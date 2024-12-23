@@ -55,8 +55,28 @@ class mapped_reaction:
 
         return bonds
 
-    def _get_all_changed_atoms(self) -> Tuple[Set[int], Set[Tuple[int, int]], Set[Tuple[int, int]]]:
+    def _get_all_changed_atoms(self) -> Tuple[ Set[int],
+                                               Set[Tuple[int, int, Chem.rdchem.BondType]],
+                                               Set[Tuple[int, int, Chem.rdchem.BondType]] ]:
+        """
+        Parameters
+        ----------
 
+        Returns
+        -------
+        changed_atoms: Set[int]
+            The set atom indices corresponding to all changed atoms across the reaction.
+
+        broken_bonds: Set[Tuple[int, int, Chem.rdchem.BondType]]
+            The set of all bonds that were broken across the reaction.
+            Each element in this set is a tuple comprising three elements.
+            The first two elements are integers indicating start & end atom indices of a bond.
+            The third element corresponds to the bond type, i.e. single, double or aromatic.
+            This bond type is a Chem.rdchem.BondType data type.
+
+        formed_bonds: Set[Tuple[int, int, Chem.rdchem.BondType]]
+            Similar to broken_bonds, but for formed bonds.
+        """
         # create an RDKit reaction object from a fully atom-mapped reaction smarts string
         rxn = AllChem.ReactionFromSmarts(self.rxn_smarts)
         reactants = rxn.GetReactants()
