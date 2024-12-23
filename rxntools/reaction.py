@@ -62,7 +62,7 @@ class mapped_reaction:
         Parameters
         ----------
         self
-        
+
         Returns
         -------
         changed_atoms: Set[int]
