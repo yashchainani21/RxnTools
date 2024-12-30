@@ -27,7 +27,14 @@ class mapped_reaction:
 
     Methods
     ----------
-    _get_mapped_bonds : get the set of all atom-mapped bonds from a molecule's RDKit mol object
+    _get_mapped_bonds :
+        get the set of all atom-mapped bonds from a molecule's RDKit mol object
+
+    _get_all_changed_atoms:
+        get all transformed atoms as well as broken and formed bonds from a atom-mapped reaction
+
+    get_all_changed_atoms:
+        same as above but with the added option to include or exclude cofactors
     """
     def __init__(self,
                  rxn_smarts: str,
