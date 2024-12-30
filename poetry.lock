@@ -1498,6 +1498,17 @@ files = [
 ]
 
 [[package]]
+name = "mmpdb"
+version = "2.1"
+description = "A package to identify matched molecular pairs and use them to predict property changes"
+optional = false
+python-versions = "*"
+files = [
+    {file = "mmpdb-2.1-py2.py3-none-any.whl", hash = "sha256:16273d265391d0592e7facb30788ec5e22949a6b863d873e1782ff9fc79901e0"},
+    {file = "mmpdb-2.1.tar.gz", hash = "sha256:1f7ac30c0a7bd6587ae072d210eb1c662485ae4df2bee61cb1e07cb67c0da9d7"},
+]
+
+[[package]]
 name = "mols2grid"
 version = "2.0.0"
 description = "Interactive 2D small molecule viewer"
@@ -3036,4 +3047,4 @@ notebook = ">=4.4.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "0ffbf1437f3da15c0f1ad6f14d487d07e540651fe29dc2dbd54074cb7efd7e6b"
+content-hash = "4c5289848e5937a0a4cdfcf20f97a80b3d9ac641301d5500068ccec59a0ef23f"
