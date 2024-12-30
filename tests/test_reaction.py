@@ -1,6 +1,16 @@
+import pytest
 from rdkit import Chem
-from rdkit.Chem import AllChem
+import json
 from rxntools import reaction
+
+@pytest.fixture
+def cofactors_list():
+    """
+    Pytest fixture to load the cofactors list from the JSON file.
+    """
+    with open('../data/cofactors.json') as f:
+        cofactors_dict = json.load(f)
+    return [cofactors_dict[key] for key in cofactors_dict.keys()]
 
 def test_get_mapped_bonds_data_type():
     """
@@ -305,3 +315,223 @@ def test_get_all_changed_atoms_frm_decarb_rxn_SMARTS():
     assert (23, 25, Chem.rdchem.BondType.SINGLE) in broken_bonds
 
     assert (23, 27, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+
+def test_get_all_changed_atoms_frm_ethanol_AdH_rxn_SMARTS_including_cofactors(cofactors_list,
+                                                                              consider_stereo = True,
+                                                                              include_cofactors = True):
+    """
+    Test to ensure ._get_all_changed_atoms returns the atom indices of all transformed atoms
+    This should be a set of atom indices.
+    The bonds broken and bonds formed throughout should also be returned as a set of tuples.
+    Within the set of bonds broken and formed, each tuple should have three elements.
+    First two elements are integers indicating start & end atom indices of the transformed bond
+    Meanwhile, the third element is a Chem.rdchem.BondType bond type
+    """
+
+    # fully atom mapped reaction SMARTS for an alcohol dehydrogenase transforming ethanol to ethanal
+    # reaction SMARTS were obtained from the MetaCyc database released by the EnzymeMap paper
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts='[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1')
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = include_cofactors,
+                                                                                 consider_stereo = consider_stereo,
+                                                                                 cofactors_list = cofactors_list)
+
+    # check first if the data types returned are as expected
+    assert isinstance(changed_atoms, set)
+    assert isinstance(broken_bonds, set)
+    assert isinstance(formed_bonds, set)
+
+    # ensure correct atom indices corresponding to transformed atoms are in changed_atoms
+    expected_atoms_changed = [2, 3, 7, 8, 9, 10, 11, 47]
+    assert all(item in changed_atoms for item in expected_atoms_changed)
+
+    # ensure that a C-O single bond has been broken within ethanol (CCO)
+    assert (2, 3, Chem.rdchem.BondType.SINGLE) in broken_bonds
+
+    # ensure that a C=O double bond has been formed within ethanal (CC=O)
+    assert (2, 3, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+
+    # ensure that the aromaticity of the pyridine is broken as expected in an AdH reaction
+    assert (7, 8, Chem.rdchem.BondType.AROMATIC) in broken_bonds
+    assert (8, 9, Chem.rdchem.BondType.AROMATIC) in broken_bonds
+    assert (9, 10, Chem.rdchem.BondType.AROMATIC) in broken_bonds
+    assert (10, 11, Chem.rdchem.BondType.AROMATIC) in broken_bonds
+    assert (11, 47, Chem.rdchem.BondType.AROMATIC) in broken_bonds
+    assert (47, 7, Chem.rdchem.BondType.AROMATIC) in broken_bonds
+
+    # ensure that new single and double bonds are formed within the pyrimidine ring
+    assert (8, 7, Chem.rdchem.BondType.SINGLE) in formed_bonds
+    assert (9, 8, Chem.rdchem.BondType.SINGLE) in formed_bonds
+    assert (10, 9, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+    assert (11, 10, Chem.rdchem.BondType.SINGLE) in formed_bonds
+    assert (47, 11, Chem.rdchem.BondType.SINGLE) in formed_bonds
+    assert (7, 47, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+
+def test_get_all_changed_atoms_frm_ethanol_AdH_rxn_SMARTS_excluding_cofactors(cofactors_list,
+                                                                              consider_stereo = True,
+                                                                              include_cofactors = False):
+    """
+    Test to ensure ._get_all_changed_atoms returns the atom indices of all transformed atoms
+    This should be a set of atom indices.
+    The bonds broken and bonds formed throughout should also be returned as a set of tuples.
+    Within the set of bonds broken and formed, each tuple should have three elements.
+    First two elements are integers indicating start & end atom indices of the transformed bond
+    Meanwhile, the third element is a Chem.rdchem.BondType bond type
+    """
+
+    # fully atom mapped reaction SMARTS for an alcohol dehydrogenase transforming ethanol to ethanal
+    # reaction SMARTS were obtained from the MetaCyc database released by the EnzymeMap paper
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts='[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1')
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = include_cofactors,
+                                                                                 consider_stereo = consider_stereo,
+                                                                                 cofactors_list = cofactors_list)
+
+    # check first if the data types returned are as expected
+    assert isinstance(changed_atoms, set)
+    assert isinstance(broken_bonds, set)
+    assert isinstance(formed_bonds, set)
+
+    # ensure correct atom indices corresponding to transformed atoms are in changed_atoms
+    expected_atoms_changed = [2, 3]
+    assert all(item in changed_atoms for item in expected_atoms_changed)
+
+    # ensure that a C-O single bond has been broken within ethanol (CCO)
+    assert (2, 3, Chem.rdchem.BondType.SINGLE) in broken_bonds
+
+    # ensure that a C=O double bond has been formed within ethanal (CC=O)
+    assert (2, 3, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+
+def test_get_all_changed_atoms_frm_nitrilase_rxn_SMARTS_including_cofactors(cofactors_list,
+                                                                            consider_stereo = True,
+                                                                            include_cofactors = True):
+    """
+    Test to ensure ._get_all_changed_atoms returns the atom indices of all transformed atoms
+    This should be a set of atom indices.
+    The bonds broken and bonds formed throughout should also be returned as a set of tuples.
+    Within the set of bonds broken and formed, each tuple should have three elements.
+    First two elements are integers indicating start & end atom indices of the transformed bond
+    Meanwhile, the third element is a Chem.rdchem.BondType bond type
+    """
+
+    # fully atom mapped reaction SMARTS for a nitrilase transforming mandelonitrile to benzaldehyde
+    # reaction SMARTS were obtained from the MetaCyc database released by the EnzymeMap paper
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]')
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = include_cofactors,
+                                                                                 consider_stereo = consider_stereo,
+                                                                                 cofactors_list = cofactors_list)
+
+    # check first if the data types returned are as expected
+    assert isinstance(changed_atoms, set)
+    assert isinstance(broken_bonds, set)
+    assert isinstance(formed_bonds, set)
+
+    # ensure correct atom indices corresponding to transformed atoms are in changed_atoms
+    expected_atoms_changed = [2, 3, 4]
+    assert all(item in changed_atoms for item in expected_atoms_changed)
+
+    # ensure that the C-C bond between the cyanide group and the alcohol carbon is broken
+    assert (2, 3, Chem.rdchem.BondType.SINGLE) in broken_bonds
+
+    # ensure that the C-O bond within the alcohol carbon is broken and reformed as C=O
+    assert (3, 4, Chem.rdchem.BondType.SINGLE) in broken_bonds
+    assert (3, 4, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+
+def test_get_all_changed_atoms_frm_nitrilase_rxn_SMARTS_excluding_cofactors(cofactors_list,
+                                                                            consider_stereo = True,
+                                                                            include_cofactors = False):
+    """
+    Test to ensure ._get_all_changed_atoms returns the atom indices of all transformed atoms
+    This should be a set of atom indices.
+    The bonds broken and bonds formed throughout should also be returned as a set of tuples.
+    Within the set of bonds broken and formed, each tuple should have three elements.
+    First two elements are integers indicating start & end atom indices of the transformed bond
+    Meanwhile, the third element is a Chem.rdchem.BondType bond type
+    """
+
+    # fully atom mapped reaction SMARTS for a nitrilase transforming mandelonitrile to benzaldehyde
+    # reaction SMARTS were obtained from the MetaCyc database released by the EnzymeMap paper
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]')
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = include_cofactors,
+                                                                                 consider_stereo = consider_stereo,
+                                                                                 cofactors_list = cofactors_list)
+
+    # check first if the data types returned are as expected
+    assert isinstance(changed_atoms, set)
+    assert isinstance(broken_bonds, set)
+    assert isinstance(formed_bonds, set)
+
+    # ensure correct atom indices corresponding to transformed atoms are in changed_atoms
+    expected_atoms_changed = [2, 3, 4]
+    assert all(item in changed_atoms for item in expected_atoms_changed)
+
+    # ensure that the C-C bond between the cyanide group and the alcohol carbon is broken
+    assert (2, 3, Chem.rdchem.BondType.SINGLE) in broken_bonds
+
+    # ensure that the C-O bond within the alcohol carbon is broken and reformed as C=O
+    assert (3, 4, Chem.rdchem.BondType.SINGLE) in broken_bonds
+    assert (3, 4, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+
+def test_get_all_changed_atoms_frm_decarb_rxn_SMARTS_including_cofactors(cofactors_list,
+                                                                         consider_stereo = True,
+                                                                         include_cofactors = True):
+    """
+    Test to ensure ._get_all_changed_atoms returns the atom indices of all transformed atoms
+    This should be a set of atom indices.
+    The bonds broken and bonds formed throughout should also be returned as a set of tuples.
+    Within the set of bonds broken and formed, each tuple should have three elements.
+    First two elements are integers indicating start & end atom indices of the transformed bond
+    Meanwhile, the third element is a Chem.rdchem.BondType bond type
+    """
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts = '[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26].[OH2:27]>>[C:23](=[O:24])=[O:27].[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@H:20]3[CH:21]=[O:22].[OH:25][CH3:26]')
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(cofactors_list = cofactors_list,
+                                                                                 consider_stereo = consider_stereo,
+                                                                                 include_cofactors = include_cofactors)
+
+    # check first if the data types returned are as expected
+    assert isinstance(changed_atoms, set)
+    assert isinstance(broken_bonds, set)
+    assert isinstance(formed_bonds, set)
+
+    # ensure correct atom indices corresponding to transformed atoms are in changed_atoms
+    expected_atoms_changed = [20, 23, 25, 27]
+    assert all(item in changed_atoms for item in expected_atoms_changed)
+
+    assert (20, 23, Chem.rdchem.BondType.SINGLE) in broken_bonds
+    assert (23, 25, Chem.rdchem.BondType.SINGLE) in broken_bonds
+
+    assert (23, 27, Chem.rdchem.BondType.DOUBLE) in formed_bonds
+
+def test_get_all_changed_atoms_frm_decarb_rxn_SMARTS_excluding_cofactors(cofactors_list,
+                                                                         consider_stereo = True,
+                                                                         include_cofactors = False):
+    """
+    Test to ensure ._get_all_changed_atoms returns the atom indices of all transformed atoms
+    This should be a set of atom indices.
+    The bonds broken and bonds formed throughout should also be returned as a set of tuples.
+    Within the set of bonds broken and formed, each tuple should have three elements.
+    First two elements are integers indicating start & end atom indices of the transformed bond
+    Meanwhile, the third element is a Chem.rdchem.BondType bond type
+    """
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts = '[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26].[OH2:27]>>[C:23](=[O:24])=[O:27].[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@H:20]3[CH:21]=[O:22].[OH:25][CH3:26]')
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(cofactors_list = cofactors_list,
+                                                                                 consider_stereo = consider_stereo,
+                                                                                 include_cofactors = include_cofactors)
+
+    # check first if the data types returned are as expected
+    assert isinstance(changed_atoms, set)
+    assert isinstance(broken_bonds, set)
+    assert isinstance(formed_bonds, set)
+
+    # ensure correct atom indices corresponding to transformed atoms are in changed_atoms
+    expected_atoms_changed = [20, 25]
+    assert all(item in changed_atoms for item in expected_atoms_changed)
+
+    assert (20, 23, Chem.rdchem.BondType.SINGLE) in broken_bonds
+    assert (23, 25, Chem.rdchem.BondType.SINGLE) in broken_bonds
