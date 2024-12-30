@@ -18,9 +18,20 @@ class mapped_reaction:
     Parameters
     ----------
     rxn_smarts : str
-        Mapped reaction smarts with complete atom mapping of all species in reaction
+        Mapped reaction SMARTS with complete atom mapping of all species in reaction.
+
+    Attributes
+    ----------
+    rxn_smarts : str
+        Mapped reaction SMARTS with complete atom mapping of all species in reaction.
+
+    Methods
+    ----------
+    _get_mapped_bonds : get the set of all atom-mapped bonds from a molecule's RDKit mol object
     """
-    def __init__(self, rxn_smarts: str):
+    def __init__(self,
+                 rxn_smarts: str,
+                 include_stereo: bool = True):
         self.rxn_smarts = rxn_smarts
 
     @staticmethod
