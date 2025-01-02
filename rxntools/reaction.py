@@ -1,6 +1,6 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from typing import Set,Tuple
+from typing import Set,Tuple,List
 from .utils import is_cofactor
 
 class unmapped_reaction:
@@ -28,13 +28,19 @@ class mapped_reaction:
     Methods
     ----------
     _get_mapped_bonds :
-        get the set of all atom-mapped bonds from a molecule's RDKit mol object
+        Get the set of all atom-mapped bonds from a molecule's RDKit mol object.
+        This is a static method.
 
     _get_all_changed_atoms:
-        get all transformed atoms as well as broken and formed bonds from a atom-mapped reaction
+        Get all transformed atoms as well as broken and formed bonds from a atom-mapped reaction.
 
     get_all_changed_atoms:
-        same as above but with the added option to include or exclude cofactors
+        Same as above but with the added option to include or exclude cofactors.
+
+    get_template_around_rxn_site:
+        Extract a SMARTS template for this reaction with varying radii around the reaction site.
+        Templates can be extracted both with and without stereochemistry.
+        This is a static method.
     """
     def __init__(self,
                  rxn_smarts: str,
@@ -224,4 +230,72 @@ class mapped_reaction:
 
         return changed_atoms, broken_bonds, formed_bonds
 
+    @staticmethod
+    def get_template_around_rxn_site(atom_mapped_substrate_smarts: str,
+                                     reactive_atom_indices: List[int],
+                                     radius: int,
+                                     include_stereo: bool) -> str:
+        """
+        Extract the chemical environment for a given substrate around its specified reaction site.
+        The reaction site could comprise a single or even multiple carbon atoms.
+        Reaction sites must be specified as a list of atom indices of the transformed atoms.
+        The substrate mol
 
+        Parameters
+        ----------
+        atom_mapped_substrate_smarts: str
+            Atom-mapped SMARTS string representing the substrate molecule.
+
+        reactive_atom_indices: List[int]
+            List of atom indices of the reactive atoms.
+
+        radius: int
+            Radius (in bonds) around each reactive atom to extract the environment
+
+        include_stereo: bool
+            Whether to include stereochemistry in the generated SMARTS.
+
+        Returns
+        -------
+        env_smarts: str
+            The SMARTS string for the chemical environment around the reaction site.
+        """
+
+        substrate_mol = Chem.MolFromSmarts(atom_mapped_substrate_smarts)
+        if substrate_mol is None:
+            raise ValueError("Invalid SMARTS string provided.")
+
+        # Initialize a set to collect all atom indices in the environment
+        atom_indices = set()
+
+        # Loop through each reactive atom and find its environment
+        for atom_idx in reactive_atom_indices:
+            try:
+                reaction_environment = Chem.FindAtomEnvironmentOfRadiusN(substrate_mol,
+                                                                     radius = radius,
+                                                                     rootedAtAtom = atom_idx)
+
+            # if the ValueError "bad atom index" is encountered,
+            # this means that with this particular atom, there are no atoms that lie beyond
+            except ValueError:
+                reaction_environment = None
+
+            if reaction_environment:
+                # Collect atom indices from the bonds in this environment
+                for bond_idx in reaction_environment:
+                    bond = substrate_mol.GetBondWithIdx(bond_idx)
+                    atom_indices.add(bond.GetBeginAtomIdx())
+                    atom_indices.add(bond.GetEndAtomIdx())
+
+        try:
+            # Generate the SMARTS string for the combined environment
+            env_smarts = Chem.MolFragmentToSmarts(substrate_mol,
+                                                  atomsToUse=list(atom_indices))
+
+        # if the ValueError "atomsToUse argument must be non-empty" is encountered,
+        # this means we are trying to index atom numbers that do not exist
+        # i.e., the radius of our desired environment exceeds the length of our molecule
+        except ValueError:
+            raise ValueError("Radius specified exceeds length of molecule.")
+
+        return env_smarts
