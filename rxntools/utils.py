@@ -62,5 +62,7 @@ def is_cofactor(mol: Chem.rdchem.Mol,
 
     return False
 
-def highlight_substructures_in_notebook:
-    pass
+
+
+
+
