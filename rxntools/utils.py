@@ -41,7 +41,7 @@ def is_cofactor(mol: Chem.rdchem.Mol,
 
     Parameters
     ----------
-    mol1 : Chem.rdchem.Mol
+    mol : Chem.rdchem.Mol
         RDKit mol object of query molecule generated from its SMILES or SMARTS representation.
         If SMARTS were used in creating mol object, these need not be atom mapped.
     cofactors_list : list
@@ -61,3 +61,6 @@ def is_cofactor(mol: Chem.rdchem.Mol,
             return True
 
     return False
+
+def highlight_substructures_in_notebook:
+    pass
