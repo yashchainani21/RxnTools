@@ -1,4 +1,5 @@
 from rdkit import Chem
+from rdkit.Chem import rdChemReactions
 
 def are_isomorphic(mol1: Chem.rdchem.Mol,
                    mol2: Chem.rdchem.Mol,
@@ -78,6 +79,12 @@ def remove_stereo(mol: Chem.rdchem.Mol) -> Chem.rdchem.Mol:
     """
     Chem.RemoveStereochemistry(mol)
     return mol
+
+# def remove_stereo_frm_rxn(reaction_SMARTS: str) -> str:
+#     reaction = rdChemReactions.ReactionFromSmarts(reaction_smarts)
+#     if reaction is None:
+#         raise ValueError("Invalid reaction SMARTS string!")
+
 
 
 
