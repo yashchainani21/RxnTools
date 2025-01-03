@@ -191,8 +191,8 @@ class mapped_reaction:
             else:
                 # check if a reactant is a cofactor first and do nothing if this is true
                 if is_cofactor(reactant_mol,
-                                cofactors_list = cofactors_list,
-                                consider_stereo = consider_stereo):
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
                     pass
 
                 # if a reactant is not a cofactor, store its mapped bonds
@@ -265,37 +265,32 @@ class mapped_reaction:
         if substrate_mol is None:
             raise ValueError("Invalid SMARTS string provided.")
 
-        # Initialize a set to collect all atom indices in the environment
-        atom_indices = set()
+        # initialize a set to store the union of all combined atom environments
+        combined_env = set()
 
-        # Loop through each reactive atom and find its environment
-        for atom_idx in reactive_atom_indices:
-            try:
-                reaction_environment = Chem.FindAtomEnvironmentOfRadiusN(substrate_mol,
-                                                                     radius = radius,
-                                                                     rootedAtAtom = atom_idx)
+        # process each reactive site
+        for map_num in reactive_atom_indices:
+            # find the atom index corresponding to the atom map number
+            rooted_atom_index = None
+            for atom in substrate_mol.GetAtoms():
+                if atom.GetAtomMapNum() == map_num:
+                    rooted_atom_index = atom.GetIdx()
+                    break
 
-            # if the ValueError "bad atom index" is encountered,
-            # this means that with this particular atom, there are no atoms that lie beyond
-            except ValueError:
-                reaction_environment = None
+            if rooted_atom_index is None:
+                raise ValueError(f"Atom with map number {map_num} not found!")
 
-            if reaction_environment:
-                # Collect atom indices from the bonds in this environment
-                for bond_idx in reaction_environment:
-                    bond = substrate_mol.GetBondWithIdx(bond_idx)
-                    atom_indices.add(bond.GetBeginAtomIdx())
-                    atom_indices.add(bond.GetEndAtomIdx())
+            # find the atom environment of the current atom
+            env = Chem.FindAtomEnvironmentOfRadiusN(substrate_mol, radius = radius, rootedAtAtom = rooted_atom_index)
+            combined_env.update(env)
 
-        try:
-            # Generate the SMARTS string for the combined environment
-            env_smarts = Chem.MolFragmentToSmarts(substrate_mol,
-                                                  atomsToUse=list(atom_indices))
+        # after all combined environments have been collected, convert to a sub-molecule
+        combined_submol = Chem.PathToSubmol(substrate_mol, list(combined_env))
 
-        # if the ValueError "atomsToUse argument must be non-empty" is encountered,
-        # this means we are trying to index atom numbers that do not exist
-        # i.e., the radius of our desired environment exceeds the length of our molecule
-        except ValueError:
-            raise ValueError("Radius specified exceeds length of molecule.")
+        # propagate atom map numbers to the sub-molecule
+        for atom in combined_submol.GetAtoms():
+            original_atom = substrate_mol.GetAtomWithIdx(atom.GetIdx())
+            atom.SetAtomMapNum(original_atom.GetAtomMapNum())
 
-        return env_smarts
+        return Chem.MolToSmarts(combined_submol)
+
