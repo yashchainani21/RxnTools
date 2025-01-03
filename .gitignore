@@ -2,3 +2,4 @@
 *.pyc
 .tests/__pycache__/
 notebooks/.ipynb_checkpoints/
+.ipynb_checkpoints/
