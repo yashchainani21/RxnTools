@@ -70,6 +70,9 @@ def test_is_isomorphic_nadh_with_atom_mapped_SMARTS_and_canonical_SMILES():
                                 consider_stereo = True)
 
 def test_is_isomorphic_CO2_with_atom_mapped_SMARTS_and_canonical_SMILES():
+    """
+    Ensure isomorphic when CO2 is represented with atom-mapped SMARTS & canonical SMILES.
+    """
     CO2_atom_mapped_smarts = "[C:23](=[O:24])=[O:27]"
     CO2_smiles = "O=C=O"
 
@@ -78,23 +81,63 @@ def test_is_isomorphic_CO2_with_atom_mapped_SMARTS_and_canonical_SMILES():
                                 mol2 = Chem.MolFromSmiles(CO2_smiles))
 
 def test_is_cofactor_CO2_with_canonical_SMILES(cofactors_list):
-
+    """
+    Ensure CO2 is flagged as a cofactor when represented with its canonical SMILES string.
+    """
     assert utils.is_cofactor(mol = Chem.MolFromSmiles("O=C=O"),
                              cofactors_list = cofactors_list)
 
 def test_is_cofactor_CO2_with_atom_mapped_SMARTS(cofactors_list):
-
+    """
+    Ensure CO2 is flagged as a cofactor when represented with its atom-mapped SMARTS string.
+    """
     assert utils.is_cofactor(mol = Chem.MolFromSmarts("[C:23](=[O:24])=[O:27]"),
                              cofactors_list = cofactors_list)
 
 def test_is_cofactor_nad_plus_with_atom_mapped_SMARTS(cofactors_list):
-
+    """
+    Ensure NAD(+) is flagged as a cofactor when represented with its atom-mapped SMARTS string.
+    """
     assert utils.is_cofactor(mol = Chem.MolFromSmarts("[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1"),
                              cofactors_list = cofactors_list,
                              consider_stereo = True)
 
 def test_is_cofactor_nadh_with_atom_mapped_SMARTS(cofactors_list):
-
+    """
+    Ensure NADH is flagged as a cofactor when represented with its atom-mapped SMARTS string.
+    """
     assert utils.is_cofactor(mol = Chem.MolFromSmarts("[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1"),
                              cofactors_list = cofactors_list,
                              consider_stereo = True)
+
+def test_remove_stereochemistry_frm_nad_plus():
+    """
+    Ensure that the utils.remove_stereo(mol) function can successfully remove stereochemistry from NAD(+).
+    NAD(+) is represented with its atom-mapped SMILES here.
+    We first create a mol object using Chem.MolFromSmarts and then convert the mol object back to SMILES for comparison.
+    """
+    nad_plus_SMARTS_w_stereo = "[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1"
+    nad_plus_mol_w_stereo = Chem.MolFromSmarts(nad_plus_SMARTS_w_stereo)
+
+    nad_plus_mol_wo_stereo = utils.remove_stereo(nad_plus_mol_w_stereo)
+    nad_plus_SMARTS_wo_stereo = Chem.MolToSmiles(nad_plus_mol_wo_stereo)
+    assert nad_plus_SMARTS_wo_stereo == "[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([CH:12]2[O:13][CH:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][CH:26]3[O:27][CH:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[CH:39]([OH:40])[CH:41]3[OH:42])[CH:43]([OH:44])[CH:45]2[OH:46])[cH:47]1"
+
+def test_remove_stereochemistry_frm_nadh():
+    """
+    Ensure that the utils.remove_stereo(mol) function can successfully remove stereochemistry from NADH
+    """
+    nadh_SMARTS_w_stereo = "[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1"
+    nadh_mol_w_stereo = Chem.MolFromSmarts(nadh_SMARTS_w_stereo)
+
+    nadh_mol_wo_stereo = utils.remove_stereo(nadh_mol_w_stereo)
+    nadh_SMARTS_wo_stereo = Chem.MolToSmiles(nadh_mol_wo_stereo)
+    assert nadh_SMARTS_wo_stereo == "[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([CH:12]2[O:13][CH:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][CH:26]3[O:27][CH:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[CH:39]([OH:40])[CH:41]3[OH:42])[CH:43]([OH:44])[CH:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1"
+
+def test_remove_stereochemistry_frm_mandelonitrile():
+    mandelonitrile_SMARTS_w_stereo = "[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1"
+    mandelonitrile_mol_w_stereo = Chem.MolFromSmarts(mandelonitrile_SMARTS_w_stereo)
+
+    mandelonitrile_mol_wo_stereo = utils.remove_stereo(mandelonitrile_mol_w_stereo)
+    mandelonitrile_SMARTS_wo_stereo = Chem.MolToSmiles(mandelonitrile_mol_wo_stereo)
+    assert mandelonitrile_SMARTS_wo_stereo == "[N:1]#[C:2][CH:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1"
