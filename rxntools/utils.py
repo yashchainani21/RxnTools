@@ -80,10 +80,41 @@ def remove_stereo(mol: Chem.rdchem.Mol) -> Chem.rdchem.Mol:
     Chem.RemoveStereochemistry(mol)
     return mol
 
-# def remove_stereo_frm_rxn(reaction_SMARTS: str) -> str:
-#     reaction = rdChemReactions.ReactionFromSmarts(reaction_smarts)
-#     if reaction is None:
-#         raise ValueError("Invalid reaction SMARTS string!")
+def remove_stereo_frm_rxn(reaction_SMARTS: str) -> str:
+    """
+    Remove stereochemistry from a reaction SMARTS.
+
+    Parameters
+    ----------
+    reaction_SMARTS : str
+        Fully atom-mapped SMARTS string for a given input reaction with potentially chiral species.
+
+    Returns
+    -------
+    no_stereo_reaction_SMARTS : str
+        Fully atom-mapped SMARTS string but stereochemistry information is remove for any participating chiral species.
+    """
+    reaction = rdChemReactions.ReactionFromSmarts(reaction_SMARTS)
+    if reaction is None:
+        raise ValueError("Invalid reaction SMARTS string!")
+
+    # process reactants, products, and agents
+    reactants = [remove_stereo(mol) for mol in reaction.GetReactants()]
+    products = [remove_stereo(mol) for mol in reaction.GetProducts()]
+    agents = [remove_stereo(mol) for mol in reaction.GetAgents()]
+
+    # reconstruct the reaction SMARTS
+    reactant_smarts = '.'.join([Chem.MolToSmarts(mol) for mol in reactants])
+    product_smarts = '.'.join([Chem.MolToSmarts(mol) for mol in products])
+    agent_smarts = '.'.join([Chem.MolToSmarts(mol) for mol in agents])
+
+    # Combine into a single reaction SMARTS string
+    if agent_smarts:
+        no_stereo_reaction_SMARTS = f"{reactant_smarts}.{agent_smarts}>>{product_smarts}"
+    else:
+        no_stereo_reaction_SMARTS = f"{reactant_smarts}>>{product_smarts}"
+
+    return no_stereo_reaction_SMARTS
 
 
 
