@@ -1,5 +1,6 @@
 import pytest
 from rdkit import Chem
+from rdkit.Chem import AllChem
 import json
 from rxntools import reaction
 
@@ -535,3 +536,93 @@ def test_get_all_changed_atoms_frm_decarb_rxn_SMARTS_excluding_cofactors(cofacto
 
     assert (20, 23, Chem.rdchem.BondType.SINGLE) in broken_bonds
     assert (23, 25, Chem.rdchem.BondType.SINGLE) in broken_bonds
+
+def test_extract_rxn_template_radius1_frm_ethanol_wo_stereo_wo_cofactors(cofactors_list,
+                                                                         radius = 1,
+                                                                         include_stereo = False):
+
+    atom_mapped_ethanol_AdH_rxn_smarts = '[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1'
+    AllChem.ReactionFromSmarts(atom_mapped_ethanol_AdH_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_ethanol_AdH_rxn_smarts)
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = False,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    # check to ensure that only the C2 and O3 atoms are changed since the C2-O3 bond is oxidized
+    assert changed_atoms == {2, 3}
+
+    template = mapped_rxn.get_template_around_rxn_site(atom_mapped_substrate_smarts='[CH3:1][CH2:2][OH:3]',
+                                                       reactive_atom_indices=list(changed_atoms),
+                                                       radius = radius,
+                                                       include_stereo = include_stereo)
+
+    assert template == '[C&H3:1][C&H2:2][O&H1:3]'
+
+def test_extract_rxn_template_radius2_frm_ethanol_wo_stereo_wo_cofactors(cofactors_list,
+                                                                         radius = 2,
+                                                                         include_stereo = False):
+
+    atom_mapped_ethanol_AdH_rxn_smarts = '[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1'
+    AllChem.ReactionFromSmarts(atom_mapped_ethanol_AdH_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_ethanol_AdH_rxn_smarts)
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = False,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    # check to ensure that only the C2 and O3 atoms are changed since the C2-O3 bond is oxidized
+    assert changed_atoms == {2, 3}
+
+    template = mapped_rxn.get_template_around_rxn_site(atom_mapped_substrate_smarts='[CH3:1][CH2:2][OH:3]',
+                                                       reactive_atom_indices=list(changed_atoms),
+                                                       radius = radius,
+                                                       include_stereo = include_stereo)
+
+    assert template == '[C&H3:1][C&H2:2][O&H1:3]'
+
+def test_extract_rxn_template_radius3_frm_ethanol_wo_stereo_wo_cofactors(cofactors_list,
+                                                                         radius = 3,
+                                                                         include_stereo = False):
+
+    atom_mapped_ethanol_AdH_rxn_smarts = '[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1'
+    AllChem.ReactionFromSmarts(atom_mapped_ethanol_AdH_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_ethanol_AdH_rxn_smarts)
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = False,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    # check to ensure that only the C2 and O3 atoms are changed since the C2-O3 bond is oxidized
+    assert changed_atoms == {2, 3}
+
+    template = mapped_rxn.get_template_around_rxn_site(atom_mapped_substrate_smarts='[CH3:1][CH2:2][OH:3]',
+                                                       reactive_atom_indices=list(changed_atoms),
+                                                       radius = radius,
+                                                       include_stereo = include_stereo)
+
+    assert template == ''
+
+def test_extract_rxn_template_radius4_frm_ethanol_wo_stereo_wo_cofactors(cofactors_list,
+                                                                         radius = 4,
+                                                                         include_stereo = False):
+
+    atom_mapped_ethanol_AdH_rxn_smarts = '[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1'
+    AllChem.ReactionFromSmarts(atom_mapped_ethanol_AdH_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_ethanol_AdH_rxn_smarts)
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors = False,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    # check to ensure that only the C2 and O3 atoms are changed since the C2-O3 bond is oxidized
+    assert changed_atoms == {2, 3}
+
+    template = mapped_rxn.get_template_around_rxn_site(atom_mapped_substrate_smarts='[CH3:1][CH2:2][OH:3]',
+                                                       reactive_atom_indices=list(changed_atoms),
+                                                       radius = radius,
+                                                       include_stereo = include_stereo)
+
+    assert template == ''
+
+
