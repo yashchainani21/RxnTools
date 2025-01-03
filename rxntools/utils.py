@@ -62,6 +62,22 @@ def is_cofactor(mol: Chem.rdchem.Mol,
 
     return False
 
+def remove_stereo(mol: Chem.rdchem.Mol) -> Chem.rdchem.Mol:
+    """
+    Remove stereochemistry from a molecule.
+
+    Parameters
+    ----------
+    mol : Chem.rdchem.Mol
+        RDKit mol object of query molecule generated from its SMILES or SMARTS representation with stereochemistry.
+
+    Returns
+    -------
+    mol : Chem.rdchem.Mol
+        RDKit mol object of input molecule without stereochemistry.
+    """
+    Chem.RemoveStereochemistry(mol)
+    return mol
 
 
 
