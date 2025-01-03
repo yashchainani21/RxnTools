@@ -104,9 +104,9 @@ def remove_stereo_frm_rxn(reaction_SMARTS: str) -> str:
     agents = [remove_stereo(mol) for mol in reaction.GetAgents()]
 
     # reconstruct the reaction SMARTS
-    reactant_smarts = '.'.join([Chem.MolToSmarts(mol) for mol in reactants])
-    product_smarts = '.'.join([Chem.MolToSmarts(mol) for mol in products])
-    agent_smarts = '.'.join([Chem.MolToSmarts(mol) for mol in agents])
+    reactant_smarts = '.'.join([Chem.MolToSmiles(mol) for mol in reactants])
+    product_smarts = '.'.join([Chem.MolToSmiles(mol) for mol in products])
+    agent_smarts = '.'.join([Chem.MolToSmiles(mol) for mol in agents])
 
     # Combine into a single reaction SMARTS string
     if agent_smarts:
