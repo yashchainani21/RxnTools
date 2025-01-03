@@ -125,7 +125,7 @@ def test_remove_stereochemistry_frm_nad_plus():
 
 def test_remove_stereochemistry_frm_nadh():
     """
-    Ensure that the utils.remove_stereo(mol) function can successfully remove stereochemistry from NADH
+    Ensure that the utils.remove_stereo(mol) function can successfully remove stereochemistry from NADH.
     """
     nadh_SMARTS_w_stereo = "[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1"
     nadh_mol_w_stereo = Chem.MolFromSmarts(nadh_SMARTS_w_stereo)
@@ -135,6 +135,9 @@ def test_remove_stereochemistry_frm_nadh():
     assert nadh_SMARTS_wo_stereo == "[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([CH:12]2[O:13][CH:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][CH:26]3[O:27][CH:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[CH:39]([OH:40])[CH:41]3[OH:42])[CH:43]([OH:44])[CH:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1"
 
 def test_remove_stereochemistry_frm_mandelonitrile():
+    """
+    Ensure that the utils.remove_stereo(mol) function can successfully remove stereochemistry from mandelonitrile.
+     """
     mandelonitrile_SMARTS_w_stereo = "[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1"
     mandelonitrile_mol_w_stereo = Chem.MolFromSmarts(mandelonitrile_SMARTS_w_stereo)
 
@@ -143,11 +146,28 @@ def test_remove_stereochemistry_frm_mandelonitrile():
     assert mandelonitrile_SMARTS_wo_stereo == "[N:1]#[C:2][CH:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1"
 
 def test_remove_stereochemistry_frm_ethanol_AdH_rxn():
+    """
+    Ensure that the function utils.remove_stereo_frm_rxn() can remove stereochemistry across all species.
+    This particular test is for the alcohol dehydrogenation reaction of ethanol to form ethanal.
+    """
     rxn_SMARTS_w_stereo = '[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1'
     rxn_SMARTS_wo_stereo = utils.remove_stereo_frm_rxn(rxn_SMARTS_w_stereo)
     assert rxn_SMARTS_wo_stereo == '[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([CH:12]2[O:13][CH:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][CH:26]3[O:27][CH:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[CH:39]([OH:40])[CH:41]3[OH:42])[CH:43]([OH:44])[CH:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([CH:12]2[O:13][CH:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][CH:26]3[O:27][CH:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[CH:39]([OH:40])[CH:41]3[OH:42])[CH:43]([OH:44])[CH:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1'
 
 def test_remove_stereochemistry_frm_mandelonitrile_nitrilase_rxn():
+    """
+    Ensure that the function utils.remove_stereo_frm_rxn() can remove stereochemistry across all species.
+    This particular test is for converting mandelonitrile to benzyldehyde via a nitrilase.
+    """
     rxn_SMARTS_w_stereo = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
     rxn_SMARTS_wo_stereo = utils.remove_stereo_frm_rxn(rxn_SMARTS_w_stereo)
     assert rxn_SMARTS_wo_stereo == '[N:1]#[C:2][CH:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+
+def test_remove_stereochemistry_frm_decarboxylation_rxn():
+    """
+    Ensure that the function utils.remove_stereo_frm_rxn() can remove stereochemistry across all species.
+    This particular test is for a decarboxylation reaction.
+    """
+    rxn_SMARTS_w_stereo = '[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26].[OH2:27]>>[C:23](=[O:24])=[O:27].[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@H:20]3[CH:21]=[O:22].[OH:25][CH3:26]'
+    rxn_SMARTS_wo_stereo = utils.remove_stereo_frm_rxn(rxn_SMARTS_w_stereo)
+    assert rxn_SMARTS_wo_stereo == '[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[CH:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[CH:17]2[CH2:18][CH:19]1[C:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26].[OH2:27]>>[C:23](=[O:24])=[O:27].[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[CH:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[CH:17]2[CH2:18][CH:19]1[CH:20]3[CH:21]=[O:22].[OH:25][CH3:26]'
