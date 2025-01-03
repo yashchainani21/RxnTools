@@ -18,6 +18,7 @@ scipy = "^1.14.1"
 py3dmol = "^2.4.2"
 pytest = "^8.3.4"
 mmpdb = "^2.1"
+notebook = "^7.3.2"
 
 
 [build-system]
