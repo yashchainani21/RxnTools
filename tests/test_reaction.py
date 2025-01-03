@@ -625,4 +625,197 @@ def test_extract_rxn_template_radius4_frm_ethanol_wo_stereo_wo_cofactors(cofacto
 
     assert template == ''
 
+def test_extract_rxn_template_radius1_frm_mandelonitrile_w_stereo_wo_cofactors(cofactors_list,
+                                                                               radius = 1,
+                                                                               include_stereo = True):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
 
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2,3,4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius1_w_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius = radius,
+        include_stereo = include_stereo)
+
+    assert template_radius1_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]'
+
+def test_extract_rxn_template_radius1_frm_mandelonitrile_wo_stereo_wo_cofactors(cofactors_list,
+                                                                               radius = 1,
+                                                                               include_stereo = False):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2,3,4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius1_wo_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius = radius,
+        include_stereo = include_stereo)
+
+    assert template_radius1_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]'
+
+def test_extract_rxn_template_radius2_frm_mandelonitrile_w_stereo_wo_cofactors(cofactors_list,
+                                                                               radius = 2,
+                                                                               include_stereo = True):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2,3,4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius2_w_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius = radius,
+        include_stereo = include_stereo)
+
+    assert template_radius2_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]([c&H1:6])[c&H1:7]'
+
+def test_extract_rxn_template_radius2_frm_mandelonitrile_wo_stereo_wo_cofactors(cofactors_list,
+                                                                               radius = 2,
+                                                                               include_stereo = False):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2,3,4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius2_wo_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius = radius,
+        include_stereo = include_stereo)
+
+    assert template_radius2_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]([c&H1:6])[c&H1:7]'
+
+
+def test_extract_rxn_template_radius3_frm_mandelonitrile_w_stereo_wo_cofactors(cofactors_list,
+                                                                               radius=3,
+                                                                               include_stereo=True):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2, 3, 4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius3_w_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius=radius,
+        include_stereo=include_stereo)
+
+    assert template_radius3_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]([c&H1:6][c&H1:7])[c&H1:9][c&H1:8]'
+
+
+def test_extract_rxn_template_radius3_frm_mandelonitrile_wo_stereo_wo_cofactors(cofactors_list,
+                                                                                radius=3,
+                                                                                include_stereo=False):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2, 3, 4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius3_wo_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius=radius,
+        include_stereo=include_stereo)
+
+    assert template_radius3_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]([c&H1:6][c&H1:7])[c&H1:9][c&H1:8]'
+
+def test_extract_rxn_template_radius4_frm_mandelonitrile_w_stereo_wo_cofactors(cofactors_list,
+                                                                               radius=4,
+                                                                               include_stereo=True):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2, 3, 4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius4_w_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius=radius,
+        include_stereo=include_stereo)
+
+    assert template_radius4_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]1[c&H1:6][c&H1:7][c&H1:8][c&H1:9][c&H1:10]1'
+
+
+def test_extract_rxn_template_radius4_frm_mandelonitrile_wo_stereo_wo_cofactors(cofactors_list,
+                                                                                radius=4,
+                                                                                include_stereo=False):
+    atom_mapped_nitrilase_rxn_smarts = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1>>[CH:3](=[O:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1.[N:1]#[CH:2]'
+    AllChem.ReactionFromSmarts(atom_mapped_nitrilase_rxn_smarts)
+
+    mapped_rxn = reaction.mapped_reaction(rxn_smarts=atom_mapped_nitrilase_rxn_smarts)
+
+    changed_atoms, broken_bonds, formed_bonds = mapped_rxn.get_all_changed_atoms(include_cofactors=True,
+                                                                                 consider_stereo=True,
+                                                                                 cofactors_list=cofactors_list)
+
+    assert changed_atoms == {2, 3, 4}
+
+    mandelonitrile_atom_mapped_SMARTS = '[N:1]#[C:2][C@H:3]([OH:4])[c:5]1[cH:6][cH:7][cH:8][cH:9][cH:10]1'
+
+    template_radius4_wo_stereo = mapped_rxn.get_template_around_rxn_site(
+        atom_mapped_substrate_smarts=mandelonitrile_atom_mapped_SMARTS,
+        reactive_atom_indices=list(changed_atoms),
+        radius=radius,
+        include_stereo=include_stereo)
+
+    assert template_radius4_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]1[c&H1:6][c&H1:7][c&H1:8][c&H1:9][c&H1:10]1'
