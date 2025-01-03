@@ -1,7 +1,7 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from typing import Set,Tuple,List
-from .utils import is_cofactor
+from .utils import is_cofactor, remove_stereo, remove_stereo_frm_rxn
 
 class unmapped_reaction:
     """
@@ -264,6 +264,11 @@ class mapped_reaction:
         substrate_mol = Chem.MolFromSmarts(atom_mapped_substrate_smarts)
         if substrate_mol is None:
             raise ValueError("Invalid SMARTS string provided.")
+
+        if include_stereo:
+            pass
+        else:
+            substrate_mol = remove_stereo(substrate_mol)
 
         # initialize a set to store the union of all combined atom environments
         combined_env = set()
