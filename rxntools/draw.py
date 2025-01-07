@@ -37,18 +37,12 @@ def highlight_substructures_in_notebook(substrate_smarts: str,
 
     """
 
-    # although input to this function is an atom-mapped SMARTS representation of the substrate,
-    # we generate an RDKit mol object using Chem.MolFromSmiles instead of Chem.MolFromSmarts,
-    # because using Chem.MolFromSmarts will result in single bonds being drawn as dotted lines
-    substrate_mol = Chem.MolFromSmiles(substrate_smarts)
+    # convert the input, atom-mapped substrate SMARTS string to its corresponding SMILES string
+    substrate_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(substrate_smarts))
+    substrate_mol = Chem.MolFromSmiles(substrate_smiles)
 
-    # for generating an RDKit mol object from the query substructure, however,
-    # we use Chem.MolFromSMarts
+    # for generating an RDKit mol object from the query substructure, however, use Chem.MolFromSMarts
     substructure_mol = Chem.MolFromSmarts(substructure_smarts)
-
-    # compute the 2D coordinates for the substrate's mol object
-    # the resulting coordinates will then be stored on each atom of the molecule
-    rdDepictor.Compute2DCoords(substrate_mol)
 
     drawer = rdMolDraw2D.MolDraw2DSVG(size[0], size[1])
 
@@ -62,7 +56,6 @@ def highlight_substructures_in_notebook(substrate_smarts: str,
                                                         useChirality = False), ())
 
     drawer.DrawMolecule(substrate_mol, highlightAtoms = matches)
-
     drawer.FinishDrawing()
     svg = drawer.GetDrawingText().replace('svg:', '')
 
