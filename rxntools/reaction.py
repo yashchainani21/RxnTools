@@ -259,6 +259,7 @@ class mapped_reaction:
         -------
         env_smarts: str
             The SMARTS string for the chemical environment around the reaction site.
+            If the input radius exceeds the input substrate molecule, then an empty string is returned
         """
 
         substrate_mol = Chem.MolFromSmarts(atom_mapped_substrate_smarts)
