@@ -262,40 +262,33 @@ class mapped_reaction:
         """
 
         substrate_mol = Chem.MolFromSmarts(atom_mapped_substrate_smarts)
-        if substrate_mol is None:
-            raise ValueError("Invalid SMARTS string provided.")
 
-        if include_stereo:
-            pass
-        else:
+        if substrate_mol is None:
+            raise ValueError("Invalid SMARTS string provided")
+
+        if not include_stereo:
             substrate_mol = remove_stereo(substrate_mol)
 
-        # initialize a set to store the union of all combined atom environments
+        # initialize a set to store the union of all chemical environments
         combined_env = set()
 
-        # process each reactive site
-        for map_num in reactive_atom_indices:
-            # find the atom index corresponding to the atom map number
-            rooted_atom_index = None
-            for atom in substrate_mol.GetAtoms():
-                if atom.GetAtomMapNum() == map_num:
-                    rooted_atom_index = atom.GetIdx()
-                    break
+        # iterate through each atom in the substrate molecule
+        for atom in substrate_mol.GetAtoms():
 
-            if rooted_atom_index is None:
-                raise ValueError(f"Atom with map number {map_num} not found!")
+            # extract atom index & atom map number for each atom
+            atom_index_num = atom.GetIdx()
+            atom_map_num = atom.GetAtomMapNum()
 
-            # find the atom environment of the current atom
-            env = Chem.FindAtomEnvironmentOfRadiusN(substrate_mol, radius = radius, rootedAtAtom = rooted_atom_index)
-            combined_env.update(env)
+            # if atom map number is in the list of reactive atom indices
+            if atom_map_num in reactive_atom_indices:
+                # extract the chemical environment around this atom using its atom index
+                # note that atom index is passed
+                env = Chem.FindAtomEnvironmentOfRadiusN(substrate_mol,
+                                                        radius=radius,
+                                                        rootedAtAtom=atom_index_num)
+                combined_env.update(env)
 
-        # after all combined environments have been collected, convert to a sub-molecule
+        # with the final combined environment, extract a submolecule
         combined_submol = Chem.PathToSubmol(substrate_mol, list(combined_env))
-
-        # propagate atom map numbers to the sub-molecule
-        for atom in combined_submol.GetAtoms():
-            original_atom = substrate_mol.GetAtomWithIdx(atom.GetIdx())
-            atom.SetAtomMapNum(original_atom.GetAtomMapNum())
-
         return Chem.MolToSmarts(combined_submol)
 
