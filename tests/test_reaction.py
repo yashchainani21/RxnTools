@@ -695,7 +695,7 @@ def test_extract_rxn_template_radius2_frm_mandelonitrile_w_stereo_wo_cofactors(c
         radius = radius,
         include_stereo = include_stereo)
 
-    assert template_radius2_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]([c&H1:6])[c&H1:7]'
+    assert template_radius2_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]([c&H1:6])[c&H1:10]'
 
 def test_extract_rxn_template_radius2_frm_mandelonitrile_wo_stereo_wo_cofactors(cofactors_list,
                                                                                radius = 2,
@@ -719,7 +719,7 @@ def test_extract_rxn_template_radius2_frm_mandelonitrile_wo_stereo_wo_cofactors(
         radius = radius,
         include_stereo = include_stereo)
 
-    assert template_radius2_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]([c&H1:6])[c&H1:7]'
+    assert template_radius2_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]([c&H1:6])[c&H1:10]'
 
 
 def test_extract_rxn_template_radius3_frm_mandelonitrile_w_stereo_wo_cofactors(cofactors_list,
@@ -744,7 +744,7 @@ def test_extract_rxn_template_radius3_frm_mandelonitrile_w_stereo_wo_cofactors(c
         radius=radius,
         include_stereo=include_stereo)
 
-    assert template_radius3_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]([c&H1:6][c&H1:7])[c&H1:9][c&H1:8]'
+    assert template_radius3_w_stereo == '[N:1]#[C:2][C@&H1:3]([O&H1:4])[c:5]([c&H1:6][c&H1:7])[c&H1:10][c&H1:9]'
 
 
 def test_extract_rxn_template_radius3_frm_mandelonitrile_wo_stereo_wo_cofactors(cofactors_list,
@@ -769,7 +769,7 @@ def test_extract_rxn_template_radius3_frm_mandelonitrile_wo_stereo_wo_cofactors(
         radius=radius,
         include_stereo=include_stereo)
 
-    assert template_radius3_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]([c&H1:6][c&H1:7])[c&H1:9][c&H1:8]'
+    assert template_radius3_wo_stereo == '[N:1]#[C:2][C&H1:3]([O&H1:4])[c:5]([c&H1:6][c&H1:7])[c&H1:10][c&H1:9]'
 
 def test_extract_rxn_template_radius4_frm_mandelonitrile_w_stereo_wo_cofactors(cofactors_list,
                                                                                radius=4,
