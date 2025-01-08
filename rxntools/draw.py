@@ -8,7 +8,8 @@ from copy import deepcopy
 def highlight_substructures_in_notebook(substrate_smarts: str,
                                         substructure_smarts: str,
                                         size: Tuple[int, int] = (400, 200),
-                                        consider_stereo: bool = False) -> SVG:
+                                        consider_stereo: bool = False,
+                                        allow_multiple_matches: bool = False) -> SVG:
 
     """
     Highlights substructures in a jupyter notebook.
@@ -29,6 +30,10 @@ def highlight_substructures_in_notebook(substrate_smarts: str,
         Resolution size of output image of the substrate & any highlighted substructures.
 
     consider_stereo: bool
+        Whether stereochemistry should be considered in finding substructure matches.
+
+    allow_multiple_matches: bool
+        Whether all matching substructures should be shown or only the first matching substructure.
 
     Returns
     -------
@@ -49,11 +54,17 @@ def highlight_substructures_in_notebook(substrate_smarts: str,
     # we add up substructure matches because later on, highlightAtoms expects only one tuple
     # consequently, the tuples of tuples needs to be merged into a single tuple
     if consider_stereo:
-        matches = sum(substrate_mol.GetSubstructMatches(substructure_mol,
-                                                        useChirality = True), ())
+        if allow_multiple_matches:
+            matches = sum(substrate_mol.GetSubstructMatches(substructure_mol,
+                                                            useChirality = True), ())
+        else:
+            matches = substrate_mol.GetSubstructMatches(substructure_mol, useChirality = True)[0]
     else:
-        matches = sum(substrate_mol.GetSubstructMatches(substructure_mol,
-                                                        useChirality = False), ())
+        if allow_multiple_matches:
+            matches = sum(substrate_mol.GetSubstructMatches(substructure_mol,
+                                                            useChirality = False), ())
+        else:
+            matches = substrate_mol.GetSubstructMatches(substructure_mol, useChirality = False)[0]
 
     drawer.DrawMolecule(substrate_mol, highlightAtoms = matches)
     drawer.FinishDrawing()
