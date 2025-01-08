@@ -116,7 +116,7 @@ def remove_stereo_frm_rxn(reaction_SMARTS: str) -> str:
 
     return no_stereo_reaction_SMARTS
 
-def reset_smarts_numbering(SMARTS: str) -> str:
+def reset_atom_map(SMARTS: str) -> str:
     """
     Reset the numbering of an extracted reaction template.
     Resetting atom maps of extracted templates can help duplicate duplicates.
