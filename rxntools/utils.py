@@ -116,7 +116,8 @@ def remove_stereo_frm_rxn(reaction_SMARTS: str) -> str:
 
     return no_stereo_reaction_SMARTS
 
-def reset_atom_map(SMARTS: str) -> str:
+def reset_atom_map(SMARTS: str,
+                   starting_atom_num: int = 0) -> str:
     """
     Reset the numbering of an extracted reaction template.
     Resetting atom maps of extracted templates can help duplicate duplicates.
@@ -125,6 +126,9 @@ def reset_atom_map(SMARTS: str) -> str:
     ----------
     SMARTS: str
         Fully-atom mapped SMARTS string of an input molecule, complete with stereochemistry
+
+    starting_atom_num: int
+        Starting atom number for the new atom mapping
     """
 
     # convert the input molecule's SMARTS to an RDKit mol object
@@ -133,7 +137,10 @@ def reset_atom_map(SMARTS: str) -> str:
         raise ValueError("Invalid SMARTS string!")
 
     # map the existing atom indices to new atom map numbers starting from 1
-    new_atom_map = {atom.GetIdx(): i + 1 for i, atom in enumerate(mol.GetAtoms())}
+    if starting_atom_num == 0:
+        new_atom_map = {atom.GetIdx(): starting_atom_num + i + 1 for i, atom in enumerate(mol.GetAtoms())}
+    else:
+        new_atom_map = {atom.GetIdx(): starting_atom_num + i for i, atom in enumerate(mol.GetAtoms())}
 
     # update the existing atom map numbers in the current molecule
     for atom in mol.GetAtoms():
