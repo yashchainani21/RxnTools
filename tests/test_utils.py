@@ -172,22 +172,42 @@ def test_remove_stereochemistry_frm_decarboxylation_rxn():
     rxn_SMARTS_wo_stereo = utils.remove_stereo_frm_rxn(rxn_SMARTS_w_stereo)
     assert rxn_SMARTS_wo_stereo == '[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[CH:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[CH:17]2[CH2:18][CH:19]1[C:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26].[OH2:27]>>[C:23](=[O:24])=[O:27].[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[CH:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[CH:17]2[CH2:18][CH:19]1[CH:20]3[CH:21]=[O:22].[OH:25][CH3:26]'
 
-def test_creating_new_atommap_for_template_01_start_at_0():
+def test_creating_new_atommap_for_template_01_start_at_1():
     extracted_template = '[C:7][C&H2:9][C&H2:10]'
-    final_template = utils.reset_atom_map(extracted_template)
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num= 1)
     assert final_template == '[C:1][C&H2:2][C&H2:3]'
 
-def test_creating_new_atommap_for_template_02_start_at_0():
+def test_creating_new_atommap_for_template_01_start_at_7():
+    extracted_template = '[C:7][C&H2:9][C&H2:10]'
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 7)
+    assert final_template == '[C:7][C&H2:8][C&H2:9]'
+
+def test_creating_new_atommap_for_template_02_start_at_1():
     extracted_template = '[C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10][C@@&H1:4]'
-    final_template = utils.reset_atom_map(extracted_template)
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 1)
     assert final_template == '[C&H1:1]=[C:2]([C&H3:3])[C&H2:4][C&H2:5][C@@&H1:6]'
 
-def test_creating_new_atommap_for_template_03_start_at_0():
+def test_creating_new_atommap_for_template_02_start_at_11():
+    extracted_template = '[C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10][C@@&H1:4]'
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 11)
+    assert final_template == '[C&H1:11]=[C:12]([C&H3:13])[C&H2:14][C&H2:15][C@@&H1:16]'
+
+def test_creating_new_atommap_for_template_03_start_at_1():
     extracted_template = '[C:2][C@&H1:4]1[C&H2:5][C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10]1'
-    final_template = utils.reset_atom_map(extracted_template)
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 1)
     assert final_template == '[C:1][C@&H1:2]1[C&H2:3][C&H1:4]=[C:5]([C&H3:6])[C&H2:7][C&H2:8]1'
 
-def test_creating_new_atommap_for_template_04_start_at_0():
+def test_creating_new_atommap_for_template_03_start_at_2():
+    extracted_template = '[C:2][C@&H1:4]1[C&H2:5][C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10]1'
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 2)
+    assert final_template == '[C:2][C@&H1:3]1[C&H2:4][C&H1:5]=[C:6]([C&H3:7])[C&H2:8][C&H2:9]1'
+
+def test_creating_new_atommap_for_template_04_start_at_1():
     extracted_template = '[C&H2:1]=[C:2]([C&H3:3])[C@&H1:4]1[C&H2:5][C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10]1'
-    final_template = utils.reset_atom_map(extracted_template)
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 1)
     assert final_template == '[C&H2:1]=[C:2]([C&H3:3])[C@&H1:4]1[C&H2:5][C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10]1'
+
+def test_creating_new_atommap_for_template_04_start_at_50():
+    extracted_template = '[C&H2:1]=[C:2]([C&H3:3])[C@&H1:4]1[C&H2:5][C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10]1'
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 50)
+    assert final_template == '[C&H2:50]=[C:51]([C&H3:52])[C@&H1:53]1[C&H2:54][C&H1:55]=[C:56]([C&H3:57])[C&H2:58][C&H2:59]1'
