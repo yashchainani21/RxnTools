@@ -9,7 +9,8 @@ def highlight_substructures_in_notebook(substrate_smarts: str,
                                         substructure_smarts: str,
                                         size: Tuple[int, int] = (400, 200),
                                         consider_stereo: bool = False,
-                                        allow_multiple_matches: bool = False) -> SVG:
+                                        allow_multiple_matches: bool = False,
+                                        atoms_to_include: any = None) -> SVG:
 
     """
     Highlights substructures in a jupyter notebook.
