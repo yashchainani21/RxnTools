@@ -20,9 +20,20 @@ class unmapped_reaction:
         Parameters
         ----------
         self
-        
+
         :return:
         """
+        rxn_str = self.rxn_str
+
+        if " = " in rxn_str:
+            reactants_str = rxn_str.split(" = ")[0]
+            products_str = rxn_str.split(" = ")[1]
+            return reactants_str, products_str
+
+        if ">>" in rxn_str:
+            reactants_str = rxn_str.split(">>")[0]
+            products_str = rxn_str.split(">>")[1]
+            return reactants_str, products_str
 
 class mapped_reaction:
     """
