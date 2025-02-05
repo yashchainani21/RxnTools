@@ -41,12 +41,43 @@ class unmapped_reaction:
             products_str = rxn_str.split(">>")[1]
             return reactants_str, products_str
 
-    def get_substrates(self, cofactors_list: List[str]):
+    def get_substrates(self,
+                       cofactors_list: List[str],
+                       consider_stereo: bool) -> List[str]:
+        """
+        For an input unmapped reaction string, identify the reactants and ignore cofactors.
+
+        Parameters
+        ----------
+        self
+
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
+
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
+        """
 
         reactants_str, products_str = self._rxn_2_cpds()
+        reactants_list = []
+
         if " + " in reactants_str:
-            for reactant in reactants_str.split(" + "):
-                if is_cofactor()
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split(" + "):
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    reactants_list.append(reactant_smiles)
+
+        return reactants_list
 
 class mapped_reaction:
     """
