@@ -13,6 +13,15 @@ class unmapped_reaction:
     def __init__(self, rxn_str: str):
         self.rxn_str = rxn_str
 
+    def _rxn_2_cpds(self) -> Tuple[str, str]:
+        """
+        Parse a reaction string to return two lists: a reactants list and a products list.
+
+        Parameters
+        ----------
+        :return:
+        """
+
 class mapped_reaction:
     """
     Parameters
