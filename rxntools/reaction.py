@@ -56,6 +56,11 @@ class unmapped_reaction:
 
         consider_stereo: bool
             Whether to consider stereochemistry of cofactors specifically
+
+        Returns
+        -------
+        reactants_list: List[str]
+            List of reactants smiles strings
         """
 
         reactants_str, products_str = self._rxn_2_cpds()
@@ -65,12 +70,30 @@ class unmapped_reaction:
 
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split(" + "):
+
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, do not store
                 if is_cofactor(mol = reactant_mol,
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    reactants_list.append(reactant_smiles)
+
+        if "." in reactants_str:
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split("."):
+
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol=reactant_mol,
+                               cofactors_list=cofactors_list,
+                               consider_stereo=consider_stereo):
                     pass
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
