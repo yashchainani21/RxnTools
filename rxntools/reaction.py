@@ -102,6 +102,67 @@ class unmapped_reaction:
 
         return reactants_list
 
+    def get_products(self,
+                    cofactors_list: List[str],
+                    consider_stereo: bool) -> List[str]:
+        """
+        For an input unmapped reaction string, identify the products and ignore cofactors.
+
+        Parameters
+        ----------
+        self
+
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
+
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
+
+        Returns
+        -------
+        products_list: List[str]
+            List of product smiles strings
+        """
+
+        reactants_str, products_str = self._rxn_2_cpds()
+        products_list = []
+
+        if " + " in products_str:
+
+            # for each reactant's SMILES string
+            for product_smiles in products_str.split(" + "):
+
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    products_list.append(product_smiles)
+
+        if "." in products_str:
+
+            # for each reactant's SMILES string
+            for product_smiles in products_str.split("."):
+
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    products_list.append(product_smiles)
+
+        return products_list
+
 class mapped_reaction:
     """
     Parameters
