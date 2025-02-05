@@ -21,7 +21,13 @@ class unmapped_reaction:
         ----------
         self
 
-        :return:
+        Returns
+        -------
+        reactants_str : str
+            A string representation of all reactants involved in the reaction, e.g. "A + B" or "A.B"
+
+        products_str : str
+            A string representation of all products involved in the reaction ,e.g. "C + D" or "C.D"
         """
         rxn_str = self.rxn_str
 
@@ -34,6 +40,13 @@ class unmapped_reaction:
             reactants_str = rxn_str.split(">>")[0]
             products_str = rxn_str.split(">>")[1]
             return reactants_str, products_str
+
+    def get_substrates(self, cofactors_list: List[str]):
+
+        reactants_str, products_str = self._rxn_2_cpds()
+        if " + " in reactants_str:
+            for reactant in reactants_str.split(" + "):
+                if is_cofactor()
 
 class mapped_reaction:
     """
@@ -156,7 +169,7 @@ class mapped_reaction:
     def get_all_changed_atoms(self,
                               include_cofactors: bool,
                               consider_stereo: bool,
-                              cofactors_list: list) -> Tuple[ Set[int],
+                              cofactors_list: List[str]) -> Tuple[ Set[int],
                                                               Set[Tuple[int, int, Chem.rdchem.BondType]],
                                                               Set[Tuple[int, int, Chem.rdchem.BondType]] ]:
         """
@@ -170,19 +183,13 @@ class mapped_reaction:
         consider_stereo: bool
             Whether to consider stereochemistry of cofactors specifically
 
-        cofactors_list : list
+        cofactors_list: List[str]
             List of cofactor SMILES strings
 
         Returns
         -------
         changed_atoms: Set[int]
             The set atom indices corresponding to all changed atoms across the reaction.
-
-        include_cofactors: bool
-            Whether to include cofactor atoms or not in determining which atoms are transformed
-
-        cofactors_list: list
-            List of cofactor SMILES
 
         broken_bonds: Set[Tuple[int, int, Chem.rdchem.BondType]]
             The set of all bonds that were broken across the reaction.
