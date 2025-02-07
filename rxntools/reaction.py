@@ -163,28 +163,30 @@ class unmapped_reaction:
 
         return products_list
 
-    def get_lhs_cofactors(self):
+    def get_lhs_cofactors(self,
+                          cofactors_list: List[str],
+                          consider_stereo: bool) -> List[str]:
         """
         For an input unmapped reaction string, identify the cofactors on the LHS of a reaction.
 
-                Parameters
-                ----------
-                self
+        Parameters
+        ----------
+        self
 
-                cofactors_list: List[str]
-                    List of cofactor SMILES strings
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
 
-                consider_stereo: bool
-                    Whether to consider stereochemistry of cofactors specifically
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
 
-                Returns
-                -------
-                reactants_list: List[str]
-                    List of reactants smiles strings
-                """
+        Returns
+        -------
+        reactants_list: List[str]
+            List of reactants smiles strings
+        """
 
         reactants_str, products_str = self._rxn_2_cpds()
-        reactants_list = []
+        LHS_cofactors_list = []
 
         if " + " in reactants_str:
 
@@ -193,15 +195,16 @@ class unmapped_reaction:
 
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
-                # if this reactant is a cofactor, do not store
+                # if this reactant is a cofactor, store its SMILES
                 if is_cofactor(mol=reactant_mol,
                                cofactors_list=cofactors_list,
                                consider_stereo=consider_stereo):
-                    pass
 
-                # if this reactant is not a cofactor, however, store and return its SMILES
+                    LHS_cofactors_list.append(reactant_smiles)
+
+                # if this reactant is not a cofactor, however, then do nothing
                 else:
-                    reactants_list.append(reactant_smiles)
+                    pass
 
         if "." in reactants_str:
 
@@ -210,17 +213,18 @@ class unmapped_reaction:
 
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
-                # if this reactant is a cofactor, do not store
+                # if this reactant is a cofactor, store its SMILES
                 if is_cofactor(mol=reactant_mol,
                                cofactors_list=cofactors_list,
                                consider_stereo=consider_stereo):
+
+                    LHS_cofactors_list.append(reactant_smiles)
+
+                # if this reactant is not a cofactor, however, then do nothing
+                else:
                     pass
 
-                # if this reactant is not a cofactor, however, store and return its SMILES
-                else:
-                    reactants_list.append(reactant_smiles)
-
-        return reactants_list
+        return LHS_cofactors_list
 
     def get_rhs_cofactors(self):
         pass
