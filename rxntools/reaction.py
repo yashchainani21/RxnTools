@@ -288,6 +288,11 @@ class unmapped_reaction:
 
         return RHS_cofactors_list
 
+    def get_rxn_signature(self,
+                          cofactors_list: List[str],
+                          consider_stereo: bool) -> List[str]:
+
+        pass
 
 class mapped_reaction:
     """
