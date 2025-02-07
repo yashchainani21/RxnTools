@@ -1,6 +1,6 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from typing import Set,Tuple,List
+from typing import Set, Tuple, List, Dict
 from .utils import is_cofactor, remove_stereo, remove_stereo_frm_rxn
 
 class unmapped_reaction:
@@ -288,11 +288,39 @@ class unmapped_reaction:
 
         return RHS_cofactors_list
 
-    def get_rxn_signature(self,
-                          cofactors_list: List[str],
-                          consider_stereo: bool) -> List[str]:
+    def get_JN_rxn_descriptor(self,
+                             cofactors_dict_w_CoF_codes: Dict[str, str],
+                             consider_stereo: bool) -> Tuple[List[str], List[str]]:
 
-        pass
+        # create a list of cofactor SMILES strings with the input cofactors_dict
+        cofactors_list = [cofactors_dict_w_CoF_codes[key] for key in cofactors_dict_w_CoF_codes.keys()]
+
+        substrates_list = self.get_substrates(cofactors_list, consider_stereo = consider_stereo)
+        products_list = self.get_products(cofactors_list, consider_stereo = consider_stereo)
+        lhs_cofactors_list = self.get_lhs_cofactors(cofactors_list, consider_stereo = consider_stereo)
+        rhs_cofactors_list = self.get_rhs_cofactors(cofactors_list, consider_stereo = consider_stereo)
+
+        LHS_descriptor = []
+        RHS_descriptor = []
+
+        # for any substrates that are not cofactors, we add "Any" to the reaction descriptor for the LHS
+        for _ in substrates_list:
+            LHS_descriptor.append("Any")
+            RHS_descriptor.append(";")
+
+        # for any products that are not cofactors, we add "Any" to the product descriptor for the RHS
+        for _ in products_list:
+            LHS_descriptor.append("Any")
+            RHS_descriptor.append(";")
+
+        # for any substrates that are cofactors, we find the CoF code for this particular cofactor on the LHS
+        for lhs_cofactor in lhs_cofactors_list:
+            pass
+
+        # for any products that are cofactors, we find the CoF code for this particular cofactor on the RHS
+
+        return LHS_descriptor, RHS_descriptor
+
 
 class mapped_reaction:
     """
