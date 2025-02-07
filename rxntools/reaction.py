@@ -164,7 +164,63 @@ class unmapped_reaction:
         return products_list
 
     def get_lhs_cofactors(self):
-        pass
+        """
+        For an input unmapped reaction string, identify the cofactors on the LHS of a reaction.
+
+                Parameters
+                ----------
+                self
+
+                cofactors_list: List[str]
+                    List of cofactor SMILES strings
+
+                consider_stereo: bool
+                    Whether to consider stereochemistry of cofactors specifically
+
+                Returns
+                -------
+                reactants_list: List[str]
+                    List of reactants smiles strings
+                """
+
+        reactants_str, products_str = self._rxn_2_cpds()
+        reactants_list = []
+
+        if " + " in reactants_str:
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split(" + "):
+
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol=reactant_mol,
+                               cofactors_list=cofactors_list,
+                               consider_stereo=consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    reactants_list.append(reactant_smiles)
+
+        if "." in reactants_str:
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split("."):
+
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol=reactant_mol,
+                               cofactors_list=cofactors_list,
+                               consider_stereo=consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    reactants_list.append(reactant_smiles)
+
+        return reactants_list
 
     def get_rhs_cofactors(self):
         pass
