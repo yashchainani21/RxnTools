@@ -181,8 +181,8 @@ class unmapped_reaction:
 
         Returns
         -------
-        reactants_list: List[str]
-            List of reactants smiles strings
+        LHS_cofactors_list: List[str]
+            List of cofactors smiles strings for cofactors involved on the LHS of a reaction
         """
 
         reactants_str, products_str = self._rxn_2_cpds()
@@ -229,10 +229,6 @@ class unmapped_reaction:
     def get_rhs_cofactors(self,
                           cofactors_list: List[str],
                           consider_stereo: bool) -> List[str]:
-
-
-
-    def get_rhs_cofactors(self):
         """
         For an input unmapped reaction string, identify the cofactors on the RHS of a reaction.
 
@@ -251,6 +247,47 @@ class unmapped_reaction:
         reactants_list: List[str]
             List of reactants smiles strings
         """
+        reactants_str, products_str = self._rxn_2_cpds()
+        RHS_cofactors_list = []
+
+        if " + " in products_str:
+
+            # for each product's SMILES string
+            for product_smiles in products_str.split(" + "):
+
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this product is a cofactor, store its SMILES
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+
+                    RHS_cofactors_list.append(product_smiles)
+
+                # if this product is not a cofactor, however, then do nothing
+                else:
+                    pass
+
+        if "." in products_str:
+
+            # for each product's SMILES string
+            for product_smiles in products_str.split("."):
+
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this reactant is a cofactor, store its SMILES
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+
+                    RHS_cofactors_list.append(product_smiles)
+
+                # if this product is not a cofactor, however, then do nothing
+                else:
+                    pass
+
+        return RHS_cofactors_list
+
 
 class mapped_reaction:
     """
