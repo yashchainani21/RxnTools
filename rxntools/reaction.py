@@ -226,8 +226,31 @@ class unmapped_reaction:
 
         return LHS_cofactors_list
 
+    def get_rhs_cofactors(self,
+                          cofactors_list: List[str],
+                          consider_stereo: bool) -> List[str]:
+
+
+
     def get_rhs_cofactors(self):
-        pass
+        """
+        For an input unmapped reaction string, identify the cofactors on the RHS of a reaction.
+
+        Parameters
+        ----------
+        self
+
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
+
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
+
+        Returns
+        -------
+        reactants_list: List[str]
+            List of reactants smiles strings
+        """
 
 class mapped_reaction:
     """
