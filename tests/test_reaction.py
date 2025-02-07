@@ -78,6 +78,12 @@ def test_extracting_products_from_unmapped_rxn_str_03(cofactors_list):
     assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == [
         "C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O"]
 
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_03(cofactors_list):
+    pass
+
+def test_extracting_RHS_cofactors_from_unmapped_rxn_str_03(cofactors_list):
+    pass
+
 def test_get_mapped_bonds_data_type():
     """
     Test to ensure the internal function _get_mapped_bonds returns a set.
