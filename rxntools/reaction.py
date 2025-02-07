@@ -91,9 +91,9 @@ class unmapped_reaction:
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, do not store
-                if is_cofactor(mol=reactant_mol,
-                               cofactors_list=cofactors_list,
-                               consider_stereo=consider_stereo):
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
                     pass
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
@@ -196,9 +196,9 @@ class unmapped_reaction:
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
-                if is_cofactor(mol=reactant_mol,
-                               cofactors_list=cofactors_list,
-                               consider_stereo=consider_stereo):
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
 
                     LHS_cofactors_list.append(reactant_smiles)
 
@@ -214,9 +214,9 @@ class unmapped_reaction:
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
-                if is_cofactor(mol=reactant_mol,
-                               cofactors_list=cofactors_list,
-                               consider_stereo=consider_stereo):
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
 
                     LHS_cofactors_list.append(reactant_smiles)
 
