@@ -163,6 +163,12 @@ class unmapped_reaction:
 
         return products_list
 
+    def get_lhs_cofactors(self):
+        pass
+
+    def get_rhs_cofactors(self):
+        pass
+
 class mapped_reaction:
     """
     Parameters
