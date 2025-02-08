@@ -1,4 +1,5 @@
 import pytest
+import pandas as pd
 from rdkit import Chem
 from rxntools import utils
 import json
@@ -12,6 +13,15 @@ def cofactors_list():
     with open('../data/cofactors.json') as f:
         cofactors_dict = json.load(f)
     return [cofactors_dict[key] for key in cofactors_dict.keys()]
+
+@pytest.fixture
+def cofactors_df():
+    """
+    Pytest fixture to load the cofactors dataframe from a tsv file.
+    """
+    with open('../data/all_cofactors.tsv') as f:
+        cofactors_df = pd.read_csv(f, sep='\t')
+    return cofactors_df
 
 def test_is_isomorphic_ethanol_with_atom_mapped_SMARTS_and_canonical_SMILES():
     """
@@ -211,3 +221,11 @@ def test_creating_new_atommap_for_template_04_start_at_50():
     extracted_template = '[C&H2:1]=[C:2]([C&H3:3])[C@&H1:4]1[C&H2:5][C&H1:6]=[C:7]([C&H3:8])[C&H2:9][C&H2:10]1'
     final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 50)
     assert final_template == '[C&H2:50]=[C:51]([C&H3:52])[C@&H1:53]1[C&H2:54][C&H1:55]=[C:56]([C&H3:57])[C&H2:58][C&H2:59]1'
+
+def test_get_phosphate_donor_CoF_code(cofactors_df):
+    assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O",
+                                cofactors_df = cofactors_df) == "PYROPHOSPHATE_DONOR_CoF"
+
+def tets_get_phosphate_acceptor_CoF_code(cofactors_df):
+    assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)O)[C@@H](O)[C@H]1O",
+                                       cofactors_df = cofactors_df) == "PYROPHOSPHATE_ACCEPTOR_CoF"
