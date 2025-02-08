@@ -1,6 +1,7 @@
 from rdkit import Chem
 from rdkit.Chem import rdChemReactions
 import pandas as pd
+from typing import List
 
 def are_isomorphic(mol1: Chem.rdchem.Mol,
                    mol2: Chem.rdchem.Mol,
@@ -162,3 +163,8 @@ def get_cofactor_CoF_code(query_SMILES: str,
             CoF_code = cofactors_df.iloc[i,:]["#ID"]
 
             return CoF_code
+
+def are_rxn_descriptors_equal(rxn_descriptor_01: List[str],
+                              rxn_descriptor_02: List[str]) -> bool:
+
+    return sorted(rxn_descriptor_01) == sorted(rxn_descriptor_02)
