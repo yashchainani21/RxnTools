@@ -3,4 +3,5 @@
 .tests/__pycache__/
 notebooks/.ipynb_checkpoints/
 .ipynb_checkpoints/
-*.csv
+*.xlsx
+data/enzymemap_v2_brenda2023.csv
