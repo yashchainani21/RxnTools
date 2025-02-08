@@ -1,7 +1,8 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from typing import Set, Tuple, List, Dict
-from .utils import is_cofactor, remove_stereo, remove_stereo_frm_rxn
+import pandas as pd
+from typing import Set, Tuple, List
+from .utils import are_isomorphic, is_cofactor, remove_stereo
 
 class unmapped_reaction:
     """
@@ -289,11 +290,11 @@ class unmapped_reaction:
         return RHS_cofactors_list
 
     def get_JN_rxn_descriptor(self,
-                             cofactors_dict_w_CoF_codes: Dict[str, str],
+                             cofactors_df: pd.DataFrame,
                              consider_stereo: bool) -> Tuple[List[str], List[str]]:
 
         # create a list of cofactor SMILES strings with the input cofactors_dict
-        cofactors_list = [cofactors_dict_w_CoF_codes[key] for key in cofactors_dict_w_CoF_codes.keys()]
+        cofactors_list = list(cofactors_df["SMILES"])
 
         substrates_list = self.get_substrates(cofactors_list, consider_stereo = consider_stereo)
         products_list = self.get_products(cofactors_list, consider_stereo = consider_stereo)
@@ -318,6 +319,8 @@ class unmapped_reaction:
             pass
 
         # for any products that are cofactors, we find the CoF code for this particular cofactor on the RHS
+        for rhs_cofacor in rhs_cofactors_list:
+            pass
 
         return LHS_descriptor, RHS_descriptor
 

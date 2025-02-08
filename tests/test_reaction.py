@@ -1,17 +1,28 @@
+import pandas as pd
 import pytest
 from rdkit import Chem
 from rdkit.Chem import AllChem
 import json
+import pandas as pd
 from rxntools import reaction
 
 @pytest.fixture
 def cofactors_list():
     """
-    Pytest fixture to load the cofactors list from the JSON file.
+    Pytest fixture to load the cofactors list from a JSON file.
     """
     with open('../data/cofactors.json') as f:
         cofactors_dict = json.load(f)
     return [cofactors_dict[key] for key in cofactors_dict.keys()]
+
+@pytest.fixture
+def cofactors_df():
+    """
+    Pytest fixture to load the cofactors dataframe from a tsv file.
+    """
+    with open('../data/all_cofactors.tsv') as f:
+        cofactors_df = pd.read_csv(f, sep='\t')
+    return cofactors_df
 
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_01():
     rxn = reaction.unmapped_reaction(rxn_str = "CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")

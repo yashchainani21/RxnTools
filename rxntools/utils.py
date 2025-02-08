@@ -1,5 +1,6 @@
 from rdkit import Chem
 from rdkit.Chem import rdChemReactions
+import pandas as pd
 
 def are_isomorphic(mol1: Chem.rdchem.Mol,
                    mol2: Chem.rdchem.Mol,
@@ -148,4 +149,13 @@ def reset_atom_map(SMARTS: str,
     SMARTS_with_new_atom_mapping = Chem.MolToSmarts(mol)
     return SMARTS_with_new_atom_mapping
 
+def get_cofactor_CoF_code(query_SMILES: str,
+                          cofactors_df: pd.DataFrame) -> str:
 
+    num_rows = cofactors_df.shape[0]
+
+    for i in range(num_rows):
+        if are_isomorphic(mol1 = Chem.MolFromSmiles(query_SMILES),
+                          mol2 = Chem.MolFromSmiles(cofactors_df.iloc[i,:]["SMILES"]),
+                          consider_stereo = False):
+            return cofactors_df.iloc[i,:]["#ID"]
