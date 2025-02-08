@@ -362,3 +362,23 @@ def test_get_SULFITE_CoF_code(cofactors_df):
 def test_get_WATER_code(cofactors_df):
     assert utils.get_cofactor_CoF_code(query_SMILES = "O",
                                        cofactors_df = cofactors_df) == "WATER"
+
+def test_are_rxn_descriptors_equal_01():
+    rxn_descriptor_01 = [s for s in "Any;NAD_CoF".split(";")]
+    rxn_descriptor_02 = ["Any","NAD_CoF"]
+    assert utils.are_rxn_descriptors_equal(rxn_descriptor_01, rxn_descriptor_02)
+
+def test_are_rxn_descriptors_equal_02():
+    rxn_descriptor_01 = [s for s in "Any;NAD_CoF".split(";")]
+    rxn_descriptor_02 = ["NAD_CoF","Any"] # try a different order than the test above
+    assert utils.are_rxn_descriptors_equal(rxn_descriptor_01, rxn_descriptor_02)
+
+def test_are_rxn_descriptors_equal_03():
+    rxn_descriptor_01 = [s for s in "Any;NADH_CoF;CO2".split(";")]
+    rxn_descriptor_02 = ["NADH_CoF","CO2","Any"]
+    assert utils.are_rxn_descriptors_equal(rxn_descriptor_01, rxn_descriptor_02)
+
+def test_are_rxn_descriptors_equal_04():
+    rxn_descriptor_01 = [s for s in "Any;NADH_CoF;CO2".split(";")]
+    rxn_descriptor_02 = ["CO2","Any","NADH_CoF",]
+    assert utils.are_rxn_descriptors_equal(rxn_descriptor_01, rxn_descriptor_02)
