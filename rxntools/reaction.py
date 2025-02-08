@@ -2,7 +2,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 import pandas as pd
 from typing import Set, Tuple, List
-from .utils import are_isomorphic, is_cofactor, remove_stereo
+from .utils import get_cofactor_CoF_code, is_cofactor, remove_stereo
 
 class unmapped_reaction:
     """
@@ -307,20 +307,26 @@ class unmapped_reaction:
         # for any substrates that are not cofactors, we add "Any" to the reaction descriptor for the LHS
         for _ in substrates_list:
             LHS_descriptor.append("Any")
-            RHS_descriptor.append(";")
+            LHS_descriptor.append(";")
 
         # for any products that are not cofactors, we add "Any" to the product descriptor for the RHS
         for _ in products_list:
-            LHS_descriptor.append("Any")
+            RHS_descriptor.append("Any")
             RHS_descriptor.append(";")
 
         # for any substrates that are cofactors, we find the CoF code for this particular cofactor on the LHS
-        for lhs_cofactor in lhs_cofactors_list:
-            pass
+        for lhs_cofactor_smiles in lhs_cofactors_list:
+            lhs_cofactor_CoF_code = get_cofactor_CoF_code(query_SMILES = lhs_cofactor_smiles,
+                                                          cofactors_df = cofactors_df)
+            LHS_descriptor.append(lhs_cofactor_CoF_code)
+            LHS_descriptor.append(";")
 
         # for any products that are cofactors, we find the CoF code for this particular cofactor on the RHS
-        for rhs_cofacor in rhs_cofactors_list:
-            pass
+        for rhs_cofactor_smiles in rhs_cofactors_list:
+            rhs_cofactor_CoF_code = get_cofactor_CoF_code(query_SMILES = rhs_cofactor_smiles,
+                                                          cofactors_df = cofactors_df)
+            RHS_descriptor.append(rhs_cofactor_CoF_code)
+            RHS_descriptor.append(";")
 
         return LHS_descriptor, RHS_descriptor
 

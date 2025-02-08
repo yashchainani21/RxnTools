@@ -222,10 +222,23 @@ def test_creating_new_atommap_for_template_04_start_at_50():
     final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 50)
     assert final_template == '[C&H2:50]=[C:51]([C&H3:52])[C@&H1:53]1[C&H2:54][C&H1:55]=[C:56]([C&H3:57])[C&H2:58][C&H2:59]1'
 
-def test_get_phosphate_donor_CoF_code(cofactors_df):
+def test_get_pyrophosphate_donor_CoF_code(cofactors_df):
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O",
                                 cofactors_df = cofactors_df) == "PYROPHOSPHATE_DONOR_CoF"
 
-def tets_get_phosphate_acceptor_CoF_code(cofactors_df):
+def test_get_pyrophosphate_acceptor_CoF_code(cofactors_df):
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)O)[C@@H](O)[C@H]1O",
                                        cofactors_df = cofactors_df) == "PYROPHOSPHATE_ACCEPTOR_CoF"
+
+def test_get_FAD_CoF_code(cofactors_df):
+    assert utils.get_cofactor_CoF_code(query_SMILES = "Cc1cc2nc3c(=O)[nH]c(=O)nc-3n(C[C@H](O)[C@H](O)[C@H](O)COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)c2cc1C",
+                                       cofactors_df = cofactors_df) == "FAD_CoF"
+
+def test_get_FADH2_CoF_code(cofactors_df):
+    assert utils.get_cofactor_CoF_code(query_SMILES = "Cc1cc2c(cc1C)N(C[C@H](O)[C@H](O)[C@H](O)COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n3cnc4c(N)ncnc43)[C@H](O)[C@@H]1O)c1[nH]c(=O)[nH]c(=O)c1N2",
+                                       cofactors_df = cofactors_df) == "FADH2_CoF"
+
+def test_get_phosphate_acceptor(cofactors_df):
+    assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O",
+                                       cofactors_df = cofactors_df) == "PHOSPHATE_ACCEPTOR_CoF"
+
