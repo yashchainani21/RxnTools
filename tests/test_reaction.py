@@ -24,78 +24,101 @@ def cofactors_df():
         cofactors_df = pd.read_csv(f, sep=',')
     return cofactors_df
 
+#### ----------------------- Tests for the unmapped reaction class -----------------------
+
+# tests involving an alcohol dehydrogenase that oxidizes ethanol to ethanal
+ethanol_AdH_rxn_str = "CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
+
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_01():
-    rxn = reaction.unmapped_reaction(rxn_str = "CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(ethanol_AdH_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1"
     assert products_str == "CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
 
 def test_extracting_substrates_from_unmapped_rxn_str_01(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str)
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["CCO"]
 
 def test_extracting_products_from_unmapped_rxn_str_01(cofactors_list):
-    rxn = reaction.unmapped_reaction(
-        rxn_str="CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str)
     assert rxn.get_products(cofactors_list=cofactors_list,
                               consider_stereo=False) == ["CC=O"]
 
 def test_extracting_LHS_cofactors_from_unmapped_rxn_str_01(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str)
     assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list, consider_stereo = False) == ["NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1"]
 
 def test_extracting_RHS_cofactors_from_unmapped_rxn_str_01(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str)
     assert rxn.get_rhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1","[H+]"]
 
+def test_get_JN_rxn_descriptor_01(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
+    assert LHS_descriptor == ['Any','NAD_CoF']
+    assert RHS_descriptor == ['Any','NADH_CoF']
+
+# tests involving an alcohol dehydrogenase that oxidizes cis-4-hydroxyproline to the corresponding aldehyde
+hydroxyproline_AdH_rxn_str = "NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]"
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_02():
-    rxn = reaction.unmapped_reaction(rxn_str = "NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1"
     assert products_str == "NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]"
 
 def test_extracting_substrates_from_unmapped_rxn_str_02(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str = "NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1"]
 
 def test_extracting_products_from_unmapped_rxn_str_02(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == ["O=C1C[NH2+][C@H](C(=O)[O-])C1"]
 
 def extracting_LHS_cofactors_from_unmapped_rxn_str_02(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     assert rxn.get_lhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1"]
 
 def extracting_RHS_cofactors_from_unmapped_rxn_str_02(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     assert rxn.get_rhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1","[H+]"]
+def test_get_JN_rxn_descriptor_02(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
 
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
+    assert LHS_descriptor == ['Any','NAD_CoF',]
+    assert RHS_descriptor == ['Any', 'NADH_CoF',]
+
+# tests involving an alcohol dehydrogenase that oxidizes mannofuranose to the corresponding aldehyde
+mannofuranose_AdH_rxn_str = "C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_03():
-    rxn = reaction.unmapped_reaction(rxn_str = "C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1"
     assert products_str == "C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
 
 def test_extracting_substrates_from_unmapped_rxn_str_03(cofactors_list):
-    rxn = reaction.unmapped_reaction(
-        rxn_str="C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
     assert rxn.get_substrates(cofactors_list = cofactors_list, consider_stereo = False) == ["C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O"]
 
 def test_extracting_products_from_unmapped_rxn_str_03(cofactors_list):
-    rxn = reaction.unmapped_reaction(
-        rxn_str="C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
-    assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == [
-        "C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O"]
+    rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
+    assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == ["C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O"]
 
 def test_extracting_LHS_cofactors_from_unmapped_rxn_str_03(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
+    rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
     assert rxn.get_lhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1"]
 
 def test_extracting_RHS_cofactors_from_unmapped_rxn_str_03(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str="C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]")
-    assert rxn.get_rhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1","[H+]"]
+    rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1","[H+]"]
+
+#### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
     """

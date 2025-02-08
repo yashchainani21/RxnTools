@@ -304,29 +304,35 @@ class unmapped_reaction:
         LHS_descriptor = []
         RHS_descriptor = []
 
+        ### populate the reaction descriptor for the LHS of the reaction
+
         # for any substrates that are not cofactors, we add "Any" to the reaction descriptor for the LHS
         for _ in substrates_list:
             LHS_descriptor.append("Any")
-            LHS_descriptor.append(";")
-
-        # for any products that are not cofactors, we add "Any" to the product descriptor for the RHS
-        for _ in products_list:
-            RHS_descriptor.append("Any")
-            RHS_descriptor.append(";")
 
         # for any substrates that are cofactors, we find the CoF code for this particular cofactor on the LHS
         for lhs_cofactor_smiles in lhs_cofactors_list:
             lhs_cofactor_CoF_code = get_cofactor_CoF_code(query_SMILES = lhs_cofactor_smiles,
                                                           cofactors_df = cofactors_df)
-            LHS_descriptor.append(lhs_cofactor_CoF_code)
-            LHS_descriptor.append(";")
+
+            # ignore accounting for hydrogens in generating the reaction descriptor
+            if lhs_cofactor_CoF_code != "H+":
+                LHS_descriptor.append(lhs_cofactor_CoF_code)
+
+        ### populate the reaction descriptor for the RHS of the reaction
+
+        # for any products that are not cofactors, we add "Any" to the product descriptor for the RHS
+        for _ in products_list:
+            RHS_descriptor.append("Any")
 
         # for any products that are cofactors, we find the CoF code for this particular cofactor on the RHS
         for rhs_cofactor_smiles in rhs_cofactors_list:
             rhs_cofactor_CoF_code = get_cofactor_CoF_code(query_SMILES = rhs_cofactor_smiles,
                                                           cofactors_df = cofactors_df)
-            RHS_descriptor.append(rhs_cofactor_CoF_code)
-            RHS_descriptor.append(";")
+
+            # ignore accounting for hydrogens in generating the reaction descriptor
+            if rhs_cofactor_CoF_code != "H+":
+                RHS_descriptor.append(rhs_cofactor_CoF_code)
 
         return LHS_descriptor, RHS_descriptor
 
