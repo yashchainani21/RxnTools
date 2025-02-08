@@ -158,4 +158,7 @@ def get_cofactor_CoF_code(query_SMILES: str,
         if are_isomorphic(mol1 = Chem.MolFromSmiles(query_SMILES),
                           mol2 = Chem.MolFromSmiles(cofactors_df.iloc[i,:]["SMILES"]),
                           consider_stereo = False):
-            return cofactors_df.iloc[i,:]["#ID"]
+
+            CoF_code = cofactors_df.iloc[i,:]["#ID"]
+
+            return CoF_code

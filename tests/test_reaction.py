@@ -20,8 +20,8 @@ def cofactors_df():
     """
     Pytest fixture to load the cofactors dataframe from a tsv file.
     """
-    with open('../data/all_cofactors.tsv') as f:
-        cofactors_df = pd.read_csv(f, sep='\t')
+    with open('../data/all_cofactors.csv') as f:
+        cofactors_df = pd.read_csv(f, sep=',')
     return cofactors_df
 
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_01():
