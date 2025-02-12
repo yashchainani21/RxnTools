@@ -160,6 +160,11 @@ def test_get_JN_rxn_descriptor_04(cofactors_df):
     assert LHS_descriptor == ['Any','WATER',]
     assert RHS_descriptor == ['Any', 'Any', 'CO2']
 
+# tests involving the glucopyranose-phosphatase reaction
+"O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O>>O=P([O-])([O-])O.OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
+
+
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
