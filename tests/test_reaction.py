@@ -85,6 +85,7 @@ def extracting_LHS_cofactors_from_unmapped_rxn_str_02(cofactors_list):
 def extracting_RHS_cofactors_from_unmapped_rxn_str_02(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     assert rxn.get_rhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1","[H+]"]
+
 def test_get_JN_rxn_descriptor_02(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
 
@@ -117,6 +118,14 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_03(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1","[H+]"]
+
+def test_get_JN_rxn_descriptor_03(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
+    assert LHS_descriptor == ['Any','NAD_CoF',]
+    assert RHS_descriptor == ['Any', 'NADH_CoF',]
 
 # tests involving the polyneuridine-aldehyde esterase reaction
 esterase_rxn_str = "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O>>CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12.CO.O=C=O"
