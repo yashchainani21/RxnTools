@@ -152,6 +152,13 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_04(cofactors_list):
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["O=C=O"]
 
+def test_get_JN_rxn_descriptor_04(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
+    assert LHS_descriptor == ['Any','WATER',]
+    assert RHS_descriptor == ['Any', 'Any', 'CO2']
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
