@@ -134,6 +134,11 @@ def test_extracting_products_from_unmapped_rxn_str_04(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
     assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == ["CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12","CO"]
 
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_04(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
+    assert rxn.get_lhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["O"]
+
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
