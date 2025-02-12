@@ -130,6 +130,10 @@ def test_extracting_substrates_from_unmapped_rxn_str_04(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
     assert rxn.get_substrates(cofactors_list = cofactors_list, consider_stereo = False) == ["CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC"]
 
+def test_extracting_products_from_unmapped_rxn_str_04(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
+    assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == ["CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12","CO"]
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
