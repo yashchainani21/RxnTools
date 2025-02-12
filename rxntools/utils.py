@@ -168,3 +168,23 @@ def are_rxn_descriptors_equal(rxn_descriptor_01: List[str],
                               rxn_descriptor_02: List[str]) -> bool:
 
     return sorted(rxn_descriptor_01) == sorted(rxn_descriptor_02)
+
+
+def neutralize_atoms(smiles):
+    """
+    http://www.rdkit.org/docs/Cookbook.html#neutralizing-charged-molecules
+    """
+    mol = Chem.MolFromSmiles(smiles)
+    pattern = Chem.MolFromSmarts("[+1!h0!$([*]~[-1,-2,-3,-4]),-1!$([*]~[+1,+2,+3,+4])]")
+    at_matches = mol.GetSubstructMatches(pattern)
+    at_matches_list = [y[0] for y in at_matches]
+    if len(at_matches_list) > 0:
+        for at_idx in at_matches_list:
+            atom = mol.GetAtomWithIdx(at_idx)
+            chg = atom.GetFormalCharge()
+            hcount = atom.GetTotalNumHs()
+            atom.SetFormalCharge(0)
+            atom.SetNumExplicitHs(hcount - chg)
+            atom.UpdatePropertyCache()
+    return Chem.MolToSmiles(mol)
+
