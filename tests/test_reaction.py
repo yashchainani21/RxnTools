@@ -118,6 +118,18 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_03(cofactors_list):
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1","[H+]"]
 
+# tests involving the polyneuridine-aldehyde esterase reaction
+esterase_rxn_str = "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O>>CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12.CO.O=C=O"
+def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_04():
+    rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O"
+    assert products_str == "CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12.CO.O=C=O"
+
+def test_extracting_substrates_from_unmapped_rxn_str_04(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
+    assert rxn.get_substrates(cofactors_list = cofactors_list, consider_stereo = False) == ["CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC"]
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
