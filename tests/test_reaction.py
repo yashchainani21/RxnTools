@@ -161,8 +161,21 @@ def test_get_JN_rxn_descriptor_04(cofactors_df):
     assert RHS_descriptor == ['Any', 'Any', 'CO2']
 
 # tests involving the glucopyranose-phosphatase reaction
-"O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O>>O=P([O-])([O-])O.OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
+glucopyranose_phosphatase_rxn = "O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O>>O=P([O-])([O-])O.OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
 
+def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_05():
+    rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O"
+    assert products_str == "O=P([O-])([O-])O.OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
+
+def test_extracting_substrates_from_unmapped_rxn_str_05(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
+    assert rxn.get_substrates(cofactors_list = cofactors_list, consider_stereo = False) == ["O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O"]
+
+def test_extracting_products_from_unmapped_rxn_str_05(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
+    assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == ["OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"]
 
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
