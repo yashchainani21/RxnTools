@@ -200,7 +200,7 @@ def test_get_JN_rxn_descriptor_05(cofactors_df):
 ethanolamine_phosphate_phosphatase_rxn = "O.[NH3+]CCOP(=O)([O-])[O-]>>CC=O.O=P([O-])([O-])O.[NH4+]"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_06():
-    rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "O.[NH3+]CCOP(=O)([O-])[O-]"
     assert products_str == "CC=O.O=P([O-])([O-])O.[NH4+]"
