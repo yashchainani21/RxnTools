@@ -145,7 +145,8 @@ def test_extracting_products_from_unmapped_rxn_str_04(cofactors_list):
 
 def test_extracting_LHS_cofactors_from_unmapped_rxn_str_04(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
-    assert rxn.get_lhs_cofactors(cofactors_list=cofactors_list, consider_stereo=False) == ["O"]
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["O"]
 
 def test_extracting_RHS_cofactors_from_unmapped_rxn_str_04(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
@@ -177,6 +178,10 @@ def test_extracting_products_from_unmapped_rxn_str_05(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
     assert rxn.get_products(cofactors_list=cofactors_list, consider_stereo=False) == ["OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"]
 
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_05(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["O"]
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
