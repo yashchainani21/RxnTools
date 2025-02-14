@@ -2,7 +2,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 import pandas as pd
 from typing import Set, Tuple, List
-from .utils import get_cofactor_CoF_code, is_cofactor, remove_stereo, neutralize_atoms
+from .utils import get_cofactor_CoF_code, is_cofactor, remove_stereo, neutralize_atoms, canonicalize_smiles
 
 class unmapped_reaction:
     """
@@ -72,7 +72,10 @@ class unmapped_reaction:
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split(" + "):
 
-                reactant_mol = Chem.MolFromSmiles(neutralize_atoms(reactant_smiles))
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
+
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, do not store
                 if is_cofactor(mol = reactant_mol,
@@ -82,14 +85,14 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    reactants_list.append(neutralize_atoms(reactant_smiles))
+                    reactants_list.append(reactant_smiles)
 
         if "." in reactants_str:
 
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split("."):
 
-                reactant_mol = Chem.MolFromSmiles(neutralize_atoms(reactant_smiles))
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, do not store
                 if is_cofactor(mol = reactant_mol,
@@ -99,7 +102,7 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    reactants_list.append(neutralize_atoms(reactant_smiles))
+                    reactants_list.append(reactant_smiles)
 
         return reactants_list
 
@@ -132,6 +135,9 @@ class unmapped_reaction:
 
             # for each reactant's SMILES string
             for product_smiles in products_str.split(" + "):
+
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
 
                 product_mol = Chem.MolFromSmiles(neutralize_atoms(product_smiles))
 
