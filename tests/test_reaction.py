@@ -172,7 +172,7 @@ def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_05():
 
 def test_extracting_substrates_from_unmapped_rxn_str_05(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
-    assert rxn.get_substrates(cofactors_list = cofactors_list, consider_stereo = False) == ["O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O"]
+    assert rxn.get_substrates(cofactors_list = cofactors_list, consider_stereo = False) == ["O=P(O)(O)O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O"]
 
 def test_extracting_products_from_unmapped_rxn_str_05(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
