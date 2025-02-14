@@ -205,6 +205,16 @@ def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_06():
     assert reactants_str == "O.[NH3+]CCOP(=O)([O-])[O-]"
     assert products_str == "CC=O.O=P([O-])([O-])O.[NH4+]"
 
+def test_extracting_substrates_from_unmapped_rxn_str_06(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["NCCOP(=O)(O)O"]
+
+def test_extracting_products_from_unmapped_rxn_str_06(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo=False) == ["CC=O"]
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
