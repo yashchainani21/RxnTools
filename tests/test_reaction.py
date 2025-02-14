@@ -240,16 +240,33 @@ def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_07():
     assert reactants_str == "O=C(COP(=O)([O-])[O-])[C@H](O)CO"
     assert products_str == "O=C(COP(=O)([O-])[O-])[C@@H](O)CO"
 
-def test_extracting_LHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+def test_extracting_substrates_from_unmapped_rxn_str_07(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["O=C(COP(=O)(O)O)[C@H](O)CO"]
+
+def test_extracting_products_from_unmapped_rxn_str_07(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo=False) == ["O=C(COP(=O)(O)O)[C@@H](O)CO"]
+
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_07(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
     assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
-                                 consider_stereo = False) == ["O"]
+                                 consider_stereo = False) == []
 
-def test_extracting_RHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
-    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+def test_extracting_RHS_cofactors_from_unmapped_rxn_str_07(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
-                                 consider_stereo = False) == ["O=P(O)(O)O","N"]
+                                 consider_stereo = False) == []
 
+def test_get_JN_rxn_descriptor_07(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
+    assert LHS_descriptor == ['Any']
+    assert RHS_descriptor == ['Any']
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 

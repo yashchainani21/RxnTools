@@ -105,6 +105,24 @@ class unmapped_reaction:
                 else:
                     reactants_list.append(reactant_smiles)
 
+        else:
+
+            # if neither " + " nor "." has been used, then only one reactant is present on the LHS
+            reactant_smiles = reactants_str
+            reactant_smiles = canonicalize_smiles(reactant_smiles)
+            reactant_smiles = neutralize_atoms(reactant_smiles)
+            reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+            # if this reactant is a cofactor, do not store
+            if is_cofactor(mol=reactant_mol,
+                           cofactors_list=cofactors_list,
+                           consider_stereo=consider_stereo):
+                pass
+
+            # if this reactant is not a cofactor, however, store and return its SMILES
+            else:
+                reactants_list.append(reactant_smiles)
+
         return reactants_list
 
     def get_products(self,
@@ -169,6 +187,24 @@ class unmapped_reaction:
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
                     products_list.append(product_smiles)
+
+        else:
+
+            # if neither " + " nor "." has been used, then only one product is present on the RHS
+            product_smiles = products_str
+            product_smiles = canonicalize_smiles(product_smiles)
+            product_smiles = neutralize_atoms(product_smiles)
+            product_mol = Chem.MolFromSmiles(product_smiles)
+
+            # if this reactant is a cofactor, do not store
+            if is_cofactor(mol = product_mol,
+                           cofactors_list = cofactors_list,
+                           consider_stereo = consider_stereo):
+                pass
+
+            # if this reactant is not a cofactor, however, store and return its SMILES
+            else:
+                products_list.append(product_smiles)
 
         return products_list
 
@@ -237,6 +273,22 @@ class unmapped_reaction:
                 else:
                     pass
 
+        else:
+
+            # if neither " + " nor "." has been used, then only one reactant is present on the LHS
+            reactant_smiles = reactants_str
+            reactant_smiles = canonicalize_smiles(reactant_smiles)
+            reactant_smiles = neutralize_atoms(reactant_smiles)
+            reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+            if is_cofactor(mol = reactant_mol,
+                           cofactors_list = cofactors_list,
+                           consider_stereo = consider_stereo):
+                LHS_cofactors_list.append(reactant_smiles)
+
+            else:
+                pass
+
         return LHS_cofactors_list
 
     def get_rhs_cofactors(self,
@@ -302,6 +354,23 @@ class unmapped_reaction:
                 # if this product is not a cofactor, however, then do nothing
                 else:
                     pass
+
+        # if neither " + " nor "." has been used, then only one product is present on the RHS
+        product_smiles = products_str
+        product_smiles = canonicalize_smiles(product_smiles)
+        product_smiles = neutralize_atoms(product_smiles)
+        product_mol = Chem.MolFromSmiles(product_smiles)
+
+        if is_cofactor(mol = product_mol,
+                       cofactors_list = cofactors_list,
+                       consider_stereo = consider_stereo):
+
+            RHS_cofactors_list.append(product_mol)
+
+        else:
+            pass
+
+
 
         return RHS_cofactors_list
 
