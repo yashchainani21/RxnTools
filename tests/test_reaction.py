@@ -188,6 +188,14 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_05(cofactors_list):
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["O=P(O)(O)O"]
 
+def test_get_JN_rxn_descriptor_05(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
+    assert LHS_descriptor == ['Any','WATER',]
+    assert RHS_descriptor == ['Any', 'Pi']
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
