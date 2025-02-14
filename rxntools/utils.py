@@ -3,8 +3,8 @@ from rdkit.Chem import rdChemReactions
 import pandas as pd
 from typing import List
 
-def canonicalize_smiles(mol: Chem.rdchem.Mol) -> Chem.rdchem.Mol:
-    return Chem.MolToSmiles(Chem.MolFromSmiles(mol))
+def canonicalize_smiles(smiles: str) -> str:
+    return Chem.MolToSmiles(Chem.MolFromSmiles(smiles))
 
 def are_isomorphic(mol1: Chem.rdchem.Mol,
                    mol2: Chem.rdchem.Mol,
@@ -189,5 +189,6 @@ def neutralize_atoms(smiles):
             atom.SetFormalCharge(0)
             atom.SetNumExplicitHs(hcount - chg)
             atom.UpdatePropertyCache()
+
     return Chem.MolToSmiles(mol)
 
