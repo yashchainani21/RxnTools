@@ -139,7 +139,7 @@ class unmapped_reaction:
                 product_smiles = canonicalize_smiles(product_smiles)
                 product_smiles = neutralize_atoms(product_smiles)
 
-                product_mol = Chem.MolFromSmiles(neutralize_atoms(product_smiles))
+                product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this reactant is a cofactor, do not store
                 if is_cofactor(mol = product_mol,
@@ -149,14 +149,14 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    products_list.append(neutralize_atoms(product_smiles))
+                    products_list.append(product_smiles)
 
         if "." in products_str:
 
             # for each reactant's SMILES string
             for product_smiles in products_str.split("."):
 
-                product_mol = Chem.MolFromSmiles(neutralize_atoms(product_smiles))
+                product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this reactant is a cofactor, do not store
                 if is_cofactor(mol = product_mol,
@@ -166,7 +166,7 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    products_list.append(neutralize_atoms(product_smiles))
+                    products_list.append(product_smiles)
 
         return products_list
 
@@ -200,14 +200,17 @@ class unmapped_reaction:
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split(" + "):
 
-                reactant_mol = Chem.MolFromSmiles(neutralize_atoms(reactant_smiles))
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
+
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
                 if is_cofactor(mol = reactant_mol,
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    LHS_cofactors_list.append(neutralize_atoms(reactant_smiles))
+                    LHS_cofactors_list.append(reactant_smiles)
 
                 # if this reactant is not a cofactor, however, then do nothing
                 else:
@@ -218,14 +221,14 @@ class unmapped_reaction:
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split("."):
 
-                reactant_mol = Chem.MolFromSmiles(neutralize_atoms(reactant_smiles))
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
                 if is_cofactor(mol = reactant_mol,
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    LHS_cofactors_list.append(neutralize_atoms(reactant_smiles))
+                    LHS_cofactors_list.append(reactant_smiles)
 
                 # if this reactant is not a cofactor, however, then do nothing
                 else:
@@ -262,14 +265,17 @@ class unmapped_reaction:
             # for each product's SMILES string
             for product_smiles in products_str.split(" + "):
 
-                product_mol = Chem.MolFromSmiles(neutralize_atoms(product_smiles))
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
+
+                product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this product is a cofactor, store its SMILES
                 if is_cofactor(mol = product_mol,
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    RHS_cofactors_list.append(neutralize_atoms(product_smiles))
+                    RHS_cofactors_list.append(product_smiles)
 
                 # if this product is not a cofactor, however, then do nothing
                 else:
@@ -280,14 +286,14 @@ class unmapped_reaction:
             # for each product's SMILES string
             for product_smiles in products_str.split("."):
 
-                product_mol = Chem.MolFromSmiles(neutralize_atoms(product_smiles))
+                product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
                 if is_cofactor(mol = product_mol,
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    RHS_cofactors_list.append(neutralize_atoms(product_smiles))
+                    RHS_cofactors_list.append(product_smiles)
 
                 # if this product is not a cofactor, however, then do nothing
                 else:
