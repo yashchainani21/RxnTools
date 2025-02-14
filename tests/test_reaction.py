@@ -215,6 +215,24 @@ def test_extracting_products_from_unmapped_rxn_str_06(cofactors_list):
     assert rxn.get_products(cofactors_list = cofactors_list,
                             consider_stereo=False) == ["CC=O"]
 
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["O"]
+
+def test_extracting_RHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["O=P(O)(O)O","N"]
+
+def test_get_JN_rxn_descriptor_06(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
+    assert LHS_descriptor == ['Any','WATER',]
+    assert RHS_descriptor == ['Any', 'Pi', 'NH3']
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
