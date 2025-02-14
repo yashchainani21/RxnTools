@@ -72,7 +72,7 @@ def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_02():
 def test_extracting_substrates_from_unmapped_rxn_str_02(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     assert rxn.get_substrates(cofactors_list = cofactors_list,
-                              consider_stereo = False) == ["O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1"]
+                              consider_stereo = False) == ["O=C([C@@H]1C[C@@H](CN1)O)O"]
 
 def test_extracting_products_from_unmapped_rxn_str_02(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
@@ -183,10 +183,10 @@ def test_extracting_LHS_cofactors_from_unmapped_rxn_str_05(cofactors_list):
     assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["O"]
 
-def test_extracting_RHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
+def test_extracting_RHS_cofactors_from_unmapped_rxn_str_05(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
-                                 consider_stereo = False) == ["O=P([O-])([O-])O"]
+                                 consider_stereo = False) == ["O=P(O)(O)O"]
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
