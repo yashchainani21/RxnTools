@@ -1,4 +1,3 @@
-import pandas as pd
 import pytest
 from rdkit import Chem
 from rdkit.Chem import AllChem
@@ -232,6 +231,25 @@ def test_get_JN_rxn_descriptor_06(cofactors_df):
 
     assert LHS_descriptor == ['Any','WATER',]
     assert RHS_descriptor == ['Any', 'Pi', 'NH3']
+
+epimerization_rxn = "O=C(COP(=O)([O-])[O-])[C@H](O)CO>>O=C(COP(=O)([O-])[O-])[C@@H](O)CO"
+
+def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_07():
+    rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "O=C(COP(=O)([O-])[O-])[C@H](O)CO"
+    assert products_str == "O=C(COP(=O)([O-])[O-])[C@@H](O)CO"
+
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["O"]
+
+def test_extracting_RHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["O=P(O)(O)O","N"]
+
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
