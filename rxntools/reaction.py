@@ -82,7 +82,7 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    reactants_list.append(reactant_smiles)
+                    reactants_list.append(neutralize_atoms(reactant_smiles))
 
         if "." in reactants_str:
 
@@ -99,7 +99,7 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    reactants_list.append(reactant_smiles)
+                    reactants_list.append(neutralize_atoms(reactant_smiles))
 
         return reactants_list
 
@@ -143,7 +143,7 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    products_list.append(product_smiles)
+                    products_list.append(neutralize_atoms(product_smiles))
 
         if "." in products_str:
 
@@ -160,7 +160,7 @@ class unmapped_reaction:
 
                 # if this reactant is not a cofactor, however, store and return its SMILES
                 else:
-                    products_list.append(product_smiles)
+                    products_list.append(neutralize_atoms(product_smiles))
 
         return products_list
 
@@ -201,7 +201,7 @@ class unmapped_reaction:
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    LHS_cofactors_list.append(reactant_smiles)
+                    LHS_cofactors_list.append(neutralize_atoms(reactant_smiles))
 
                 # if this reactant is not a cofactor, however, then do nothing
                 else:
@@ -219,7 +219,7 @@ class unmapped_reaction:
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    LHS_cofactors_list.append(reactant_smiles)
+                    LHS_cofactors_list.append(neutralize_atoms(reactant_smiles))
 
                 # if this reactant is not a cofactor, however, then do nothing
                 else:
@@ -263,7 +263,7 @@ class unmapped_reaction:
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    RHS_cofactors_list.append(product_smiles)
+                    RHS_cofactors_list.append(neutralize_atoms(product_smiles))
 
                 # if this product is not a cofactor, however, then do nothing
                 else:
@@ -281,7 +281,7 @@ class unmapped_reaction:
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    RHS_cofactors_list.append(product_smiles)
+                    RHS_cofactors_list.append(neutralize_atoms(product_smiles))
 
                 # if this product is not a cofactor, however, then do nothing
                 else:
