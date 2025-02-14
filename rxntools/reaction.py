@@ -74,7 +74,6 @@ class unmapped_reaction:
 
                 reactant_smiles = canonicalize_smiles(reactant_smiles)
                 reactant_smiles = neutralize_atoms(reactant_smiles)
-
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, do not store
@@ -92,6 +91,8 @@ class unmapped_reaction:
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split("."):
 
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, do not store
@@ -138,7 +139,6 @@ class unmapped_reaction:
 
                 product_smiles = canonicalize_smiles(product_smiles)
                 product_smiles = neutralize_atoms(product_smiles)
-
                 product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this reactant is a cofactor, do not store
@@ -156,6 +156,8 @@ class unmapped_reaction:
             # for each reactant's SMILES string
             for product_smiles in products_str.split("."):
 
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
                 product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this reactant is a cofactor, do not store
@@ -202,7 +204,6 @@ class unmapped_reaction:
 
                 reactant_smiles = canonicalize_smiles(reactant_smiles)
                 reactant_smiles = neutralize_atoms(reactant_smiles)
-
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
@@ -221,6 +222,8 @@ class unmapped_reaction:
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split("."):
 
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
@@ -267,7 +270,6 @@ class unmapped_reaction:
 
                 product_smiles = canonicalize_smiles(product_smiles)
                 product_smiles = neutralize_atoms(product_smiles)
-
                 product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this product is a cofactor, store its SMILES
@@ -286,6 +288,8 @@ class unmapped_reaction:
             # for each product's SMILES string
             for product_smiles in products_str.split("."):
 
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
                 product_mol = Chem.MolFromSmiles(product_smiles)
 
                 # if this reactant is a cofactor, store its SMILES
