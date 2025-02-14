@@ -3,6 +3,9 @@ from rdkit.Chem import rdChemReactions
 import pandas as pd
 from typing import List
 
+def canonicalize_smiles(mol: Chem.rdchem.Mol) -> Chem.rdchem.Mol:
+    return Chem.MolToSmiles(Chem.MolFromSmiles(mol))
+
 def are_isomorphic(mol1: Chem.rdchem.Mol,
                    mol2: Chem.rdchem.Mol,
                    consider_stereo: bool = False) -> bool:
