@@ -281,6 +281,17 @@ def test_extracting_substrates_from_unmapped_rxn_str_08(cofactors_list):
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["O=C(O)CCC(=O)O"]
 
+def test_extracting_products_from_unmapped_rxn_str_08(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = succoasyn_rxn)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo=False) == ["CC(C)(COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O)[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCC(=O)O"]
+
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_08(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = succoasyn_rxn)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["CC(C)(COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O)[C@@H](O)C(=O)NCCC(=O)NCCS",
+                                                              "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O"]
+
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
 def test_get_mapped_bonds_data_type():
