@@ -62,7 +62,7 @@ def test_get_JN_rxn_descriptor_01(cofactors_df):
     assert RHS_descriptor == ['Any','NADH_CoF']
 
 # tests involving an alcohol dehydrogenase that oxidizes cis-4-hydroxyproline to the corresponding aldehyde
-# EC 1.1.1.104 MetaCyc rxn idx 693
+# EC 1.1.1.104, MetaCyc rxn idx 693
 hydroxyproline_AdH_rxn_str = "NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]"
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_02():
     rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
@@ -96,7 +96,7 @@ def test_get_JN_rxn_descriptor_02(cofactors_df):
     assert RHS_descriptor == ['Any', 'NADH_CoF',]
 
 # tests involving an alcohol dehydrogenase that oxidizes mannofuranose to the corresponding aldehyde
-# EC 1.1.1.173 MetaCyc rxn idx 1652
+# EC 1.1.1.173, MetaCyc rxn idx 1652
 mannofuranose_AdH_rxn_str = "C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_03():
     rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
@@ -130,6 +130,7 @@ def test_get_JN_rxn_descriptor_03(cofactors_df):
     assert RHS_descriptor == ['Any', 'NADH_CoF',]
 
 # tests involving the polyneuridine-aldehyde esterase reaction
+# EC 3.1.1.78, MetaCyc rxn idx 583
 esterase_rxn_str = "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O>>CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12.CO.O=C=O"
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_04():
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
