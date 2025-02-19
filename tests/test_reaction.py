@@ -56,7 +56,8 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_01(cofactors_list):
 def test_get_JN_rxn_descriptor_01(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any','NAD_CoF']
     assert RHS_descriptor == ['Any','NADH_CoF']
@@ -90,7 +91,8 @@ def extracting_RHS_cofactors_from_unmapped_rxn_str_02(cofactors_list):
 def test_get_JN_rxn_descriptor_02(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any','NAD_CoF',]
     assert RHS_descriptor == ['Any', 'NADH_CoF',]
@@ -124,7 +126,8 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_03(cofactors_list):
 def test_get_JN_rxn_descriptor_03(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any','NAD_CoF',]
     assert RHS_descriptor == ['Any', 'NADH_CoF',]
@@ -159,7 +162,8 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_04(cofactors_list):
 def test_get_JN_rxn_descriptor_04(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any','WATER',]
     assert RHS_descriptor == ['Any', 'Any', 'CO2']
@@ -195,7 +199,8 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_05(cofactors_list):
 def test_get_JN_rxn_descriptor_05(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any','WATER',]
     assert RHS_descriptor == ['Any', 'Pi']
@@ -233,7 +238,8 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_06(cofactors_list):
 def test_get_JN_rxn_descriptor_06(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any','WATER',]
     assert RHS_descriptor == ['Any', 'Pi', 'NH3']
@@ -271,11 +277,14 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_07(cofactors_list):
 def test_get_JN_rxn_descriptor_07(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any']
     assert RHS_descriptor == ['Any']
 
+# tests involving succoasyn reaction
+# EC 6.2.1.5, MetaCyc rxn idx 6847 (SUCCCOASYN-RXN)
 succoasyn_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCC(=O)[O-]>>CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCC(=O)[O-].Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_08():
@@ -309,10 +318,53 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_08(cofactors_list):
 def test_get_JN_rxn_descriptor_08(cofactors_df):
     rxn = reaction.unmapped_reaction(rxn_str = succoasyn_rxn)
 
-    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
 
     assert LHS_descriptor == ['Any', 'CoA', 'PYROPHOSPHATE_DONOR_CoF']
     assert RHS_descriptor == ['Any', 'PHOSPHATE_ACCEPTOR_CoF', 'Pi']
+
+# tests involving biotin coa ligase reaction
+# EC 6.2.1.11, MetaCyc rxn idx 1030 (BIOTIN--COA-LIGASE-RXN)
+biotin_coa_ligase_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21>>CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])OP(=O)([O-])O"
+
+def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_09():
+    rxn = reaction.unmapped_reaction(rxn_str = biotin_coa_ligase_rxn)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21"
+    assert products_str == "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])OP(=O)([O-])O"
+
+def test_extracting_substrates_from_unmapped_rxn_str_09(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = biotin_coa_ligase_rxn)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["O=C(O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21"]
+
+def test_extracting_products_from_unmapped_rxn_str_09(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = biotin_coa_ligase_rxn)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo=False) == ["CC(C)(COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O)[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21"]
+
+def test_extracting_LHS_cofactors_from_unmapped_rxn_str_09(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = biotin_coa_ligase_rxn)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                             consider_stereo = False) == ["CC(C)(COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O)[C@@H](O)C(=O)NCCC(=O)NCCS",
+                                                          "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O"]
+
+def test_extracting_RHS_cofactors_from_unmapped_rxn_str_09(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = biotin_coa_ligase_rxn)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)O)[C@@H](O)[C@H]1O",
+                                                              "O=P(O)(O)OP(=O)(O)O"]
+
+def test_get_JN_rxn_descriptor_09(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = biotin_coa_ligase_rxn)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
+
+    assert LHS_descriptor == ['Any', 'CoA', 'PYROPHOSPHATE_DONOR_CoF']
+    assert RHS_descriptor == ['Any', 'PYROPHOSPHATE_ACCEPTOR_CoF', 'PPI']
+
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
