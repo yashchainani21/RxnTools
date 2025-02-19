@@ -130,7 +130,7 @@ def test_get_JN_rxn_descriptor_03(cofactors_df):
     assert RHS_descriptor == ['Any', 'NADH_CoF',]
 
 # tests involving the polyneuridine-aldehyde esterase reaction
-# EC 3.1.1.78, MetaCyc rxn idx 583
+# EC 3.1.1.78, MetaCyc rxn idx 583 (3.1.1.78-RXN)
 esterase_rxn_str = "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O>>CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12.CO.O=C=O"
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_04():
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
@@ -165,7 +165,7 @@ def test_get_JN_rxn_descriptor_04(cofactors_df):
     assert RHS_descriptor == ['Any', 'Any', 'CO2']
 
 # tests involving the glucopyranose-phosphatase reaction
-# EC 3.1.3.10, MetaCyc rxn idx 1414
+# EC 3.1.3.10, MetaCyc rxn idx 1414 (GLUCOSE-1-PHOSPHAT-RXN)
 glucopyranose_phosphatase_rxn = "O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O>>O=P([O-])([O-])O.OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_05():
