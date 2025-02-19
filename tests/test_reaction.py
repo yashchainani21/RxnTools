@@ -201,7 +201,7 @@ def test_get_JN_rxn_descriptor_05(cofactors_df):
     assert RHS_descriptor == ['Any', 'Pi']
 
 # tests involving the ethanolamine-phosphate phosphatase reaction
-# EC 4.2.3.2, MetaCyc rxn idx 1309
+# EC 4.2.3.2, MetaCyc rxn idx 1309 (ETHANOLAMINE-PHOSPHATE-PHOSPHO-LYASE-RXN)
 ethanolamine_phosphate_phosphatase_rxn = "O.[NH3+]CCOP(=O)([O-])[O-]>>CC=O.O=P([O-])([O-])O.[NH4+]"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_06():
@@ -238,6 +238,8 @@ def test_get_JN_rxn_descriptor_06(cofactors_df):
     assert LHS_descriptor == ['Any','WATER',]
     assert RHS_descriptor == ['Any', 'Pi', 'NH3']
 
+# tests involving an epimerization reaction
+# EC 5.1.3.38, MetaCyc rxn idx 4160 (RXN-17771)
 epimerization_rxn = "O=C(COP(=O)([O-])[O-])[C@H](O)CO>>O=C(COP(=O)([O-])[O-])[C@@H](O)CO"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_07():
