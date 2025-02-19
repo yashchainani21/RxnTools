@@ -165,6 +165,7 @@ def test_get_JN_rxn_descriptor_04(cofactors_df):
     assert RHS_descriptor == ['Any', 'Any', 'CO2']
 
 # tests involving the glucopyranose-phosphatase reaction
+# EC 3.1.3.10, MetaCyc rxn idx 1414
 glucopyranose_phosphatase_rxn = "O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O>>O=P([O-])([O-])O.OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_05():
@@ -200,6 +201,7 @@ def test_get_JN_rxn_descriptor_05(cofactors_df):
     assert RHS_descriptor == ['Any', 'Pi']
 
 # tests involving the ethanolamine-phosphate phosphatase reaction
+# EC 4.2.3.2, MetaCyc rxn idx 1309
 ethanolamine_phosphate_phosphatase_rxn = "O.[NH3+]CCOP(=O)([O-])[O-]>>CC=O.O=P([O-])([O-])O.[NH4+]"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_06():
