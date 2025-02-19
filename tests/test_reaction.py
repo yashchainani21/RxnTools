@@ -26,6 +26,7 @@ def cofactors_df():
 #### ----------------------- Tests for the unmapped reaction class -----------------------
 
 # tests involving an alcohol dehydrogenase that oxidizes ethanol to ethanal
+# EC 1.1.1.1, MetaCyc rxn idx 903
 ethanol_AdH_rxn_str = "CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
 
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_01():
