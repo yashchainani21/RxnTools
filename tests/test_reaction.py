@@ -100,7 +100,7 @@ def test_get_JN_rxn_descriptor_02(cofactors_df):
 # tests involving an alcohol dehydrogenase that oxidizes mannofuranose to the corresponding aldehyde
 # EC 1.1.1.173, MetaCyc rxn idx 1652 (L-RHAMNOSE-1-DEHYDROGENASE-RXN)
 mannofuranose_AdH_rxn_str = "C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
-def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_03():
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_03():
     rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1"
@@ -135,7 +135,7 @@ def test_get_JN_rxn_descriptor_03(cofactors_df):
 # tests involving the polyneuridine-aldehyde esterase reaction
 # EC 3.1.1.78, MetaCyc rxn idx 583 (3.1.1.78-RXN)
 esterase_rxn_str = "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O>>CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12.CO.O=C=O"
-def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_04():
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_04():
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O"
@@ -172,7 +172,7 @@ def test_get_JN_rxn_descriptor_04(cofactors_df):
 # EC 3.1.3.10, MetaCyc rxn idx 1414 (GLUCOSE-1-PHOSPHAT-RXN)
 glucopyranose_phosphatase_rxn = "O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O>>O=P([O-])([O-])O.OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"
 
-def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_05():
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_05():
     rxn = reaction.unmapped_reaction(rxn_str = glucopyranose_phosphatase_rxn)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "O.O=P([O-])([O-])O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O"
@@ -209,7 +209,7 @@ def test_get_JN_rxn_descriptor_05(cofactors_df):
 # EC 4.2.3.2, MetaCyc rxn idx 1309 (ETHANOLAMINE-PHOSPHATE-PHOSPHO-LYASE-RXN)
 ethanolamine_phosphate_phosphatase_rxn = "O.[NH3+]CCOP(=O)([O-])[O-]>>CC=O.O=P([O-])([O-])O.[NH4+]"
 
-def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_06():
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_06():
     rxn = reaction.unmapped_reaction(rxn_str = ethanolamine_phosphate_phosphatase_rxn)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "O.[NH3+]CCOP(=O)([O-])[O-]"
@@ -248,7 +248,7 @@ def test_get_JN_rxn_descriptor_06(cofactors_df):
 # EC 5.1.3.38, MetaCyc rxn idx 4160 (RXN-17771)
 epimerization_rxn = "O=C(COP(=O)([O-])[O-])[C@H](O)CO>>O=C(COP(=O)([O-])[O-])[C@@H](O)CO"
 
-def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_07():
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_07():
     rxn = reaction.unmapped_reaction(rxn_str = epimerization_rxn)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "O=C(COP(=O)([O-])[O-])[C@H](O)CO"
@@ -283,11 +283,11 @@ def test_get_JN_rxn_descriptor_07(cofactors_df):
     assert LHS_descriptor == ['Any']
     assert RHS_descriptor == ['Any']
 
-# tests involving succoasyn reaction
+# tests involving the succoasyn reaction
 # EC 6.2.1.5, MetaCyc rxn idx 6847 (SUCCCOASYN-RXN)
 succoasyn_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCC(=O)[O-]>>CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCC(=O)[O-].Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O"
 
-def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_08():
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_08():
     rxn = reaction.unmapped_reaction(rxn_str = succoasyn_rxn)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCC(=O)[O-]"
@@ -324,11 +324,11 @@ def test_get_JN_rxn_descriptor_08(cofactors_df):
     assert LHS_descriptor == ['Any', 'CoA', 'PYROPHOSPHATE_DONOR_CoF']
     assert RHS_descriptor == ['Any', 'PHOSPHATE_ACCEPTOR_CoF', 'Pi']
 
-# tests involving biotin coa ligase reaction
+# tests involving the biotin coa ligase reaction
 # EC 6.2.1.11, MetaCyc rxn idx 1030 (BIOTIN--COA-LIGASE-RXN)
 biotin_coa_ligase_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21>>CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])OP(=O)([O-])O"
 
-def test_separating_unmapped_rxn_str_into_reactant_and_products_strs_09():
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_09():
     rxn = reaction.unmapped_reaction(rxn_str = biotin_coa_ligase_rxn)
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21"
@@ -365,6 +365,20 @@ def test_get_JN_rxn_descriptor_09(cofactors_df):
     assert LHS_descriptor == ['Any', 'CoA', 'PYROPHOSPHATE_DONOR_CoF']
     assert RHS_descriptor == ['Any', 'PYROPHOSPHATE_ACCEPTOR_CoF', 'PPI']
 
+# tests involving RXN-14637
+# EC 6.3.1.18, MetaCyc rxn idx 3419 (RXN-14637)
+rxn_14637 = "Nc1ccccc1.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.[NH3+][C@@H](CCC(=O)[O-])C(=O)[O-]>>Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O.[NH3+][C@@H](CCC(=O)Nc1ccccc1)C(=O)[O-]"
+
+def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_10(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = rxn_14637)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "Nc1ccccc1.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.[NH3+][C@@H](CCC(=O)[O-])C(=O)[O-]"
+    assert products_str == "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O.[NH3+][C@@H](CCC(=O)Nc1ccccc1)C(=O)[O-]"
+
+def test_extracting_substrates_from_unmapped_rxn_str_10(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = rxn_14637)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["Nc1ccccc1"]
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
