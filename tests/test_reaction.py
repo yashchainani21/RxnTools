@@ -10,7 +10,7 @@ def cofactors_list():
     """
     Pytest fixture to load the cofactors list from a JSON file.
     """
-    with open('../data/cofactors.json') as f:
+    with open('../data/raw/cofactors.json') as f:
         cofactors_dict = json.load(f)
     return [cofactors_dict[key] for key in cofactors_dict.keys()]
 
@@ -19,7 +19,7 @@ def cofactors_df():
     """
     Pytest fixture to load the cofactors dataframe from a tsv file.
     """
-    with open('../data/all_cofactors.csv') as f:
+    with open('../data/raw/all_cofactors.csv') as f:
         cofactors_df = pd.read_csv(f, sep=',')
     return cofactors_df
 
@@ -397,6 +397,14 @@ def test_extracting_RHS_cofactors_from_unmapped_rxn_str_10(cofactors_list):
                                  consider_stereo=False) == ["Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O",
                                                             "O=P(O)(O)O"]
 
+def test_get_JN_rxn_descriptor_10(cofactors_df):
+    rxn = reaction.unmapped_reaction(rxn_str = rxn_14637)
+
+    LHS_descriptor, RHS_descriptor = rxn.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                               consider_stereo = False)
+
+    assert LHS_descriptor == ['Any', 'PYROPHOSPHATE_DONOR_CoF', 'AMINO_CoF']
+    assert RHS_descriptor == ['Any', 'PHOSPHATE_ACCEPTOR_CoF', 'Pi']
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 

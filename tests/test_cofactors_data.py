@@ -1,6 +1,6 @@
 import json
 def test_cofactors_are_unique():
-    with open('../data/cofactors.json', 'r') as f:
+    with open('../data/raw/cofactors.json', 'r') as f:
         cofactors_dict = json.load(f)
 
     cofactors_smiles_list = []

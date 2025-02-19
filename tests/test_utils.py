@@ -10,7 +10,7 @@ def cofactors_list():
     """
     Pytest fixture to load the cofactors list from the JSON file.
     """
-    with open('../data/cofactors.json') as f:
+    with open('../data/raw/cofactors.json') as f:
         cofactors_dict = json.load(f)
     return [cofactors_dict[key] for key in cofactors_dict.keys()]
 
@@ -19,7 +19,7 @@ def cofactors_df():
     """
     Pytest fixture to load the cofactors dataframe from a tsv file.
     """
-    with open('../data/all_cofactors.csv') as f:
+    with open('../data/raw/all_cofactors.csv') as f:
         cofactors_df = pd.read_csv(f, sep=',')
     return cofactors_df
 
