@@ -4,4 +4,4 @@
 notebooks/.ipynb_checkpoints/
 .ipynb_checkpoints/
 *.xlsx
-data/enzymemap_v2_brenda2023.csv
+data/raw/enzymemap_v2_brenda2023.csv
