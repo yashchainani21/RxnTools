@@ -4,6 +4,8 @@ version = "0.1.0"
 description = "A package of custom rdkit-based operations for reaction cheminformatics"
 authors = ["yashchainani21 <yashchainani2026@u.northwestern.edu>"]
 readme = "README.md"
+include = ["./data/raw/all_cofactors.csv",
+           "./data/raw/cofactors.json"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
