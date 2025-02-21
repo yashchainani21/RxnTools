@@ -31,3 +31,6 @@ for i, rxn_str in enumerate(list(brenda_df['unmapped'])):
 query_df = brenda_df.iloc[keep_idx, :]
 query_df = query_df[query_df['source'] == 'direct']
 query_rxns_frm_BRENDA = set(query_df['mapped'])
+
+for rxn in query_rxns_frm_BRENDA:
+    print(reaction.unmapped_reaction(rxn).get_JN_rxn_descriptor(cofactors_df,consider_stereo=False))
