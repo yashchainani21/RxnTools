@@ -421,6 +421,13 @@ class unmapped_reaction:
 
         return LHS_descriptor, RHS_descriptor
 
+    def map_rxn_to_rule(self,
+                        cofactors_df: pd.DataFrame,
+                        rule_type: str):
+
+        if rule_type == "generalized":
+            self.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+
 
 class mapped_reaction:
     """
