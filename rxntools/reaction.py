@@ -429,6 +429,10 @@ class unmapped_reaction:
             LHS_descriptor, RHS_descriptor = self.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
                                                                         consider_stereo = False)
 
+            for i in range(0, cofactors_df.shape[0]):
+                lhs_rxn_signature = cofactors_df.iloc[i, :]['Reactants']
+                rhs_rxn_signature = cofactors_df.iloc[i, :]['Products']
+
 
 class mapped_reaction:
     """
