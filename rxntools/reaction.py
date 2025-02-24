@@ -426,7 +426,8 @@ class unmapped_reaction:
                         rule_type: str):
 
         if rule_type == "generalized":
-            self.get_JN_rxn_descriptor(cofactors_df = cofactors_df, consider_stereo = False)
+            LHS_descriptor, RHS_descriptor = self.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+                                                                        consider_stereo = False)
 
 
 class mapped_reaction:
