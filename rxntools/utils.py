@@ -1,5 +1,5 @@
 from rdkit import Chem
-from rdkit.Chem import rdChemReactions
+from rdkit.Chem import rdChemReactions, AllChem
 import pandas as pd
 from typing import List
 
@@ -192,3 +192,29 @@ def neutralize_atoms(smiles):
 
     return Chem.MolToSmiles(mol)
 
+def does_template_fit(rxn_str: str,
+                      rxn_template: str) -> bool:
+
+    rxn = AllChem.ReactionFromSmarts(rxn_template)
+    reactants_list = rxn_str.split(">>")[0].split(".") # index 0 for reactants on LHS
+    products_list = rxn_str.split(">>")[1].split(".") # index 1 for products on RHS
+
+    reactants_templates = rxn_template.split(">>")[0].split(".")
+    products_templates = rxn_template.split(">>")[1].split(".")
+
+    # first, we check if the reactant templates match the reactants
+    
+
+    # initialize an empty tuple to store mol objects of reactants
+    reactant_mols = []
+
+    for reactant_smiles in reactants_list:
+        reactant_mols.append(Chem.MolFromSmiles(reactant_smiles))
+
+    # convert the list into a tuple to use RDKit's rxn.RunReactants method
+    reactants_tuple = tuple(reactant_mols)
+
+    rxn_outcomes = rxn.RunReactants(reactants_tuple)
+
+    if rxn_outcomes:
+        return True
