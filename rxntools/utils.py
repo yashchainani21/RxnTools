@@ -199,11 +199,23 @@ def does_template_fit(rxn_str: str,
     reactants_list = rxn_str.split(">>")[0].split(".") # index 0 for reactants on LHS
     products_list = rxn_str.split(">>")[1].split(".") # index 1 for products on RHS
 
-    reactants_templates = rxn_template.split(">>")[0].split(".")
-    products_templates = rxn_template.split(">>")[1].split(".")
+    reactant_templates = rxn_template.split(">>")[0].split(".")
+    product_templates = rxn_template.split(">>")[1].split(".")
 
     # first, we check if the reactant templates match the reactants
-    
+    num_reactant_template_matches = 0
+    for i in range(0, len(reactants_list)):
+        reactant_mol = Chem.MolFromSmiles(reactants_list[i])
+        reactant_template_smarts = Chem.MolFromSmarts(reactant_templates[i])
+        if reactant_mol.HasSubstructMatch(reactant_template_smarts):
+            num_reactant_template_matches += 1
+
+    # the number of reactant templates must exactly match the number of reactants present
+    if num_reactant_template_matches == len(reactants_list):
+        pass
+    else:
+        # if number of reactant templates does not exactly match number of reactants present, then template does not fit
+        return False
 
     # initialize an empty tuple to store mol objects of reactants
     reactant_mols = []
