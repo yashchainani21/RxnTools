@@ -202,7 +202,8 @@ def does_template_fit(rxn_str: str,
     reactant_templates = rxn_template.split(">>")[0].split(".")
     product_templates = rxn_template.split(">>")[1].split(".")
 
-    # first, we check if the reactant templates match the reactants
+    ### first, we check if the reactant patterns within the template match the reactants present in the input reaction
+    # note here that the order in which reactants appear in a template must match their order in the input reaction
     num_reactant_template_matches = 0
     for i in range(0, len(reactants_list)):
         reactant_mol = Chem.MolFromSmiles(reactants_list[i])
@@ -217,6 +218,7 @@ def does_template_fit(rxn_str: str,
         # if number of reactant templates does not exactly match number of reactants present, then template does not fit
         return False
 
+    ### second, run the chemical reaction prescribed by the reaction templates
     # initialize an empty tuple to store mol objects of reactants
     reactant_mols = []
 
@@ -226,6 +228,7 @@ def does_template_fit(rxn_str: str,
     # convert the list into a tuple to use RDKit's rxn.RunReactants method
     reactants_tuple = tuple(reactant_mols)
 
+    ###
     rxn_outcomes = rxn.RunReactants(reactants_tuple)
 
     if rxn_outcomes:
