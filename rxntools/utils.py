@@ -196,8 +196,16 @@ def does_template_fit(rxn_str: str,
                       rxn_template: str) -> bool:
 
     rxn = AllChem.ReactionFromSmarts(rxn_template)
+
+    # extract reactants and products from the input reaction string and remove any hydrogens present
     reactants_list = rxn_str.split(">>")[0].split(".") # index 0 for reactants on LHS
     products_list = rxn_str.split(">>")[1].split(".") # index 1 for products on RHS
+
+    if '[H+]' in reactants_list:
+        reactants_list.remove('[H+]')
+
+    if '[H+]' in products_list:
+        products_list.remove('[H+]')
 
     reactant_templates = rxn_template.split(">>")[0].split(".")
     product_templates = rxn_template.split(">>")[1].split(".")
@@ -218,7 +226,7 @@ def does_template_fit(rxn_str: str,
         # if number of reactant templates does not exactly match number of reactants present, then template does not fit
         return False
 
-    ### second, run the chemical reaction prescribed by the reaction templates
+    ### second, run the chemical reaction prescribed by the input reaction template
     # initialize an empty tuple to store mol objects of reactants
     reactant_mols = []
 
@@ -228,8 +236,24 @@ def does_template_fit(rxn_str: str,
     # convert the list into a tuple to use RDKit's rxn.RunReactants method
     reactants_tuple = tuple(reactant_mols)
 
-    ###
+    ### lastly, check if the products generated from running the chemical reaction match the template
     rxn_outcomes = rxn.RunReactants(reactants_tuple)
 
-    if rxn_outcomes:
-        return True
+    # initialize a counter for the number of successful reaction outcomes since multiple pairs of products can form
+    # for a template to successfully fit, at least one reaction outcome must be successful
+    num_successful_rxn_outcomes = 0
+    for rxn_outcome in rxn_outcomes:
+
+        # within each reaction outcome, initialize a counter to count the number of successful products
+        num_product_template_matches = 0
+        for product_formed in rxn_outcome:
+            for product_smiles in products_list:
+                if are_isomorphic(mol1 = Chem.MolFromSmiles(product_smiles),
+                                  mol2 = product_formed,
+                                  consider_stereo = False):
+                    num_product_template_matches += 1
+
+        if num_product_template_matches == len(products_list):
+            return True
+        else:
+            return False
