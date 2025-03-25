@@ -201,14 +201,14 @@ def does_template_fit(rxn_str: str,
     reactants_list = rxn_str.split(">>")[0].split(".") # index 0 for reactants on LHS
     products_list = rxn_str.split(">>")[1].split(".") # index 1 for products on RHS
 
+    reactant_templates = rxn_template.split(">>")[0].split(".")
+    product_templates = rxn_template.split(">>")[1].split(".")
+
     if '[H+]' in reactants_list:
         reactants_list.remove('[H+]')
 
     if '[H+]' in products_list:
         products_list.remove('[H+]')
-
-    reactant_templates = rxn_template.split(">>")[0].split(".")
-    product_templates = rxn_template.split(">>")[1].split(".")
 
     ### first, we check if the reactant patterns within the template match the reactants present in the input reaction
     # note here that the order in which reactants appear in a template must match their order in the input reaction
