@@ -184,7 +184,7 @@ def test_remove_stereochemistry_frm_decarboxylation_rxn():
 
 def test_creating_new_atommap_for_template_01_start_at_1():
     extracted_template = '[C:7][C&H2:9][C&H2:10]'
-    final_template = utils.reset_atom_map(extracted_template, starting_atom_num= 1)
+    final_template = utils.reset_atom_map(extracted_template, starting_atom_num = 1)
     assert final_template == '[C:1][C&H2:2][C&H2:3]'
 
 def test_creating_new_atommap_for_template_01_start_at_7():
@@ -580,6 +580,14 @@ def test_does_template_fit_04_using_unmapped_rxn_str():
     Test if a given template assigned to the unmapped MetaCyc RXN-10915 (rxn idx 2324) fits.
     """
     rxn_str = 'COc1cc([C@@H](O)CO)ccc1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>COc1cc([C@@H](O)C=O)ccc1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]'
+    rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_04_using_mapped_rxn_str():
+    """
+    Test if a given template assigned to the fully atom-mapped MetaCyc RXN-10915 (rxn idx 2324) fits.
+    """
+    rxn_str = '[CH3:1][O:2][c:3]1[cH:4][c:5]([C@@H:6]([OH:7])[CH2:8][OH:9])[cH:10][cH:11][c:12]1[OH:13].[NH2:14][C:15](=[O:16])[c:17]1[cH:18][cH:19][cH:20][n+:21]([C@@H:22]2[O:23][C@H:24]([CH2:25][O:26][P:27](=[O:28])([OH:29])[O:30][P:31](=[O:32])([OH:33])[O:34][CH2:35][C@H:36]3[O:37][C@@H:38]([n:39]4[cH:40][n:41][c:42]5[c:43]([NH2:44])[n:45][cH:46][n:47][c:48]45)[C@H:49]([OH:50])[C@@H:51]3[OH:52])[C@@H:53]([OH:54])[C@H:55]2[OH:56])[cH:57]1>>[CH3:1][O:2][c:3]1[cH:4][c:5]([C@@H:6]([OH:7])[CH:8]=[O:9])[cH:10][cH:11][c:12]1[OH:13].[H+].[NH2:14][C:15](=[O:16])[C:17]1=[CH:57][N:21]([C@@H:22]2[O:23][C@H:24]([CH2:25][O:26][P:27](=[O:28])([OH:29])[O:30][P:31](=[O:32])([OH:33])[O:34][CH2:35][C@H:36]3[O:37][C@@H:38]([n:39]4[cH:40][n:41][c:42]5[c:43]([NH2:44])[n:45][cH:46][n:47][c:48]45)[C@H:49]([OH:50])[C@@H:51]3[OH:52])[C@@H:53]([OH:54])[C@H:55]2[OH:56])[CH:20]=[CH:19][CH2:18]1'
     rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
 
