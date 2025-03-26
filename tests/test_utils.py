@@ -252,96 +252,112 @@ def test_get_pyrophosphate_donor_CoF_code(cofactors_df):
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O",
                                 cofactors_df = cofactors_df) == "PYROPHOSPHATE_DONOR_CoF"
+
 def test_get_pyrophosphate_acceptor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)O)[C@@H](O)[C@H]1O",
                                        cofactors_df = cofactors_df) == "PYROPHOSPHATE_ACCEPTOR_CoF"
+
 def test_get_FAD_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Cc1cc2nc3c(=O)[nH]c(=O)nc-3n(C[C@H](O)[C@H](O)[C@H](O)COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)c2cc1C",
                                        cofactors_df = cofactors_df) == "FAD_CoF"
+
 def test_get_FADH2_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Cc1cc2c(cc1C)N(C[C@H](O)[C@H](O)[C@H](O)COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n3cnc4c(N)ncnc43)[C@H](O)[C@@H]1O)c1[nH]c(=O)[nH]c(=O)c1N2",
                                        cofactors_df = cofactors_df) == "FADH2_CoF"
+
 def test_get_phosphate_acceptor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O",
                                        cofactors_df = cofactors_df) == "PHOSPHATE_ACCEPTOR_CoF"
+
 def test_get_NAD_CoF_code_frm_NAD(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES="NC(c1c[n+]([C@@H]2O[C@@H]([C@H]([C@H]2O)O)COP(O)(OP(O)(OC[C@H]3O[C@H]([C@@H]([C@@H]3O)O)n(cn4)c5c4c(N)ncn5)=O)=O)ccc1)=O",
                                        cofactors_df=cofactors_df) == "NAD_CoF"
+
 def test_get_NADH_CoF_code_frm_NADH(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "NC(C1=CN(C=CC1)[C@@H]2O[C@@H]([C@H]([C@H]2O)O)COP(O)(OP(O)(OC[C@H]3O[C@H]([C@@H]([C@@H]3O)O)n(cn4)c5c4c(N)ncn5)=O)=O)=O",
                                         cofactors_df=cofactors_df) == "NADH_CoF"
+
 def test_get_sulfate_donor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OS(=O)(=O)O)[C@@H](OP(=O)(O)O)[C@H]1O",
                                        cofactors_df = cofactors_df) == "SULFATE_DONOR_CoF"
+
 def test_get_sulfate_acceptor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)O)[C@@H](OP(=O)(O)O)[C@H]1O",
                                        cofactors_df = cofactors_df) == "SULFATE_ACCEPTOR_CoF"
+
 def test_get_methyl_donor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "C[S+](CC[C@H](N)C(=O)O)C[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1O",
                                        cofactors_df = cofactors_df) == "METHYL_DONOR_CoF"
+
 def test_get_methyl_acceptor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Nc1ncnc2c1ncn2[C@@H]1O[C@H](CSCC[C@H](N)C(=O)O)[C@@H](O)[C@H]1O",
                                        cofactors_df = cofactors_df) == "METHYL_ACCEPTOR_CoF"
+
 def test_get_glucosyl_donor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O[C@H]3O[C@H](CO)[C@@H](O)[C@H](O)[C@H]3O)[C@@H](O)[C@H]2O)c(=O)[nH]1",
                                        cofactors_df = cofactors_df) == "GLUCOSYL_DONOR_CoF"
+
 def test_get_glucosyl_acceptor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]2O)c(=O)[nH]1",
                                        cofactors_df = cofactors_df)
+
 def test_get_ubiquinols_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "*c1c(*)c(O)c(*)c(*)c1O",
                                        cofactors_df = cofactors_df)
+
 def test_get_ubiquinones_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "*C1=C(*)C(=O)C(*)=C(*)C1=O",
                                        cofactors_df = cofactors_df)
+
 def test_get_prenyl_donor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "CC(C)=CCOP(=O)(O)OP(=O)(O)O",
                                        cofactors_df = cofactors_df) == "PRENYL_DONOR_CoF"
+
 def test_get_prenyl_acceptor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
@@ -349,120 +365,140 @@ def test_get_prenyl_acceptor_CoF_code(cofactors_df):
     # comes out as PPI even though this is a prenyl-acceptor, need to correct later
     assert utils.get_cofactor_CoF_code(query_SMILES = "O=P(O)(O)OP(=O)(O)O",
                                        cofactors_df = cofactors_df) == "PPI"
+
 def test_get_carbonyl_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "O=C(O)CCC(=O)C(=O)O",
                                        cofactors_df = cofactors_df) == "CARBONYL_CoF"
+
 def test_get_amino_CoF(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "N[C@@H](CCC(=O)O)C(=O)O",
                                        cofactors_df = cofactors_df) == "AMINO_CoF"
+
 def test_get_formyl_donor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "*C(=O)CC[C@H](NC(=O)c1ccc(N(C=O)C[C@H]2CNc3nc(N)[nH]c(=O)c3N2)cc1)C(=O)O",
                                        cofactors_df = cofactors_df) == "FORMYL_DONOR_CoF"
+
 def test_get_formly_acceptor_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "*C(=O)CC[C@H](NC(=O)c1ccc(NC[C@H]2CNc3nc(N)[nH]c(=O)c3N2)cc1)C(=O)O",
                                        cofactors_df = cofactors_df) == "FORMYL_ACCEPTOR_CoF"
+
 def test_get_ascorbate_radical_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "[O]C1=C(O)C(=O)O[C@@H]1[C@@H](O)CO",
                                        cofactors_df = cofactors_df) == "ASCORBATE_RADICAL_CoF"
+
 def test_get_ascorbate_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "O=C1O[C@H]([C@@H](O)CO)C(O)=C1O",
                                        cofactors_df = cofactors_df) == "ASCORBATE_CoF"
+
 def test_get_oxidized_factor_F420_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "*C(=O)[C@H](C)OP(=O)(O)OC[C@@H](O)[C@@H](O)[C@@H](O)Cn1c2nc(=O)[nH]c(=O)c-2cc2ccc(O)cc21",
                                        cofactors_df = cofactors_df) == "Oxidized-Factor-F420_CoF"
+
 def test_get_reduced_factor_F420_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "*C(=O)[C@H](C)OP(=O)(O)OC[C@@H](O)[C@@H](O)[C@@H](O)CN1c2cc(O)ccc2Cc2c1[nH]c(=O)[nH]c2=O",
                                        cofactors_df = cofactors_df) == "Reduced-Factor-F420_CoF"
+
 def test_get_acetyl_coa_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "CC(=O)SCCNC(=O)CCNC(=O)[C@H](O)C(C)(C)COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O",
                                        cofactors_df = cofactors_df) == "ACETYL-COA"
+
 def test_get_CO_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "C#[O+]",
                                        cofactors_df = cofactors_df) == "CO"
+
 def test_get_CO2_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "O=C=O",
                                        cofactors_df = cofactors_df) == "CO2"
+
 def test_get_CO3_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "O=C(O)O",
                                        cofactors_df = cofactors_df) == "CO3"
+
 def test_get_CoA_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "CC(C)(COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O)[C@@H](O)C(=O)NCCC(=O)NCCS",
                                        cofactors_df = cofactors_df) == "CoA"
+
 def test_get_H_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "[H+]",
                                        cofactors_df = cofactors_df) == "H+"
+
 def test_get_H2O2_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "OO",
                                        cofactors_df = cofactors_df) == "H2O2"
+
 def test_get_HBr_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Br",
                                        cofactors_df = cofactors_df) == "HBr"
+
 def test_get_HCN_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "C#N",
                                        cofactors_df = cofactors_df) == "HCN"
+
 def test_get_HCl_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "Cl",
                                        cofactors_df = cofactors_df) == "HCl"
+
 def test_get_HF_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
     """
     assert utils.get_cofactor_CoF_code(query_SMILES = "F",
                                        cofactors_df = cofactors_df) == "HF"
+
 def test_get_HI_CoF_code(cofactors_df):
     """
     Check if the correct JN1224MIN-type cofactor code can be obtained for the input cofactor SMILES.
@@ -551,7 +587,7 @@ def test_are_rxn_descriptors_equal_04():
     rxn_descriptor_02 = ["CO2","Any","NADH_CoF",]
     assert utils.are_rxn_descriptors_equal(rxn_descriptor_01, rxn_descriptor_02)
 
-def test_does_template_fit_01_using_unmapped_rxn_str():
+def test_does_template_fit_01_using_unmapped_rxn_str_forward_dir():
     """
     Test if a given template assigned to the unmapped MetaCyc ALCOHOL-DEHYDROG-RXN (rxn idx 903) fits.
     """
@@ -559,11 +595,29 @@ def test_does_template_fit_01_using_unmapped_rxn_str():
     rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
 
-def test_does_template_fit_01_using_mapped_rxn_str():
+def test_does_template_fit_01_using_mapped_rxn_str_forward_dir():
     """
     Test if a given template assigned to the fully atom-mapped MetaCyc ALCOHOL-DEHYDROG-RXN (rxn idx 903) fits.
     """
     rxn_str = '[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1'
+    rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_01_using_unmapped_rxn_str_reverse_dir():
+    """
+    Test if a given template assigned to the unmapped MetaCyc ALCOHOL-DEHYDROG-RXN (rxn idx 903) fits.
+    This reaction direction and the template are both in the opposite direction to the tests above.
+    """
+    rxn_str = 'CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]>>CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1'
+    rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_01_using_mapped_rxn_str_reverse_dir():
+    """
+    Test if a given template assigned to the fully atom-mapped MetaCyc ALCOHOL-DEHYDROG-RXN (rxn idx 903) fits.
+    This reaction direction and the template are both in the opposite direction to the tests above.
+    """
+    rxn_str = '[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:8][N:9]([C@@H:10]2[O:11][C@H:12]([CH2:13][O:14][P:15](=[O:16])([OH:17])[O:18][P:19](=[O:20])([OH:21])[O:22][CH2:23][C@H:24]3[O:25][C@@H:26]([n:27]4[cH:28][n:29][c:30]5[c:31]([NH2:32])[n:33][cH:34][n:35][c:36]45)[C@H:37]([OH:38])[C@@H:39]3[OH:40])[C@@H:41]([OH:42])[C@H:43]2[OH:44])[CH:45]=[CH:46][CH2:47]1>>[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][n+:9]([C@@H:10]2[O:11][C@H:12]([CH2:13][O:14][P:15](=[O:16])([OH:17])[O:18][P:19](=[O:20])([OH:21])[O:22][CH2:23][C@H:24]3[O:25][C@@H:26]([n:27]4[cH:28][n:29][c:30]5[c:31]([NH2:32])[n:33][cH:34][n:35][c:36]45)[C@H:37]([OH:38])[C@@H:39]3[OH:40])[C@@H:41]([OH:42])[C@H:43]2[OH:44])[cH:45][cH:46][cH:47]1'
     rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
 
