@@ -241,7 +241,6 @@ def does_template_fit(rxn_str: str,
 
     # initialize a counter for the number of successful reaction outcomes since multiple pairs of products can form
     # for a template to successfully fit, at least one reaction outcome must be successful
-    num_successful_rxn_outcomes = 0
     for rxn_outcome in rxn_outcomes:
 
         # within each reaction outcome, initialize a counter to count the number of successful products
@@ -256,4 +255,4 @@ def does_template_fit(rxn_str: str,
         if num_product_template_matches == len(products_list):
             return True
         else:
-            return False
+            pass
