@@ -214,9 +214,11 @@ def does_template_fit(rxn_str: str,
     # note here that the order in which reactants appear in a template must match their order in the input reaction
     num_reactant_template_matches = 0
     for i in range(0, len(reactants_list)):
-        reactant_mol = Chem.MolFromSmiles(reactants_list[i])
-        reactant_template_smarts = Chem.MolFromSmarts(reactant_templates[i])
-        if reactant_mol.HasSubstructMatch(reactant_template_smarts):
+        reactant_smiles = reactants_list[i]
+        reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+        reactant_template_smarts = reactant_templates[i]
+        reactant_template_mol = Chem.MolFromSmarts(reactant_template_smarts)
+        if reactant_mol.HasSubstructMatch(reactant_template_mol):
             num_reactant_template_matches += 1
 
     # the number of reactant templates must exactly match the number of reactants present
