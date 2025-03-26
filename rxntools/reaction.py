@@ -2,7 +2,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 import pandas as pd
 from typing import Set, Tuple, List
-from .utils import get_cofactor_CoF_code, is_cofactor, remove_stereo, neutralize_atoms, canonicalize_smiles
+from .utils import get_cofactor_CoF_code, is_cofactor, remove_stereo, neutralize_atoms, canonicalize_smiles, does_template_fit
 
 class unmapped_reaction:
     """
