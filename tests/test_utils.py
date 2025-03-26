@@ -383,15 +383,28 @@ def test_are_rxn_descriptors_equal_04():
     rxn_descriptor_02 = ["CO2","Any","NADH_CoF",]
     assert utils.are_rxn_descriptors_equal(rxn_descriptor_01, rxn_descriptor_02)
 
-def test_does_template_fit_01():
+def test_does_template_fit_01_using_unmapped_rxn_str():
     rxn_str = 'CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]'
     rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) == True
 
+def test_does_template_fit_01_using_mapped_rxn_str():
+    rxn_str = 'CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]'
+    rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
+    assert utils.does_template_fit(rxn_str, rxn_template) == True
 
 def test_does_template_fit_02():
     rxn_str = '[H+].[NH2:1][C:2](=[O:3])[C:4]1=[CH:5][N:6]([C@@H:7]2[O:8][C@H:9]([CH2:10][O:11][P:12](=[O:13])([OH:14])[O:15][P:16](=[O:17])([OH:18])[O:19][CH2:20][C@H:21]3[O:22][C@@H:23]([n:24]4[cH:25][n:26][c:27]5[c:28]([NH2:29])[n:30][cH:31][n:32][c:33]45)[C@H:34]([OH:35])[C@@H:36]3[OH:37])[C@@H:38]([OH:39])[C@H:40]2[OH:41])[CH:42]=[CH:43][CH2:44]1.[O:45]=[CH:46][CH2:47][c:48]1[cH:49][nH:50][c:51]2[cH:52][cH:53][c:54]([OH:55])[cH:56][c:57]12>>[NH2:1][C:2](=[O:3])[c:4]1[cH:5][n+:6]([C@@H:7]2[O:8][C@H:9]([CH2:10][O:11][P:12](=[O:13])([OH:14])[O:15][P:16](=[O:17])([OH:18])[O:19][CH2:20][C@H:21]3[O:22][C@@H:23]([n:24]4[cH:25][n:26][c:27]5[c:28]([NH2:29])[n:30][cH:31][n:32][c:33]45)[C@H:34]([OH:35])[C@@H:36]3[OH:37])[C@@H:38]([OH:39])[C@H:40]2[OH:41])[cH:42][cH:43][cH:44]1.[OH:45][CH2:46][CH2:47][c:48]1[cH:49][nH:50][c:51]2[cH:52][cH:53][c:54]([OH:55])[cH:56][c:57]12'
     rxn_template = '[#6:1]1=[#6:2]-[#7:3]-[#6:4]=[#6:5]-[#6:6]-1.[#6:7]=[#8:8]>>[#6:7]-[#8:8].[#6:1]1:[#6:6]:[#6:5]:[#6:4]:[#7+:3]:[#6:2]:1'
     assert utils.does_template_fit(rxn_str, rxn_template) == True
 
-test_does_template_fit_01()
+def test_does_template_fit_03():
+    rxn_str = '[H+].[NH2:1][C:2](=[O:3])[C:4]1=[CH:5][N:6]([C@@H:7]2[O:8][C@H:9]([CH2:10][O:11][P:12](=[O:13])([OH:14])[O:15][P:16](=[O:17])([OH:18])[O:19][CH2:20][C@H:21]3[O:22][C@@H:23]([n:24]4[cH:25][n:26][c:27]5[c:28]([NH2:29])[n:30][cH:31][n:32][c:33]45)[C@H:34]([OH:35])[C@@H:36]3[OH:37])[C@@H:38]([OH:39])[C@H:40]2[OH:41])[CH:42]=[CH:43][CH2:44]1.[O:45]=[CH:46][C@H:47]([OH:48])[c:49]1[cH:50][cH:51][c:52]([OH:53])[c:54]([OH:55])[cH:56]1>>[NH2:1][C:2](=[O:3])[c:4]1[cH:5][n+:6]([C@@H:7]2[O:8][C@H:9]([CH2:10][O:11][P:12](=[O:13])([OH:14])[O:15][P:16](=[O:17])([OH:18])[O:19][CH2:20][C@H:21]3[O:22][C@@H:23]([n:24]4[cH:25][n:26][c:27]5[c:28]([NH2:29])[n:30][cH:31][n:32][c:33]45)[C@H:34]([OH:35])[C@@H:36]3[OH:37])[C@@H:38]([OH:39])[C@H:40]2[OH:41])[cH:42][cH:43][cH:44]1.[OH:45][CH2:46][C@H:47]([OH:48])[c:49]1[cH:50][cH:51][c:52]([OH:53])[c:54]([OH:55])[cH:56]1'
+    rxn_template = '[#6:1]1=[#6:2]-[#7:3]-[#6:4]=[#6:5]-[#6:6]-1.[#6:7]=[#8:8]>>[#6:7]-[#8:8].[#6:1]1:[#6:6]:[#6:5]:[#6:4]:[#7+:3]:[#6:2]:1'
+    assert utils.does_template_fit(rxn_str, rxn_template) == True
+
+def test_does_template_fit_04():
+    rxn_str = '[CH3:1][O:2][c:3]1[cH:4][c:5]([C@@H:6]([OH:7])[CH2:8][OH:9])[cH:10][cH:11][c:12]1[OH:13].[NH2:14][C:15](=[O:16])[c:17]1[cH:18][cH:19][cH:20][n+:21]([C@@H:22]2[O:23][C@H:24]([CH2:25][O:26][P:27](=[O:28])([OH:29])[O:30][P:31](=[O:32])([OH:33])[O:34][CH2:35][C@H:36]3[O:37][C@@H:38]([n:39]4[cH:40][n:41][c:42]5[c:43]([NH2:44])[n:45][cH:46][n:47][c:48]45)[C@H:49]([OH:50])[C@@H:51]3[OH:52])[C@@H:53]([OH:54])[C@H:55]2[OH:56])[cH:57]1>>[CH3:1][O:2][c:3]1[cH:4][c:5]([C@@H:6]([OH:7])[CH:8]=[O:9])[cH:10][cH:11][c:12]1[OH:13].[H+].[NH2:14][C:15](=[O:16])[C:17]1=[CH:57][N:21]([C@@H:22]2[O:23][C@H:24]([CH2:25][O:26][P:27](=[O:28])([OH:29])[O:30][P:31](=[O:32])([OH:33])[O:34][CH2:35][C@H:36]3[O:37][C@@H:38]([n:39]4[cH:40][n:41][c:42]5[c:43]([NH2:44])[n:45][cH:46][n:47][c:48]45)[C@H:49]([OH:50])[C@@H:51]3[OH:52])[C@@H:53]([OH:54])[C@H:55]2[OH:56])[CH:20]=[CH:19][CH2:18]1'
+    rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
+    assert utils.does_template_fit(rxn_str, rxn_template) == True
+
