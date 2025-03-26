@@ -689,4 +689,82 @@ def test_does_template_fit_04_using_mapped_rxn_str():
     rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
 
-#test_does_template_fit_01_using_unmapped_rxn_str_reverse_dir()
+def test_does_template_fit_05_using_unmapped_rxn_str():
+    """
+    Test if a given template assigned to the unmapped MetaCyc RXN-7693 (rxn idx 5751) fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = 'CC(C)CCO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>CC(C)CC=O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]'
+    rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_05_using_mapped_rxn_str():
+    """
+    Test if a given template assigned to the fully atom-mapped MetaCyc RXN-7693 (rxn idx 5751) fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = '[CH3:1][CH:2]([CH3:3])[CH2:4][CH2:5][OH:6].[NH2:7][C:8](=[O:9])[c:10]1[cH:11][cH:12][cH:13][n+:14]([C@@H:15]2[O:16][C@H:17]([CH2:18][O:19][P:20](=[O:21])([OH:22])[O:23][P:24](=[O:25])([OH:26])[O:27][CH2:28][C@H:29]3[O:30][C@@H:31]([n:32]4[cH:33][n:34][c:35]5[c:36]([NH2:37])[n:38][cH:39][n:40][c:41]45)[C@H:42]([OH:43])[C@@H:44]3[OH:45])[C@@H:46]([OH:47])[C@H:48]2[OH:49])[cH:50]1>>[CH3:1][CH:2]([CH3:3])[CH2:4][CH:5]=[O:6].[H+].[NH2:7][C:8](=[O:9])[C:10]1=[CH:50][N:14]([C@@H:15]2[O:16][C@H:17]([CH2:18][O:19][P:20](=[O:21])([OH:22])[O:23][P:24](=[O:25])([OH:26])[O:27][CH2:28][C@H:29]3[O:30][C@@H:31]([n:32]4[cH:33][n:34][c:35]5[c:36]([NH2:37])[n:38][cH:39][n:40][c:41]45)[C@H:42]([OH:43])[C@@H:44]3[OH:45])[C@@H:46]([OH:47])[C@H:48]2[OH:49])[CH:13]=[CH:12][CH2:11]1'
+    rxn_template = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_06_using_unmapped_rxn_str():
+    """
+    Test if a given template assigned to the unmapped MetaCyc RXN-18376 (rxn idx 4258) fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = 'C[N+](C)(C)CCO.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=O.[H+]>>C[NH+](C)C.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O.O=CCO'
+    rxn_template = '[#6:1]-[#7:2].[#6:3]1=[#6:4]-[#7:5]-[#6:6]=[#6:7]-[#6:8]-1.[#8:9]=[#8:10]>>[#6:3]1:[#6:8]:[#6:7]:[#6:6]:[#7+:5]:[#6:4]:1.[#6:1]=[#8:10].[#7:2].[#8:9]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_06_using_mapped_rxn_str():
+    """
+    Test if a given template assigned to the fully atom-mapped MetaCyc RXN-18376 (rxn idx 4258) fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = '[CH3:1][N+:2]([CH3:3])([CH3:4])[CH2:5][CH2:6][OH:7].[H+].[NH2:8][C:9](=[O:10])[C:11]1=[CH:12][N:13]([C@@H:14]2[O:15][C@H:16]([CH2:17][O:18][P:19](=[O:20])([OH:21])[O:22][P:23](=[O:24])([OH:25])[O:26][CH2:27][C@H:28]3[O:29][C@@H:30]([n:31]4[cH:32][n:33][c:34]5[c:35]([NH2:36])[n:37][cH:38][n:39][c:40]45)[C@H:41]([OH:42])[C@@H:43]3[OH:44])[C@@H:45]([OH:46])[C@H:47]2[OH:48])[CH:49]=[CH:50][CH2:51]1.[O:52]=[O:53]>>[CH3:1][NH+:2]([CH3:3])[CH3:4].[CH:5]([CH2:6][OH:7])=[O:53].[NH2:8][C:9](=[O:10])[c:11]1[cH:12][n+:13]([C@@H:14]2[O:15][C@H:16]([CH2:17][O:18][P:19](=[O:20])([OH:21])[O:22][P:23](=[O:24])([OH:25])[O:26][CH2:27][C@H:28]3[O:29][C@@H:30]([n:31]4[cH:32][n:33][c:34]5[c:35]([NH2:36])[n:37][cH:38][n:39][c:40]45)[C@H:41]([OH:42])[C@@H:43]3[OH:44])[C@@H:45]([OH:46])[C@H:47]2[OH:48])[cH:49][cH:50][cH:51]1.[OH2:52]'
+    rxn_template = '[#6:1]-[#7:2].[#6:3]1=[#6:4]-[#7:5]-[#6:6]=[#6:7]-[#6:8]-1.[#8:9]=[#8:10]>>[#6:3]1:[#6:8]:[#6:7]:[#6:6]:[#7+:5]:[#6:4]:1.[#6:1]=[#8:10].[#7:2].[#8:9]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_07_using_unmapped_rxn_str():
+    """
+    Test if a given template assigned to the unmapped MetaCyc rxn fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = 'CC1(C)C2CC[C@]3(C)C(CC=C4C5C[C@@](C)(CO)CC[C@]5(C)CC[C@]43C)[C@@]2(C)CC[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=O>>CC1(C)C2CC[C@]3(C)C([C@H](O)C=C4C5C[C@@](C)(CO)CC[C@]5(C)CC[C@]43C)[C@@]2(C)CC[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O'
+    rxn_template = '[#6:1].[#6:2]1=[#6:3]-[#7:4]-[#6:5]=[#6:6]-[#6:7]-1.[#8:8]=[#8:9]>>[#6:1]-[#8:8].[#6:2]1:[#6:7]:[#6:6]:[#6:5]:[#7+:4]:[#6:3]:1.[#8:9]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_08_using_unmapped_rxn_str():
+    """
+    Test if a given template assigned to the unmapped MetaCyc rxn fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = 'CC(C)O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=O>>CC(O)CO.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O'
+    rxn_template = '[#6:1].[#6:2]1=[#6:3]-[#7:4]-[#6:5]=[#6:6]-[#6:7]-1.[#8:8]=[#8:9]>>[#6:1]-[#8:8].[#6:2]1:[#6:7]:[#6:6]:[#6:5]:[#7+:4]:[#6:3]:1.[#8:9]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_09_using_unmapped_rxn_str():
+    """
+    Test if a given template assigned to the unmapped MetaCyc rxn fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = 'O=C1c2c(O)cc(O)cc2O[C@H](c2ccc(O)cc2)[C@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=O>>O=C1c2c(O)cc(O)cc2O[C@H](c2ccc(O)c(O)c2)[C@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O'
+    rxn_template = '[#6:1].[#6:2]1=[#6:3]-[#7:4]-[#6:5]=[#6:6]-[#6:7]-1.[#8:8]=[#8:9]>>[#6:1]-[#8:8].[#6:2]1:[#6:7]:[#6:6]:[#6:5]:[#7+:4]:[#6:3]:1.[#8:9]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_10_using_unmapped_rxn_str():
+    """
+    Test if a given template assigned to the unmapped MetaCyc rxn fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
+    rxn_str = 'C=C[C@]1(C)CC[C@@H]2C(=CC[C@H]3[C@@](C)(C=O)CCC[C@]23C)C1.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=O>>C=C[C@]1(C)CC[C@@H]2C(=CC[C@H]3[C@@](C)(C(=O)O)CCC[C@]23C)C1.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](OP(=O)(O)O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O'
+    rxn_template = '[#6:1].[#6:2]1=[#6:3]-[#7:4]-[#6:5]=[#6:6]-[#6:7]-1.[#8:8]=[#8:9]>>[#6:1]-[#8:8].[#6:2]1:[#6:7]:[#6:6]:[#6:5]:[#7+:4]:[#6:3]:1.[#8:9]'
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
