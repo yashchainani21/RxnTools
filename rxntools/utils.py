@@ -173,7 +173,7 @@ def are_rxn_descriptors_equal(rxn_descriptor_01: List[str],
     return sorted(rxn_descriptor_01) == sorted(rxn_descriptor_02)
 
 
-def neutralize_atoms(smiles):
+def neutralize_atoms(smiles: str) -> str:
     """
     http://www.rdkit.org/docs/Cookbook.html#neutralizing-charged-molecules
     """
@@ -252,6 +252,7 @@ def does_template_fit(rxn_str: str,
                 if are_isomorphic(mol1 = Chem.MolFromSmiles(product_smiles),
                                   mol2 = product_formed,
                                   consider_stereo = False):
+
                     num_product_template_matches += 1
 
         if num_product_template_matches == len(products_list):
