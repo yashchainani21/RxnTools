@@ -825,4 +825,6 @@ def test_does_template_fit_16_using_unmapped_rxn_str():
     Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
     On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
     """
+    rxn_str = "CC(=O)N[C@H]1[C@H](C)O[C@H](OP(=O)(O)OP(=O)(O)OC[C@H]2O[C@@H](n3ccc(=O)[nH]c3=O)[C@H](O)[C@@H]2O)[C@H](NC(C)=O)[C@H]1O.O>>CC(=O)N[C@H]1[C@H](C)O[C@H](O)[C@H](NC(C)=O)[C@H]1O.O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]2O)c(=O)[nH]1"
+    rxn_template = '[#6:1]-[#8:2].[#8:3]>>[#6:1]-[#8:3].[#8:2]'
     
