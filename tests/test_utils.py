@@ -819,4 +819,5 @@ def test_does_template_fit_15_using_unmapped_rxn_str():
     rxn_template = '[#6:1]-[#8:2].[#8:3]>>[#6:1]-[#8:3].[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
 
-def test_does_template_fit_15_using_unmapped_rxn_str():
+def test_does_template_fit_16_using_unmapped_rxn_str():
+    
