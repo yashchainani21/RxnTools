@@ -820,4 +820,9 @@ def test_does_template_fit_15_using_unmapped_rxn_str():
     assert utils.does_template_fit(rxn_str, rxn_template) is True
 
 def test_does_template_fit_16_using_unmapped_rxn_str():
+    """
+    Test if a given template assigned to the unmapped MetaCyc rxn fits.
+    Note that on the LHS of a reaction, the order in which reactants appear MUST MATCH that within the template.
+    On the RHS of a reaction, the order in which products appear does NOT need to match that within the template.
+    """
     
