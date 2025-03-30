@@ -827,4 +827,7 @@ def test_does_template_fit_16_using_unmapped_rxn_str():
     """
     rxn_str = "CC(=O)N[C@H]1[C@H](C)O[C@H](OP(=O)(O)OP(=O)(O)OC[C@H]2O[C@@H](n3ccc(=O)[nH]c3=O)[C@H](O)[C@@H]2O)[C@H](NC(C)=O)[C@H]1O.O>>CC(=O)N[C@H]1[C@H](C)O[C@H](O)[C@H](NC(C)=O)[C@H]1O.O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]2O)c(=O)[nH]1"
     rxn_template = '[#6:1]-[#8:2].[#8:3]>>[#6:1]-[#8:3].[#8:2]'
-    
+    assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_does_template_fit_17_using_unmapped_rxn_str():
+
