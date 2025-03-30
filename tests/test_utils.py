@@ -839,7 +839,7 @@ def test_does_template_fit_17_using_unmapped_rxn_str():
     rxn_template = '[#6:1]-[#8:2].[#8:3]>>[#6:1]-[#8:3].[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
 
-    def test_does_template_fit_18_using_unmapped_rxn_str():
+def test_does_template_fit_18_using_unmapped_rxn_str():
     rxn_str = "OC[C@H]1O[C@@H](Oc2cc3c(O)cc(O)cc3[o+]c2-c2ccc(O)cc2)[C@H](O)[C@@H](O)[C@@H]1O.O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]2O)c(=O)[nH]1>>O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O[C@H]3O[C@H](CO)[C@@H](O)[C@H](O)[C@H]3O)[C@@H](O)[C@H]2O)c(=O)[nH]1.Oc1ccc(-c2[o+]c3cc(O)cc(O)c3cc2O)cc1"
     rxn_template = '[#6:1]-[#8:2].[#8:3]>>[#6:1]-[#8:3].[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
