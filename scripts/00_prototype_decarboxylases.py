@@ -5,6 +5,24 @@ from rdkit import RDLogger
 lg = RDLogger.logger()
 lg.setLevel(RDLogger.CRITICAL)
 
+jn_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', sep='\t')
+
+all_rxn_signatures = []
+
+for i in range(0,jn_rules_df.shape[0]):
+    lhs_rxn_signature = jn_rules_df.iloc[i,:]['Reactants'].split(';')
+    rhs_rxn_signature = jn_rules_df.iloc[i,:]['Products'].split(';')
+    rxn_signature = (lhs_rxn_signature, rhs_rxn_signature)
+
+    if rxn_signature not in all_rxn_signatures:
+        all_rxn_signatures.append(rxn_signature)
+
+    else:
+        print(rxn_signature)
+
+print(len(all_rxn_signatures))
+exit()
+
 
 with open('../data/raw/all_cofactors.csv') as f:
     cofactors_df = pd.read_csv(f, sep=',')
