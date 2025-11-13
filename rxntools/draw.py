@@ -5,6 +5,62 @@ from IPython.display import display, SVG
 from typing import Tuple
 from copy import deepcopy
 
+def draw_molecule(
+    mol_string: str,
+    outfile: str | None = None,
+    width: int = 800,
+    height: int = 600,
+    line_width: float = 1.5,
+    kekulize: bool = True,
+    show_in_notebook: bool = True,
+):
+    """
+    Draws a molecule from a SMILES or SMARTS string (no stereochemistry labels).
+
+    Args:
+        mol_string (str): SMILES or SMARTS representation of the molecule.
+        outfile (str, optional): Path to save the SVG file (if desired).
+        width (int): Width of the rendered SVG.
+        height (int): Height of the rendered SVG.
+        line_width (float): Line thickness for bonds.
+        kekulize (bool): Whether to draw in Kekulé form.
+        show_in_notebook (bool): Whether to display automatically if running in a notebook.
+
+    Returns:
+        str: SVG string representation of the molecule.
+    """
+    # --- Parse molecule as SMILES or SMARTS ---
+    mol = Chem.MolFromSmiles(mol_string)
+    if mol is None:
+        mol = Chem.MolFromSmarts(mol_string)
+        if mol is None:
+            raise ValueError("❌ Invalid molecule string: not valid SMILES or SMARTS.")
+        mol.UpdatePropertyCache()
+        mol.GetRingInfo()
+
+    # --- Set up drawing ---
+    drawer = Draw.MolDraw2DSVG(width, height)
+    opts = drawer.drawOptions()
+    opts.bondLineWidth = line_width
+    opts.dotsPerAngstrom = 200
+    opts.addAtomIndices = False
+    opts.addStereoAnnotation = False   # 🚫 Disable E/Z and R/S labels
+
+    Draw.rdMolDraw2D.PrepareAndDrawMolecule(drawer, mol, kekulize=kekulize)
+    drawer.FinishDrawing()
+    svg = drawer.GetDrawingText()
+
+    # --- Save or show ---
+    if outfile:
+        with open(outfile, "w") as f:
+            f.write(svg)
+        print(f"✅ Saved molecule drawing to: {outfile}")
+    elif show_in_notebook:
+        display(SVG(svg))
+
+    return svg
+
+
 def highlight_substructures_in_notebook(substrate_smarts: str,
                                         substructure_smarts: str,
                                         size: Tuple[int, int] = (400, 200),
