@@ -421,24 +421,32 @@ class unmapped_reaction:
 
         return LHS_descriptor, RHS_descriptor
 
-    # def map_rxn_to_rule(self,
-    #                     cofactors_df: pd.DataFrame,
-    #                     rule_type: str):
-    #
-    #     if rule_type == "generalized":
-    #         LHS_descriptor, RHS_descriptor = self.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
-    #                                                                     consider_stereo = False)
-    #
-    #         query_signature = (LHS_descriptor, RHS_descriptor)
-    #
-    #         possible_rxn_templates = []
-    #
-    #         for i in range(0, cofactors_df.shape[0]):
-    #             lhs_rxn_signature = cofactors_df.iloc[i, :]['Reactants']
-    #             rhs_rxn_signature = cofactors_df.iloc[i, :]['Products']
-    #             rxn_signature_rule_i = (lhs_rxn_signature, rhs_rxn_signature)
-    #
-    #             if
+    def map_rxn_to_rule(self,
+                        cofactors_df: pd.DataFrame,
+                        rule_type: str):
+        """
+        Placeholder for mapping an unmapped reaction to a predefined reaction rule.
+        """
+        pass
+
+        # def map_rxn_to_rule(self,
+        #                     cofactors_df: pd.DataFrame,
+        #                     rule_type: str):
+        #
+        #     if rule_type == "generalized":
+        #         LHS_descriptor, RHS_descriptor = self.get_JN_rxn_descriptor(cofactors_df = cofactors_df,
+        #                                                                     consider_stereo = False)
+        #
+        #         query_signature = (LHS_descriptor, RHS_descriptor)
+        #
+        #         possible_rxn_templates = []
+        #
+        #         for i in range(0, cofactors_df.shape[0]):
+        #             lhs_rxn_signature = cofactors_df.iloc[i, :]['Reactants']
+        #             rhs_rxn_signature = cofactors_df.iloc[i, :]['Products']
+        #             rxn_signature_rule_i = (lhs_rxn_signature, rhs_rxn_signature)
+        #
+        #             if
 
 
 class mapped_reaction:
@@ -714,4 +722,3 @@ class mapped_reaction:
         # with the final combined environment, extract a submolecule
         combined_submol = Chem.PathToSubmol(substrate_mol, list(combined_env))
         return Chem.MolToSmarts(combined_submol)
-
