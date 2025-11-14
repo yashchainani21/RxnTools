@@ -13,7 +13,7 @@ Whether you are curating reaction datasets, prototyping retrosynthesis heuristic
 
 ### From PyPI (recommended)
 ```bash
-pip install rxntools
+pip install rxntools-kit
 ```
 
 > **Note:** RxnTools targets Python 3.10. You must install an RDKit build that matches your platform; conda-forge is the most reliable source (`conda install -c conda-forge rdkit`).
