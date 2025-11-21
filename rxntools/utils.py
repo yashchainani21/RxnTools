@@ -172,7 +172,6 @@ def are_rxn_descriptors_equal(rxn_descriptor_01: List[str],
 
     return sorted(rxn_descriptor_01) == sorted(rxn_descriptor_02)
 
-
 def neutralize_atoms(smiles: str) -> str:
     """
     http://www.rdkit.org/docs/Cookbook.html#neutralizing-charged-molecules
