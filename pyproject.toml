@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rxntools-kit"
-version = "0.1.0"
+version = "0.2.0"
 description = "A package of custom rdkit-based operations for reaction cheminformatics"
 authors = ["yashchainani21 <yashchainani2026@u.northwestern.edu>"]
 readme = "README.md"
