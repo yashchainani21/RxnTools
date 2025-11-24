@@ -6,8 +6,8 @@ import multiprocessing
 import os
 multiprocessing.set_start_method("fork", force=True)
 
-rxns_df_input_filepath = "../data/raw/enzymemap_MetaCyc_processed.csv"
-rxns_df_output_filepath = "../data/interim/enzymemap_MetaCyc_JN_mapped.parquet"
+rxns_df_input_filepath = "../data/raw/enzymemap_v2_brenda2023.csv"
+rxns_df_output_filepath = "../data/interim/enzymemap_v2_brenda2023_JN_mapped.parquet"
 
 def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
     """
@@ -30,7 +30,7 @@ gen_rxn_operators_df = pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter=
 gen_rxn_operators_list: List[str] = gen_rxn_operators_df["SMARTS"].to_list()
 
 # extract and create a list of all unmapped reactions
-enzymatic_rxns_df = pd.read_csv(rxns_df_input_filepath).iloc[0:10,:]
+enzymatic_rxns_df = pd.read_csv(rxns_df_input_filepath)
 unmapped_rxns_list: List[str] = enzymatic_rxns_df["unmapped"].to_list()
 
 # remove all hydrogen ions from rxn strings so that they can be mapped by Stefan's ergochemics
