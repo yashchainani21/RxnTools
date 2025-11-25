@@ -6,22 +6,16 @@ from typing import List, Tuple, Any
 import numpy as np
 import os
 
+
 # ------------------ Helper functions ------------------ #
 
 def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
-    """
-    Convert an integer into a zero-padded rule ID of the form 'rule0001'.
-    """
     if n < 1:
         raise ValueError("Input must be >= 1.")
     return f"{prefix}{n:0{width}d}"
 
 
 def map_single_reaction(idx: int, rxn: str, gen_rxn_operators_list: List[str]) -> Tuple[int, Any]:
-    """
-    Map a single reaction against all operators.
-    Returns (index, list_of_rule_ids) or (index, '__WORKER_FAILED__...').
-    """
     mapped_ops = []
     try:
         for i, operator in enumerate(gen_rxn_operators_list):
@@ -30,31 +24,20 @@ def map_single_reaction(idx: int, rxn: str, gen_rxn_operators_list: List[str]) -
                 if mapped_rxn.did_map:
                     mapped_ops.append(make_rule_id(i + 1))
             except Exception:
-                # ignore per-operator failures
                 pass
     except Exception as e:
         return idx, f"__WORKER_FAILED__: {repr(e)}"
-
     return idx, mapped_ops
 
 
 def get_top_operator(op_list):
-    """
-    Given a list like ['rule0002', 'rule0754'], return the one with
-    the smallest integer value (e.g. 'rule0002').
-
-    Handles None, empty lists, or failure strings by returning None.
-    """
     if not isinstance(op_list, list) or not op_list:
         return None
-
     nums = [int(op.replace("rule", "")) for op in op_list]
-    min_num = min(nums)
-    return f"rule{min_num:04d}"
+    return f"rule{min(nums):04d}"
 
 
 def chunk_list(lst, n):
-    """Split a list into n (almost) equal-sized chunks."""
     k, m = divmod(len(lst), n)
     chunks = []
     start = 0
@@ -65,90 +48,111 @@ def chunk_list(lst, n):
     return chunks
 
 
-# ------------------ MPI setup ------------------ #
+# ------------------ MPI Setup ------------------ #
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
 
-# ------------------ File paths ------------------ #
+
+# ------------------ File Paths ------------------ #
 
 rxns_df_input_filepath = "../data/raw/enzymemap_v2_brenda2023.csv"
 rxns_df_output_filepath = "../data/interim/enzymemap_v2_brenda2023_JN_mapped.parquet"
 rules_filepath = "../data/raw/JN1224MIN_rules.tsv"
 
-# ------------------ Rank 0: load data & prepare tasks ------------------ #
+
+# ------------------ Rank 0: Load and Deduplicate Reactions ------------------ #
 
 if rank == 0:
-    print(f"[rank 0] Reading operators from: {rules_filepath}")
+    print(f"[rank 0] Reading operator rules...")
     gen_rxn_operators_df = pd.read_csv(rules_filepath, delimiter="\t")
-    gen_rxn_operators_list: List[str] = gen_rxn_operators_df["SMARTS"].to_list()
+    gen_rxn_operators_list = gen_rxn_operators_df["SMARTS"].to_list()
 
-    print(f"[rank 0] Reading reactions from: {rxns_df_input_filepath}")
-    enzymatic_rxns_df = pd.read_csv(rxns_df_input_filepath)
+    print(f"[rank 0] Reading reactions...")
+    df = pd.read_csv(rxns_df_input_filepath)
 
-    unmapped_rxns_list: List[str] = enzymatic_rxns_df["unmapped"].astype(str).to_list()
+    raw_rxns = df["unmapped"].astype(str).tolist()
 
     # Clean hydrogens
-    cleaned_rxns_list: List[str] = []
-    for rxn in unmapped_rxns_list:
-        rxn = rxn.replace(".[H+]", "").replace("[H+].", "")
-        cleaned_rxns_list.append(rxn)
+    cleaned_rxns = [
+        r.replace(".[H+]", "").replace("[H+].", "") for r in raw_rxns
+    ]
 
-    # Build tasks: (index, rxn)
-    tasks = [(i, rxn) for i, rxn in enumerate(cleaned_rxns_list)]
-    n_tasks = len(tasks)
-    print(f"[rank 0] Total reactions to map: {n_tasks}")
+    df["cleaned_unmapped"] = cleaned_rxns
 
-    # Split tasks into chunks for each rank
-    task_chunks = chunk_list(tasks, size)
+    # Create list of unique reactions
+    print(f"[rank 0] Finding unique reaction strings...")
+    unique_rxns = sorted(list(set(cleaned_rxns)))
+    print(f"[rank 0] Unique reactions: {len(unique_rxns)} (from {len(cleaned_rxns)})")
+
+    # Build mapping cleaned_rxn → unique_index
+    rxn_to_uid = {rxn: i for i, rxn in enumerate(unique_rxns)}
+
+    # Build tasks: (unique_index, unique_rxn)
+    unique_tasks = [(i, rxn) for i, rxn in enumerate(unique_rxns)]
+    n_unique_tasks = len(unique_tasks)
+
+    print(f"[rank 0] MPI will map {n_unique_tasks} unique reactions.")
+
+    task_chunks = chunk_list(unique_tasks, size)
 
 else:
     gen_rxn_operators_list = None
-    enzymatic_rxns_df = None
-    tasks = None
-    n_tasks = None
+    df = None
+    unique_rxns = None
+    rxn_to_uid = None
+    unique_tasks = None
+    n_unique_tasks = None
     task_chunks = None
 
-# ------------------ Broadcast operators and total task count ------------------ #
 
-# Broadcast the operator list and the total number of tasks to all ranks
-gen_rxn_operators_list = comm.bcast(gen_rxn_operators_list if rank == 0 else None, root=0)
-n_tasks = comm.bcast(n_tasks if rank == 0 else None, root=0)
+# ------------------ Broadcast Shared Data ------------------ #
 
-# Scatter the chunks of tasks
-local_tasks = comm.scatter(task_chunks if rank == 0 else None, root=0)
+gen_rxn_operators_list = comm.bcast(gen_rxn_operators_list, root=0)
+unique_rxns = comm.bcast(unique_rxns, root=0)
+rxn_to_uid = comm.bcast(rxn_to_uid, root=0)
+n_unique_tasks = comm.bcast(n_unique_tasks, root=0)
 
-# ------------------ Each rank: process its local tasks ------------------ #
+# Each rank receives its own list of unique tasks
+local_tasks = comm.scatter(task_chunks, root=0)
 
-local_results: List[Tuple[int, Any]] = []
 
-# tqdm per rank; you could disable for rank>0 if you want less noise
-for idx, rxn in tqdm(local_tasks, desc=f"Rank {rank} mapping", disable=False):
-    local_results.append(map_single_reaction(idx, rxn, gen_rxn_operators_list))
+# ------------------ Parallel Mapping on Each Rank ------------------ #
 
-# ------------------ Gather all results on rank 0 ------------------ #
+local_results = []
+
+for uid, rxn in tqdm(local_tasks, desc=f"[Rank {rank}]", disable=False):
+    local_results.append(map_single_reaction(uid, rxn, gen_rxn_operators_list))
+
+
+# ------------------ Gather Unique Reaction Results ------------------ #
 
 all_results = comm.gather(local_results, root=0)
 
-# ------------------ Rank 0: assemble results, compute top operator, save ------------------ #
+
+# ------------------ Rank 0: Expand Back to Full DataFrame ------------------ #
 
 if rank == 0:
-    # Flatten and put back in original order
-    results_flat: List[Any] = [None] * n_tasks
+    print("[rank 0] Assembling unique mapping results...")
+
+    # Flatten
+    unique_results = [None] * n_unique_tasks
     for rank_results in all_results:
-        for idx, mapped_ops in rank_results:
-            results_flat[idx] = mapped_ops
+        for uid, mapped_ops in rank_results:
+            unique_results[uid] = mapped_ops
 
-    # Attach column with full list of mapped operators
-    enzymatic_rxns_df["all_mapped_operators"] = results_flat
+    # Expand back to original rows
+    print("[rank 0] Expanding unique results to full dataframe...")
+    all_mapped = []
+    for cleaned in df["cleaned_unmapped"]:
+        uid = rxn_to_uid[cleaned]
+        all_mapped.append(unique_results[uid])
 
-    # Compute top operator column
-    enzymatic_rxns_df["top_mapped_operator"] = enzymatic_rxns_df["all_mapped_operators"].apply(
-        get_top_operator
-    )
+    df["all_mapped_operators"] = all_mapped
+    df["top_mapped_operator"] = df["all_mapped_operators"].apply(get_top_operator)
 
-    # Save to parquet
-    print(f"[rank 0] Writing results to: {rxns_df_output_filepath}")
-    enzymatic_rxns_df.to_parquet(rxns_df_output_filepath, index=False)
+    print(f"[rank 0] Saving to {rxns_df_output_filepath}")
+    df.to_parquet(rxns_df_output_filepath, index=False)
+
     print("[rank 0] Done.")
