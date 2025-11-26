@@ -483,6 +483,117 @@ class mapped_reaction:
                  include_stereo: bool = True):
         self.rxn_smarts = rxn_smarts
 
+    def _rxn_2_cpds(self) -> Tuple[str, str]:
+        """
+        Parse a reaction string to return two lists: a reactants list and a products list.
+
+        Parameters
+        ----------
+        self
+
+        Returns
+        -------
+        reactants_str : str
+            A string representation of all reactants involved in the reaction, e.g. "A + B" or "A.B"
+
+        products_str : str
+            A string representation of all products involved in the reaction ,e.g. "C + D" or "C.D"
+        """
+        rxn_smarts = self.rxn_smarts
+
+        if " = " in rxn_smarts:
+            reactants_str = rxn_smarts.split(" = ")[0]
+            products_str = rxn_smarts.split(" = ")[1]
+            return reactants_str, products_str
+
+        if ">>" in rxn_smarts:
+            reactants_str = rxn_smarts.split(">>")[0]
+            products_str = rxn_smarts.split(">>")[1]
+            return reactants_str, products_str
+    
+    def get_substrates(self,
+                       cofactors_list: List[str],
+                       consider_stereo: bool) -> List[str]:
+        """
+        For an input unmapped reaction string, identify the reactants and ignore cofactors.
+
+        Parameters
+        ----------
+        self
+
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
+
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
+
+        Returns
+        -------
+        reactants_list: List[str]
+            List of reactants smiles strings
+        """
+
+        reactants_str, _ = self._rxn_2_cpds()
+        reactants_list = []
+
+        if " + " in reactants_str:
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split(" + "):
+
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    reactants_list.append(reactant_smiles)
+
+        if "." in reactants_str:
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split("."):
+
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, do not store
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+                    pass
+
+                # if this reactant is not a cofactor, however, store and return its SMILES
+                else:
+                    reactants_list.append(reactant_smiles)
+
+        else:
+
+            # if neither " + " nor "." has been used, then only one reactant is present on the LHS
+            reactant_smiles = reactants_str
+            reactant_smiles = canonicalize_smiles(reactant_smiles)
+            reactant_smiles = neutralize_atoms(reactant_smiles)
+            reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+            # if this reactant is a cofactor, do not store
+            if is_cofactor(mol=reactant_mol,
+                           cofactors_list=cofactors_list,
+                           consider_stereo=consider_stereo):
+                pass
+
+            # if this reactant is not a cofactor, however, store and return its SMILES
+            else:
+                reactants_list.append(reactant_smiles)
+
+        return reactants_list
+
     @staticmethod
     def _get_mapped_bonds(mol: Chem.rdchem.Mol) -> Set[Tuple[int, int, Chem.rdchem.BondType]]:
         """
