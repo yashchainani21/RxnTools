@@ -736,7 +736,7 @@ class mapped_reaction:
         if "." in reactants_str:
 
             # for each reactant's SMARTS string (SMARTS because this is an atom-mapped reaction)
-            for reactant_smarts in reactants_str.split(" + "):
+            for reactant_smarts in reactants_str.split("."):
                 
                 # we first convert the SMARTS string to a SMILES string via a mol object
                 reactant_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(reactant_smarts))
