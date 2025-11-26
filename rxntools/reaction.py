@@ -64,7 +64,7 @@ class unmapped_reaction:
             List of reactants smiles strings
         """
 
-        reactants_str, products_str = self._rxn_2_cpds()
+        reactants_str, _ = self._rxn_2_cpds()
         reactants_list = []
 
         if " + " in reactants_str:
@@ -147,7 +147,7 @@ class unmapped_reaction:
             List of product smiles strings
         """
 
-        reactants_str, products_str = self._rxn_2_cpds()
+        _, products_str = self._rxn_2_cpds()
         products_list = []
 
         if " + " in products_str:
