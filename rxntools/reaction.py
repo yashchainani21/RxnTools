@@ -530,7 +530,7 @@ class mapped_reaction:
         Returns
         -------
         reactants_list: List[str]
-            List of reactants smiles strings
+            List of reactants' SMARTS strings
         """
 
         reactants_str, _ = self._rxn_2_cpds()
@@ -538,9 +538,11 @@ class mapped_reaction:
 
         if " + " in reactants_str:
 
-            # for each reactant's SMILES string
-            for reactant_smiles in reactants_str.split(" + "):
-
+            # for each reactant's SMARTS string (SMARTS because this is an atom-mapped reaction)
+            for reactant_smarts in reactants_str.split(" + "):
+                
+                # we first convert the SMARTS string to a SMILES string via a mol object
+                reactant_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(reactant_smarts))
                 reactant_smiles = canonicalize_smiles(reactant_smiles)
                 reactant_smiles = neutralize_atoms(reactant_smiles)
                 reactant_mol = Chem.MolFromSmiles(reactant_smiles)
@@ -551,9 +553,9 @@ class mapped_reaction:
                                consider_stereo = consider_stereo):
                     pass
 
-                # if this reactant is not a cofactor, however, store and return its SMILES
+                # if this reactant is not a cofactor, however, store and return its SMARTS string
                 else:
-                    reactants_list.append(reactant_smiles)
+                    reactants_list.append(reactant_smarts)
 
         if "." in reactants_str:
 
