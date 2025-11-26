@@ -534,7 +534,7 @@ class mapped_reaction:
         """
 
         reactants_str, _ = self._rxn_2_cpds()
-        reactants_list = []
+        reactants_list: List[str] = []
 
         if " + " in reactants_str:
 
