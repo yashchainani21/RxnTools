@@ -598,6 +598,95 @@ class mapped_reaction:
                 reactants_list.append(reactant_smarts)
 
         return reactants_list
+    
+
+    def get_products(self,
+                    cofactors_list: List[str],
+                    consider_stereo: bool) -> List[str]:
+        """
+        For an input unmapped reaction string, identify the products and ignore cofactors.
+
+        Parameters
+        ----------
+        self
+
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
+
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
+
+        Returns
+        -------
+        products_list: List[str]
+            List of product smiles strings
+        """
+
+        _, products_str = self._rxn_2_cpds()
+        products_list: List[str] = []
+
+        if " + " in products_str:
+
+            # for each product's SMARTS string (SMARTS because this is an atom-mapped reaction)
+            for product_smarts in products_str.split(" + "):
+
+                # we first convert the SMARTS string to a SMILES string via a mol object
+                product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this product is a cofactor, do not store
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+                    pass
+
+                # if this product is not a cofactor, however, store and return its SMARTS string
+                else:
+                    products_list.append(product_smarts)
+
+        if "." in products_str:
+
+            # for each product's SMARTS string (SMARTS because this is an atom-mapped reaction)
+            for product_smarts in products_str.split("."):
+
+                # we first convert the SMARTS string to a SMILES string via a mol object
+                product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this product is a cofactor, do not store
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+                    pass
+
+                # if this product is not a cofactor, however, store and return its SMARTS string
+                else:
+                    products_list.append(product_smarts)
+
+        else:
+
+            # if neither " + " nor "." has been used, then only one product is present on the LHS
+            # again, we convert the SMARTS string to a SMILES string first via a mol object
+            product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
+            product_smiles = canonicalize_smiles(product_smiles)
+            product_smiles = neutralize_atoms(product_smiles)
+            product_mol = Chem.MolFromSmiles(product_smiles)
+
+            # if this product is a cofactor, do not store
+            if is_cofactor(mol = product_mol,
+                           cofactors_list = cofactors_list,
+                           consider_stereo = consider_stereo):
+                pass
+
+            # if this reactant is not a cofactor, however, store and return its SMARTS string
+            else:
+                products_list.append(product_smarts)
+
+        return products_list
 
     @staticmethod
     def _get_mapped_bonds(mol: Chem.rdchem.Mol) -> Set[Tuple[int, int, Chem.rdchem.BondType]]:
