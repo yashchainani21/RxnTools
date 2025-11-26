@@ -425,6 +425,11 @@ def test_extracting_substrates_from_mapped_rxn_str_01(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str_mapped)
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[CH3:1][CH2:2][OH:3]"]
+    
+def test_extracting_products_from_mapped_rxn_str_01(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str_mapped)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["[CH3:1][CH:2]=[O:3]"]
 
 hydroxyproline_AdH_rxn_str_mapped = "[NH2:1][C:2](=[O:3])[c:4]1[cH:5][cH:6][cH:7][n+:8]([C@@H:9]2[O:10][C@H:11]([CH2:12][O:13][P:14](=[O:15])([OH:16])[O:17][P:18](=[O:19])([OH:20])[O:21][CH2:22][C@H:23]3[O:24][C@@H:25]([n:26]4[cH:27][n:28][c:29]5[c:30]([NH2:31])[n:32][cH:33][n:34][c:35]45)[C@H:36]([OH:37])[C@@H:38]3[OH:39])[C@@H:40]([OH:41])[C@H:42]2[OH:43])[cH:44]1.[O:45]=[C:46]([O-:47])[C@@H:48]1[CH2:49][C@H:50]([OH:51])[CH2:52][NH2+:53]1>>[H+].[NH2:1][C:2](=[O:3])[C:4]1=[CH:44][N:8]([C@@H:9]2[O:10][C@H:11]([CH2:12][O:13][P:14](=[O:15])([OH:16])[O:17][P:18](=[O:19])([OH:20])[O:21][CH2:22][C@H:23]3[O:24][C@@H:25]([n:26]4[cH:27][n:28][c:29]5[c:30]([NH2:31])[n:32][cH:33][n:34][c:35]45)[C@H:36]([OH:37])[C@@H:38]3[OH:39])[C@@H:40]([OH:41])[C@H:42]2[OH:43])[CH:7]=[CH:6][CH2:5]1.[O:45]=[C:46]([O-:47])[C@@H:48]1[CH2:49][C:50](=[O:51])[CH2:52][NH2+:53]1"
 
@@ -439,6 +444,10 @@ def test_extracting_substrates_from_mapped_rxn_str_02(cofactors_list):
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[O:45]=[C:46]([OH:47])[C@@H:48]1[CH2:49][C@H:50]([OH:51])[CH2:52][NH:53]1"]
 
+def test_extracting_products_mapped_rxn_str_02(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str_mapped)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo = False) == ["[O:45]=[C:46]([OH:47])[C@@H:48]1[CH2:49][C:50](=[O:51])[CH2:52][NH:53]1"]
 
 def test_get_mapped_bonds_data_type():
     """
