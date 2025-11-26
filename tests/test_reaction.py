@@ -411,6 +411,8 @@ def test_get_JN_rxn_descriptor_10(cofactors_df):
 
 #### ----------------------- Tests for the mapped reaction class -----------------------
 
+# tests involving an alcohol dehydrogenase that oxidizes ethanol to ethanal
+# EC 1.1.1.1, MetaCyc rxn idx 903 (ALCOHOL-DEHYDROG-RXN)
 ethanol_AdH_rxn_str_mapped = "[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1>>[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1"
 
 def test_separating_mapped_rxn_str_into_reactant_and_product_strs_01():
@@ -423,6 +425,20 @@ def test_extracting_substrates_from_mapped_rxn_str_01(cofactors_list):
     rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str_mapped)
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[CH3:1][CH2:2][OH:3]"]
+
+hydroxyproline_AdH_rxn_str_mapped = "[NH2:1][C:2](=[O:3])[c:4]1[cH:5][cH:6][cH:7][n+:8]([C@@H:9]2[O:10][C@H:11]([CH2:12][O:13][P:14](=[O:15])([OH:16])[O:17][P:18](=[O:19])([OH:20])[O:21][CH2:22][C@H:23]3[O:24][C@@H:25]([n:26]4[cH:27][n:28][c:29]5[c:30]([NH2:31])[n:32][cH:33][n:34][c:35]45)[C@H:36]([OH:37])[C@@H:38]3[OH:39])[C@@H:40]([OH:41])[C@H:42]2[OH:43])[cH:44]1.[O:45]=[C:46]([O-:47])[C@@H:48]1[CH2:49][C@H:50]([OH:51])[CH2:52][NH2+:53]1>>[H+].[NH2:1][C:2](=[O:3])[C:4]1=[CH:44][N:8]([C@@H:9]2[O:10][C@H:11]([CH2:12][O:13][P:14](=[O:15])([OH:16])[O:17][P:18](=[O:19])([OH:20])[O:21][CH2:22][C@H:23]3[O:24][C@@H:25]([n:26]4[cH:27][n:28][c:29]5[c:30]([NH2:31])[n:32][cH:33][n:34][c:35]45)[C@H:36]([OH:37])[C@@H:38]3[OH:39])[C@@H:40]([OH:41])[C@H:42]2[OH:43])[CH:7]=[CH:6][CH2:5]1.[O:45]=[C:46]([O-:47])[C@@H:48]1[CH2:49][C:50](=[O:51])[CH2:52][NH2+:53]1"
+
+def test_separating_mapped_rxn_str_into_reactant_and_product_strs_02():
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str_mapped)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "[NH2:1][C:2](=[O:3])[c:4]1[cH:5][cH:6][cH:7][n+:8]([C@@H:9]2[O:10][C@H:11]([CH2:12][O:13][P:14](=[O:15])([OH:16])[O:17][P:18](=[O:19])([OH:20])[O:21][CH2:22][C@H:23]3[O:24][C@@H:25]([n:26]4[cH:27][n:28][c:29]5[c:30]([NH2:31])[n:32][cH:33][n:34][c:35]45)[C@H:36]([OH:37])[C@@H:38]3[OH:39])[C@@H:40]([OH:41])[C@H:42]2[OH:43])[cH:44]1.[O:45]=[C:46]([O-:47])[C@@H:48]1[CH2:49][C@H:50]([OH:51])[CH2:52][NH2+:53]1"
+    assert products_str == "[H+].[NH2:1][C:2](=[O:3])[C:4]1=[CH:44][N:8]([C@@H:9]2[O:10][C@H:11]([CH2:12][O:13][P:14](=[O:15])([OH:16])[O:17][P:18](=[O:19])([OH:20])[O:21][CH2:22][C@H:23]3[O:24][C@@H:25]([n:26]4[cH:27][n:28][c:29]5[c:30]([NH2:31])[n:32][cH:33][n:34][c:35]45)[C@H:36]([OH:37])[C@@H:38]3[OH:39])[C@@H:40]([OH:41])[C@H:42]2[OH:43])[CH:7]=[CH:6][CH2:5]1.[O:45]=[C:46]([O-:47])[C@@H:48]1[CH2:49][C:50](=[O:51])[CH2:52][NH2+:53]1"
+
+def test_extracting_substrates_from_mapped_rxn_str_02(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str_mapped)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["[O:45]=[C:46]([OH:47])[C@@H:48]1[CH2:49][C@H:50]([OH:51])[CH2:52][NH:53]1"]
+
 
 def test_get_mapped_bonds_data_type():
     """
