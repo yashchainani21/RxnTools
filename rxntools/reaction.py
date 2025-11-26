@@ -230,7 +230,7 @@ class unmapped_reaction:
             List of cofactors smiles strings for cofactors involved on the LHS of a reaction
         """
 
-        reactants_str, products_str = self._rxn_2_cpds()
+        reactants_str, _ = self._rxn_2_cpds()
         LHS_cofactors_list = []
 
         if " + " in reactants_str:
@@ -312,7 +312,7 @@ class unmapped_reaction:
         reactants_list: List[str]
             List of reactants smiles strings
         """
-        reactants_str, products_str = self._rxn_2_cpds()
+        _, products_str = self._rxn_2_cpds()
         RHS_cofactors_list = []
 
         if " + " in products_str:
@@ -685,6 +685,172 @@ class mapped_reaction:
                 products_list.append(product_smarts)
 
         return products_list
+
+    def get_lhs_cofactors(self,
+                          cofactors_list: List[str],
+                          consider_stereo: bool) -> List[str]:
+        """
+        For an input unmapped reaction string, identify the cofactors on the LHS of a reaction.
+
+        Parameters
+        ----------
+        self
+
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
+
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
+
+        Returns
+        -------
+        LHS_cofactors_list: List[str]
+            List of cofactors smiles strings for cofactors involved on the LHS of a reaction
+        """
+
+        reactants_str, _ = self._rxn_2_cpds()
+        LHS_cofactors_list = []
+
+        if " + " in reactants_str:
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split(" + "):
+
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, store its SMILES
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+
+                    LHS_cofactors_list.append(reactant_smiles)
+
+                # if this reactant is not a cofactor, however, then do nothing
+                else:
+                    pass
+
+        if "." in reactants_str:
+
+            # for each reactant's SMILES string
+            for reactant_smiles in reactants_str.split("."):
+
+                reactant_smiles = canonicalize_smiles(reactant_smiles)
+                reactant_smiles = neutralize_atoms(reactant_smiles)
+                reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+                # if this reactant is a cofactor, store its SMILES
+                if is_cofactor(mol = reactant_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+
+                    LHS_cofactors_list.append(reactant_smiles)
+
+                # if this reactant is not a cofactor, however, then do nothing
+                else:
+                    pass
+
+        else:
+
+            # if neither " + " nor "." has been used, then only one reactant is present on the LHS
+            reactant_smiles = reactants_str
+            reactant_smiles = canonicalize_smiles(reactant_smiles)
+            reactant_smiles = neutralize_atoms(reactant_smiles)
+            reactant_mol = Chem.MolFromSmiles(reactant_smiles)
+
+            if is_cofactor(mol = reactant_mol,
+                           cofactors_list = cofactors_list,
+                           consider_stereo = consider_stereo):
+                LHS_cofactors_list.append(reactant_smiles)
+
+            else:
+                pass
+
+        return LHS_cofactors_list
+
+    def get_rhs_cofactors(self,
+                          cofactors_list: List[str],
+                          consider_stereo: bool) -> List[str]:
+        """
+        For an input unmapped reaction string, identify the cofactors on the RHS of a reaction.
+
+        Parameters
+        ----------
+        self
+
+        cofactors_list: List[str]
+            List of cofactor SMILES strings
+
+        consider_stereo: bool
+            Whether to consider stereochemistry of cofactors specifically
+
+        Returns
+        -------
+        reactants_list: List[str]
+            List of reactants smiles strings
+        """
+        reactants_str, products_str = self._rxn_2_cpds()
+        RHS_cofactors_list = []
+
+        if " + " in products_str:
+
+            # for each product's SMILES string
+            for product_smiles in products_str.split(" + "):
+
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this product is a cofactor, store its SMILES
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+
+                    RHS_cofactors_list.append(product_smiles)
+
+                # if this product is not a cofactor, however, then do nothing
+                else:
+                    pass
+
+        if "." in products_str:
+
+            # for each product's SMILES string
+            for product_smiles in products_str.split("."):
+
+                product_smiles = canonicalize_smiles(product_smiles)
+                product_smiles = neutralize_atoms(product_smiles)
+                product_mol = Chem.MolFromSmiles(product_smiles)
+
+                # if this reactant is a cofactor, store its SMILES
+                if is_cofactor(mol = product_mol,
+                               cofactors_list = cofactors_list,
+                               consider_stereo = consider_stereo):
+
+                    RHS_cofactors_list.append(product_smiles)
+
+                # if this product is not a cofactor, however, then do nothing
+                else:
+                    pass
+
+        # if neither " + " nor "." has been used, then only one product is present on the RHS
+        product_smiles = products_str
+        product_smiles = canonicalize_smiles(product_smiles)
+        product_smiles = neutralize_atoms(product_smiles)
+        product_mol = Chem.MolFromSmiles(product_smiles)
+
+        if is_cofactor(mol = product_mol,
+                       cofactors_list = cofactors_list,
+                       consider_stereo = consider_stereo):
+
+            RHS_cofactors_list.append(product_mol)
+
+        else:
+            pass
+
+
+
+        return RHS_cofactors_list
 
     @staticmethod
     def _get_mapped_bonds(mol: Chem.rdchem.Mol) -> Set[Tuple[int, int, Chem.rdchem.BondType]]:
