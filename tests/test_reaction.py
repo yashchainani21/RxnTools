@@ -65,6 +65,7 @@ def test_get_JN_rxn_descriptor_01(cofactors_df):
 # tests involving an alcohol dehydrogenase that oxidizes cis-4-hydroxyproline to the corresponding aldehyde
 # EC 1.1.1.104, MetaCyc rxn idx 693 (4-OXOPROLINE-REDUCTASE-RXN)
 hydroxyproline_AdH_rxn_str = "NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1.O=C([O-])[C@@H]1C[C@H](O)C[NH2+]1>>NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.O=C1C[NH2+][C@H](C(=O)[O-])C1.[H+]"
+
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_02():
     rxn = reaction.unmapped_reaction(rxn_str = hydroxyproline_AdH_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
@@ -100,6 +101,7 @@ def test_get_JN_rxn_descriptor_02(cofactors_df):
 # tests involving an alcohol dehydrogenase that oxidizes mannofuranose to the corresponding aldehyde
 # EC 1.1.1.173, MetaCyc rxn idx 1652 (L-RHAMNOSE-1-DEHYDROGENASE-RXN)
 mannofuranose_AdH_rxn_str = "C[C@H](O)[C@@H]1OC(O)[C@H](O)[C@@H]1O.NC(=O)c1ccc[n+]([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)c1>>C[C@H](O)[C@@H]1OC(=O)[C@H](O)[C@@H]1O.NC(=O)C1=CN([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)OC[C@H]3O[C@@H](n4cnc5c(N)ncnc54)[C@H](O)[C@@H]3O)[C@@H](O)[C@H]2O)C=CC1.[H+]"
+
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_03():
     rxn = reaction.unmapped_reaction(rxn_str = mannofuranose_AdH_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
@@ -135,6 +137,7 @@ def test_get_JN_rxn_descriptor_03(cofactors_df):
 # tests involving the polyneuridine-aldehyde esterase reaction
 # EC 3.1.1.78, MetaCyc rxn idx 583 (3.1.1.78-RXN)
 esterase_rxn_str = "CC=C1CN2[C@H]3Cc4c([nH]c5ccccc45)[C@@H]2C[C@H]1[C@@]3(C=O)C(=O)OC.O>>CC=C1CN2[C@H]3C[C@H]1[C@H](C=O)[C@@H]2Cc1c3[nH]c2ccccc12.CO.O=C=O"
+
 def test_separating_unmapped_rxn_str_into_reactant_and_product_strs_04():
     rxn = reaction.unmapped_reaction(rxn_str = esterase_rxn_str)
     reactants_str, products_str = rxn._rxn_2_cpds()
@@ -415,6 +418,11 @@ def test_separating_mapped_rxn_str_into_reactant_and_product_strs_01():
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "[CH3:1][CH2:2][OH:3].[NH2:4][C:5](=[O:6])[c:7]1[cH:8][cH:9][cH:10][n+:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[cH:47]1"
     assert products_str == "[CH3:1][CH:2]=[O:3].[H+].[NH2:4][C:5](=[O:6])[C:7]1=[CH:47][N:11]([C@@H:12]2[O:13][C@H:14]([CH2:15][O:16][P:17](=[O:18])([OH:19])[O:20][P:21](=[O:22])([OH:23])[O:24][CH2:25][C@H:26]3[O:27][C@@H:28]([n:29]4[cH:30][n:31][c:32]5[c:33]([NH2:34])[n:35][cH:36][n:37][c:38]45)[C@H:39]([OH:40])[C@@H:41]3[OH:42])[C@@H:43]([OH:44])[C@H:45]2[OH:46])[CH:10]=[CH:9][CH2:8]1"
+
+def test_extracting_substrates_from_mapped_rxn_str_01(cofactors_list):
+    rxn = reaction.unmapped_reaction(rxn_str = ethanol_AdH_rxn_str_mapped)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["[CH3:1][CH2:2][OH:3]"]
 
 def test_get_mapped_bonds_data_type():
     """
