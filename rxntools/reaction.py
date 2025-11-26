@@ -448,7 +448,6 @@ class unmapped_reaction:
         #
         #             if
 
-
 class mapped_reaction:
     """
     Parameters
@@ -598,7 +597,6 @@ class mapped_reaction:
                 reactants_list.append(reactant_smarts)
 
         return reactants_list
-    
 
     def get_products(self,
                     cofactors_list: List[str],
