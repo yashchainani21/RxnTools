@@ -86,7 +86,7 @@ class unmapped_reaction:
                 else:
                     reactants_list.append(reactant_smiles)
 
-        if "." in reactants_str:
+        elif "." in reactants_str:
 
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split("."):
@@ -169,7 +169,7 @@ class unmapped_reaction:
                 else:
                     products_list.append(product_smiles)
 
-        if "." in products_str:
+        elif "." in products_str:
 
             # for each reactant's SMILES string
             for product_smiles in products_str.split("."):
@@ -253,7 +253,7 @@ class unmapped_reaction:
                 else:
                     pass
 
-        if "." in reactants_str:
+        elif "." in reactants_str:
 
             # for each reactant's SMILES string
             for reactant_smiles in reactants_str.split("."):
@@ -335,7 +335,7 @@ class unmapped_reaction:
                 else:
                     pass
 
-        if "." in products_str:
+        elif "." in products_str:
 
             # for each product's SMILES string
             for product_smiles in products_str.split("."):
@@ -355,22 +355,21 @@ class unmapped_reaction:
                 else:
                     pass
 
-        # if neither " + " nor "." has been used, then only one product is present on the RHS
-        product_smiles = products_str
-        product_smiles = canonicalize_smiles(product_smiles)
-        product_smiles = neutralize_atoms(product_smiles)
-        product_mol = Chem.MolFromSmiles(product_smiles)
-
-        if is_cofactor(mol = product_mol,
-                       cofactors_list = cofactors_list,
-                       consider_stereo = consider_stereo):
-
-            RHS_cofactors_list.append(product_mol)
-
         else:
-            pass
+            # if neither " + " nor "." has been used, then only one product is present on the RHS
+            product_smiles = products_str
+            product_smiles = canonicalize_smiles(product_smiles)
+            product_smiles = neutralize_atoms(product_smiles)
+            product_mol = Chem.MolFromSmiles(product_smiles)
 
+            if is_cofactor(mol = product_mol,
+                           cofactors_list = cofactors_list,
+                           consider_stereo = consider_stereo):
 
+                RHS_cofactors_list.append(product_smiles)
+
+            else:
+                pass
 
         return RHS_cofactors_list
 
@@ -557,7 +556,7 @@ class mapped_reaction:
                 else:
                     reactants_list.append(reactant_smarts)
 
-        if "." in reactants_str:
+        elif "." in reactants_str:
 
             # for each reactant's SMARTS string (SMARTS because this is an atom-mapped reaction)
             for reactant_smarts in reactants_str.split("."):
@@ -645,7 +644,7 @@ class mapped_reaction:
                 else:
                     products_list.append(product_smarts)
 
-        if "." in products_str:
+        elif "." in products_str:
 
             # for each product's SMARTS string (SMARTS because this is an atom-mapped reaction)
             for product_smarts in products_str.split("."):
@@ -794,14 +793,16 @@ class mapped_reaction:
         reactants_list: List[str]
             List of reactants smiles strings
         """
-        reactants_str, products_str = self._rxn_2_cpds()
+        _, products_str = self._rxn_2_cpds()
         RHS_cofactors_list = []
 
         if " + " in products_str:
 
-            # for each product's SMILES string
-            for product_smiles in products_str.split(" + "):
+            # for each product's SMARTS string (SMARTS because this is an atom-mapped reaction)
+            for product_smarts in products_str.split(" + "):
 
+                # we first convert the SMARTS string to a SMILES string via a mol object
+                product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
                 product_smiles = canonicalize_smiles(product_smiles)
                 product_smiles = neutralize_atoms(product_smiles)
                 product_mol = Chem.MolFromSmiles(product_smiles)
@@ -811,18 +812,19 @@ class mapped_reaction:
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    RHS_cofactors_list.append(product_smiles)
+                    RHS_cofactors_list.append(product_smarts)
 
                 # if this product is not a cofactor, however, then do nothing
                 else:
                     pass
 
-        if "." in products_str:
+        elif "." in products_str:
 
-            # for each product's SMILES string
-            for product_smiles in products_str.split("."):
+            # for each product's SMARTS string (SMARTS because this is an atom-mapped reaction)
+            for product_smarts in products_str.split("."):
 
-                product_smiles = canonicalize_smiles(product_smiles)
+                # we first convert the SMARTS string to a SMILES string via a mol object
+                product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
                 product_smiles = neutralize_atoms(product_smiles)
                 product_mol = Chem.MolFromSmiles(product_smiles)
 
@@ -831,28 +833,29 @@ class mapped_reaction:
                                cofactors_list = cofactors_list,
                                consider_stereo = consider_stereo):
 
-                    RHS_cofactors_list.append(product_smiles)
+                    RHS_cofactors_list.append(product_smarts)
 
                 # if this product is not a cofactor, however, then do nothing
                 else:
                     pass
 
-        # if neither " + " nor "." has been used, then only one product is present on the RHS
-        product_smiles = products_str
-        product_smiles = canonicalize_smiles(product_smiles)
-        product_smiles = neutralize_atoms(product_smiles)
-        product_mol = Chem.MolFromSmiles(product_smiles)
-
-        if is_cofactor(mol = product_mol,
-                       cofactors_list = cofactors_list,
-                       consider_stereo = consider_stereo):
-
-            RHS_cofactors_list.append(product_mol)
-
         else:
-            pass
 
+            # if neither " + " nor "." has been used, then only one product is present on the LHS
+            # again, we convert the SMARTS string to a SMILES string first via a mol object
+            product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
+            product_smiles = canonicalize_smiles(product_smiles)
+            product_smiles = neutralize_atoms(product_smiles)
+            product_mol = Chem.MolFromSmiles(product_smiles)
 
+            if is_cofactor(mol = product_mol,
+                        cofactors_list = cofactors_list,
+                        consider_stereo = consider_stereo):
+
+                RHS_cofactors_list.append(product_smarts)
+
+            else:
+                pass
 
         return RHS_cofactors_list
 
