@@ -502,14 +502,14 @@ class mapped_reaction:
         rxn_smarts = self.rxn_smarts
 
         if " = " in rxn_smarts:
-            reactants_str = rxn_smarts.split(" = ")[0]
-            products_str = rxn_smarts.split(" = ")[1]
-            return reactants_str, products_str
+            reactants_smarts_str = rxn_smarts.split(" = ")[0]
+            products_smarts_str = rxn_smarts.split(" = ")[1]
+            return reactants_smarts_str, products_smarts_str
 
         if ">>" in rxn_smarts:
-            reactants_str = rxn_smarts.split(">>")[0]
-            products_str = rxn_smarts.split(">>")[1]
-            return reactants_str, products_str
+            reactants_smarts_str = rxn_smarts.split(">>")[0]
+            products_smarts_str = rxn_smarts.split(">>")[1]
+            return reactants_smarts_str, products_smarts_str
     
     def get_substrates(self,
                        cofactors_list: List[str],
