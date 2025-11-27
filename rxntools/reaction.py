@@ -669,7 +669,7 @@ class mapped_reaction:
 
             # if neither " + " nor "." has been used, then only one product is present on the LHS
             # again, we convert the SMARTS string to a SMILES string first via a mol object
-            product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
+            product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(products_str))
             product_smiles = canonicalize_smiles(product_smiles)
             product_smiles = neutralize_atoms(product_smiles)
             product_mol = Chem.MolFromSmiles(product_smiles)
@@ -682,7 +682,7 @@ class mapped_reaction:
 
             # if this reactant is not a cofactor, however, store and return its SMARTS string
             else:
-                products_list.append(product_smarts)
+                products_list.append(products_str)
 
         return products_list
 
