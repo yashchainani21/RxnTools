@@ -580,12 +580,16 @@ def test_extracting_products_from_mapped_rxn_str_06(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = ethanolamine_phosphate_phosphatase_rxn_mapped)
     assert rxn.get_products(cofactors_list = cofactors_list,
                             consider_stereo = False) == ["[O:1]=[CH:3][CH3:4]"]
-
-#def test_extracting_substrates_from_mapped_rxn_str_06():
-
-#def test_extracting_lhs_cofactors_from_mapped_rxn_str_06():
-
-#def test_extracting
+    
+def test_extracting_lhs_cofactors_from_mapped_rxn_str_06(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = ethanolamine_phosphate_phosphatase_rxn_mapped)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["[OH2:1]"]
+    
+def test_extracting_rhs_cofactors_from_mapped_rxn_str_06(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = ethanolamine_phosphate_phosphatase_rxn_mapped)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["[NH4+:2]","[OH:5][P:6](=[O:7])([O-:8])[O-:9]"]
 
 # tests involving an epimerization reaction
 # EC 5.1.3.38, MetaCyc rxn idx 4160 (RXN-17771)
