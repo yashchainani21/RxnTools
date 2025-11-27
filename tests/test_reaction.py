@@ -516,7 +516,10 @@ def test_extracting_substrates_from_mapped_rxn_str_04(cofactors_list):
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26]"]
 
-#def test_extracting_products_from_mapped_rxn_str_04(cofactors_list):
+def test_extracting_products_from_mapped_rxn_str_04(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = esterase_rxn_str_mapped)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo = False) == ["[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@H:20]3[CH:21]=[O:22]", "[OH:25][CH3:26]"]
 
 def test_extracting_lhs_cofactors_from_mapped_rxn_str_04(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = esterase_rxn_str_mapped)
@@ -542,6 +545,11 @@ def test_extracting_substrates_from_mapped_rxn_str_05(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[O:2]=[P:3]([O-:4])([O-:5])[O:6][C@H:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17]"]
+
+def test_extracting_products_from_mapped_rxn_str_05(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo = False) == "[OH:1][CH:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17]"
 
 def test_extracting_lhs_cofactors_from_mapped_rxn_str_05(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
