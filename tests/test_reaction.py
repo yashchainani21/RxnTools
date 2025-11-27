@@ -606,6 +606,11 @@ def test_extracting_substrates_from_mapped_rxn_str_07(cofactors_list):
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[O:1]=[C:2]([CH2:3][O:4][P:5](=[O:6])([O-:7])[O-:8])[C@H:9]([OH:10])[CH2:11][OH:12]"]
 
+def test_extracting_products_from_mapped_rxn_str_07(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = epimerization_rxn_mapped)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["[O:1]=[C:2]([CH2:3][O:4][P:5](=[O:6])([O-:7])[O-:8])[C@@H:9]([OH:10])[CH2:11][OH:12]"]
+
 # tests involving the succoasyn reaction
 # EC 6.2.1.5, MetaCyc rxn idx 6847 (SUCCCOASYN-RXN)
 succoasyn_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCC(=O)[O-]>>CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCC(=O)[O-].Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O"
