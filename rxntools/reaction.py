@@ -765,7 +765,7 @@ class mapped_reaction:
             if is_cofactor(mol = reactant_mol,
                            cofactors_list = cofactors_list,
                            consider_stereo = consider_stereo):
-                LHS_cofactors_list.append(reactant_smarts)
+                LHS_cofactors_list.append(reactants_str)
 
             else:
                 pass
@@ -843,7 +843,7 @@ class mapped_reaction:
 
             # if neither " + " nor "." has been used, then only one product is present on the LHS
             # again, we convert the SMARTS string to a SMILES string first via a mol object
-            product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(product_smarts))
+            product_smiles = Chem.MolToSmiles(Chem.MolFromSmarts(products_str))
             product_smiles = canonicalize_smiles(product_smiles)
             product_smiles = neutralize_atoms(product_smiles)
             product_mol = Chem.MolFromSmiles(product_smiles)
@@ -852,7 +852,7 @@ class mapped_reaction:
                         cofactors_list = cofactors_list,
                         consider_stereo = consider_stereo):
 
-                RHS_cofactors_list.append(product_smarts)
+                RHS_cofactors_list.append(products_str)
 
             else:
                 pass

@@ -610,6 +610,16 @@ def test_extracting_products_from_mapped_rxn_str_07(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = epimerization_rxn_mapped)
     assert rxn.get_products(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[O:1]=[C:2]([CH2:3][O:4][P:5](=[O:6])([O-:7])[O-:8])[C@@H:9]([OH:10])[CH2:11][OH:12]"]
+    
+def test_extracting_lhs_cofactors_from_mapped_rxn_str_07(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = epimerization_rxn_mapped)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == []
+    
+def test_extracting_rhs_cofactors_from_mapped_rxn_str_07(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = epimerization_rxn_mapped)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == []
 
 # tests involving the succoasyn reaction
 # EC 6.2.1.5, MetaCyc rxn idx 6847 (SUCCCOASYN-RXN)
@@ -622,7 +632,6 @@ biotin_coa_ligase_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(
 # tests involving RXN-14637
 # EC 6.3.1.18, MetaCyc rxn idx 3419 (RXN-14637)
 rxn_14637 = "Nc1ccccc1.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.[NH3+][C@@H](CCC(=O)[O-])C(=O)[O-]>>Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O.[NH3+][C@@H](CCC(=O)Nc1ccccc1)C(=O)[O-]"
-
 
 def test_get_mapped_bonds_data_type():
     """
