@@ -486,6 +486,11 @@ def test_extracting_substrates_from_mapped_rxn_str_03(cofactors_list):
     assert rxn.get_substrates(cofactors_list = cofactors_list,
                               consider_stereo = False) == ["[CH3:1][C@H:2]([OH:3])[C@@H:4]1[O:5][CH:6]([OH:7])[C@H:8]([OH:9])[C@@H:10]1[OH:11]"]
 
+def test_extracting_products_from_mapped_rxn_str_03(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = mannofuranose_AdH_rxn_str_mapped)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo = False) == ["[CH3:1][C@H:2]([OH:3])[C@@H:4]1[O:5][C:6](=[O:7])[C@H:8]([OH:9])[C@@H:10]1[OH:11]"]
+
 def test_extracting_lhs_cofactors_from_mapped_rxn_str_03(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = mannofuranose_AdH_rxn_str_mapped)
     assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
@@ -496,8 +501,91 @@ def test_extracting_rhs_cofactors_from_mapped_rxn_str_03(cofactors_list):
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["[H+]", "[NH2:12][C:13](=[O:14])[C:15]1=[CH:55][N:19]([C@@H:20]2[O:21][C@H:22]([CH2:23][O:24][P:25](=[O:26])([OH:27])[O:28][P:29](=[O:30])([OH:31])[O:32][CH2:33][C@H:34]3[O:35][C@@H:36]([n:37]4[cH:38][n:39][c:40]5[c:41]([NH2:42])[n:43][cH:44][n:45][c:46]45)[C@H:47]([OH:48])[C@@H:49]3[OH:50])[C@@H:51]([OH:52])[C@H:53]2[OH:54])[CH:18]=[CH:17][CH2:16]1"]
 
+# tests involving the polyneuridine-aldehyde esterase reaction
+# EC 3.1.1.78, MetaCyc rxn idx 583 (3.1.1.78-RXN)
+esterase_rxn_str_mapped = "[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26].[OH2:27]>>[C:23](=[O:24])=[O:27].[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@H:20]3[CH:21]=[O:22].[OH:25][CH3:26]"
 
-#
+def test_separating_mapped_rxn_str_into_reactant_and_product_strs_04():
+    rxn = reaction.mapped_reaction(rxn_smarts = esterase_rxn_str_mapped)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26].[OH2:27]"
+    assert products_str == "[C:23](=[O:24])=[O:27].[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@H:20]3[CH:21]=[O:22].[OH:25][CH3:26]"
+
+def test_extracting_substrates_from_mapped_rxn_str_04(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = esterase_rxn_str_mapped)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["[CH3:1][CH:2]=[C:3]1[CH2:4][N:5]2[C@H:6]3[CH2:7][c:8]4[c:9]([nH:10][c:11]5[cH:12][cH:13][cH:14][cH:15][c:16]45)[C@@H:17]2[CH2:18][C@H:19]1[C@@:20]3([CH:21]=[O:22])[C:23](=[O:24])[O:25][CH3:26]"]
+
+#def test_extracting_products_from_mapped_rxn_str_04(cofactors_list):
+
+def test_extracting_lhs_cofactors_from_mapped_rxn_str_04(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = esterase_rxn_str_mapped)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["[OH2:27]"]
+
+def test_extracting_rhs_cofactors_from_mapped_rxn_str_05(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = esterase_rxn_str_mapped)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["[C:23](=[O:24])=[O:27]"]
+
+# tests involving the glucopyranose-phosphatase reaction
+# EC 3.1.3.10, MetaCyc rxn idx 1414 (GLUCOSE-1-PHOSPHAT-RXN)
+glucopyranose_phosphatase_rxn_mapped = "[O:2]=[P:3]([O-:4])([O-:5])[O:6][C@H:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17].[OH2:1]>>[O:2]=[P:3]([O-:4])([O-:5])[OH:6].[OH:1][CH:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17]"
+
+def test_separating_mapped_rxn_str_into_reactant_and_product_strs_05():
+    rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "[O:2]=[P:3]([O-:4])([O-:5])[O:6][C@H:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17].[OH2:1]"
+    assert products_str == "[O:2]=[P:3]([O-:4])([O-:5])[OH:6].[OH:1][CH:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17]"
+
+def test_extracting_substrates_from_mapped_rxn_str_05(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["[O:2]=[P:3]([O-:4])([O-:5])[O:6][C@H:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17]"]
+
+def test_extracting_lhs_cofactors_from_mapped_rxn_str_05(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
+    assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["[OH2:1]"]
+    
+def test_extracting_rhs_cofactors_from_mapped_rxn_str_06(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
+    assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
+                                 consider_stereo = False) == ["[O:2]=[P:3]([O-:4])([O-:5])[OH:6]"]
+
+# tests involving the ethanolamine-phosphate phosphatase reaction
+# EC 4.2.3.2, MetaCyc rxn idx 1309 (ETHANOLAMINE-PHOSPHATE-PHOSPHO-LYASE-RXN)
+ethanolamine_phosphate_phosphatase_rxn_mapped = "[NH3+:2][CH2:3][CH2:4][O:5][P:6](=[O:7])([O-:8])[O-:9].[OH2:1]>>[NH4+:2].[O:1]=[CH:3][CH3:4].[OH:5][P:6](=[O:7])([O-:8])[O-:9]"
+
+def test_separating_mapped_rxn_str_into_reactant_and_product_strs_06():
+    rxn = reaction.mapped_reaction(rxn_smarts = ethanolamine_phosphate_phosphatase_rxn_mapped)
+    reactants_str, products_str = rxn._rxn_2_cpds()
+    assert reactants_str == "[NH3+:2][CH2:3][CH2:4][O:5][P:6](=[O:7])([O-:8])[O-:9].[OH2:1]"
+    assert products_str == "[NH4+:2].[O:1]=[CH:3][CH3:4].[OH:5][P:6](=[O:7])([O-:8])[O-:9]"
+
+#def test_extracting_substrates_from_mapped_rxn_str_06():
+
+#def test_extracting_lhs_cofactors_from_mapped_rxn_str_06():
+
+#def test_extracting
+
+# tests involving an epimerization reaction
+# EC 5.1.3.38, MetaCyc rxn idx 4160 (RXN-17771)
+epimerization_rxn = "O=C(COP(=O)([O-])[O-])[C@H](O)CO>>O=C(COP(=O)([O-])[O-])[C@@H](O)CO"
+
+# tests involving the succoasyn reaction
+# EC 6.2.1.5, MetaCyc rxn idx 6847 (SUCCCOASYN-RXN)
+succoasyn_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCC(=O)[O-]>>CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCC(=O)[O-].Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O"
+
+# tests involving the biotin coa ligase reaction
+# EC 6.2.1.11, MetaCyc rxn idx 1030 (BIOTIN--COA-LIGASE-RXN)
+biotin_coa_ligase_rxn = "CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCS.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=C([O-])CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21>>CC(C)(COP(=O)([O-])OP(=O)([O-])OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)([O-])[O-])[C@@H](O)C(=O)NCCC(=O)NCCSC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@@H]21.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])OP(=O)([O-])O"
+
+# tests involving RXN-14637
+# EC 6.3.1.18, MetaCyc rxn idx 3419 (RXN-14637)
+rxn_14637 = "Nc1ccccc1.Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.[NH3+][C@@H](CCC(=O)[O-])C(=O)[O-]>>Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)([O-])OP(=O)([O-])[O-])[C@@H](O)[C@H]1O.O=P([O-])([O-])O.[NH3+][C@@H](CCC(=O)Nc1ccccc1)C(=O)[O-]"
+
+
 def test_get_mapped_bonds_data_type():
     """
     Test to ensure the internal function _get_mapped_bonds returns a set.
