@@ -549,7 +549,7 @@ def test_extracting_substrates_from_mapped_rxn_str_05(cofactors_list):
 def test_extracting_products_from_mapped_rxn_str_05(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
     assert rxn.get_products(cofactors_list = cofactors_list,
-                            consider_stereo = False) == "[OH:1][CH:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17]"
+                            consider_stereo = False) == ["[OH:1][CH:7]1[O:8][C@H:9]([CH2:10][OH:11])[C@@H:12]([OH:13])[C@H:14]([OH:15])[C@H:16]1[OH:17]"]
 
 def test_extracting_lhs_cofactors_from_mapped_rxn_str_05(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
