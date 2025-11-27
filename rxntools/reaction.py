@@ -594,7 +594,7 @@ class mapped_reaction:
 
             # if this reactant is not a cofactor, however, store and return its SMARTS string
             else:
-                reactants_list.append(reactant_smarts)
+                reactants_list.append(reactants_str)
 
         return reactants_list
 
