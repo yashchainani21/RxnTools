@@ -526,7 +526,7 @@ def test_extracting_lhs_cofactors_from_mapped_rxn_str_04(cofactors_list):
     assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["[OH2:27]"]
 
-def test_extracting_rhs_cofactors_from_mapped_rxn_str_05(cofactors_list):
+def test_extracting_rhs_cofactors_from_mapped_rxn_str_04(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = esterase_rxn_str_mapped)
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["[C:23](=[O:24])=[O:27]"]
@@ -556,7 +556,7 @@ def test_extracting_lhs_cofactors_from_mapped_rxn_str_05(cofactors_list):
     assert rxn.get_lhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["[OH2:1]"]
     
-def test_extracting_rhs_cofactors_from_mapped_rxn_str_06(cofactors_list):
+def test_extracting_rhs_cofactors_from_mapped_rxn_str_05(cofactors_list):
     rxn = reaction.mapped_reaction(rxn_smarts = glucopyranose_phosphatase_rxn_mapped)
     assert rxn.get_rhs_cofactors(cofactors_list = cofactors_list,
                                  consider_stereo = False) == ["[O:2]=[P:3]([O-:4])([O-:5])[OH:6]"]
@@ -570,6 +570,16 @@ def test_separating_mapped_rxn_str_into_reactant_and_product_strs_06():
     reactants_str, products_str = rxn._rxn_2_cpds()
     assert reactants_str == "[NH3+:2][CH2:3][CH2:4][O:5][P:6](=[O:7])([O-:8])[O-:9].[OH2:1]"
     assert products_str == "[NH4+:2].[O:1]=[CH:3][CH3:4].[OH:5][P:6](=[O:7])([O-:8])[O-:9]"
+
+def test_extracting_substrates_from_mapped_rxn_str_06(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = ethanolamine_phosphate_phosphatase_rxn_mapped)
+    assert rxn.get_substrates(cofactors_list = cofactors_list,
+                              consider_stereo = False) == ["[NH3+:2][CH2:3][CH2:4][O:5][P:6](=[O:7])([O-:8])[O-:9]"]
+    
+def test_extracting_products_from_mapped_rxn_str_06(cofactors_list):
+    rxn = reaction.mapped_reaction(rxn_smarts = ethanolamine_phosphate_phosphatase_rxn_mapped)
+    assert rxn.get_products(cofactors_list = cofactors_list,
+                            consider_stereo = False) == ["[O:1]=[CH:3][CH3:4]"]
 
 #def test_extracting_substrates_from_mapped_rxn_str_06():
 
