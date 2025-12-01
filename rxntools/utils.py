@@ -259,16 +259,16 @@ def does_template_fit(rxn_str: str,
         else:
             pass
 
-def get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes: str, product_codes: str, rxn_SMARTS: str, rxn_side: str):
+def get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes: str, product_codes: str, rxn_SMARTS: str, rxn_side: str) -> str:
     """
     Extracts the SMARTS template for a given cofactor from the input reaction rule.
     The reaction rule should be written in SMARTS too and be of the form "A.B>>C.D"
 
     Args:
-        cofactor_code (_type_): _description_
-        reactant_codes (str): _description_
-        product_codes (str): _description_
-        rxn_SMARTS (str): _description_
+        cofactor_code (_type_): cofactor code according to JN rules (e.g., NAD_CoF or O2)
+        reactant_codes (str): reactants on the LHS of a reaction rule template (e.g., 'Any;NAD_CoF')
+        product_codes (str): products on the RHS of a reaction rule template (e.g., 'NADH_CoF;Any')
+        rxn_SMARTS (str): SMARTS template for the overall reaction of the form "A.B>>C.D"
         rxn_side (str): _description_
 
     Returns:
