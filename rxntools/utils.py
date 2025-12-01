@@ -265,11 +265,11 @@ def get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes: str, product
     The reaction rule should be written in SMARTS too and be of the form "A.B>>C.D"
 
     Args:
-        cofactor_code (_type_): cofactor code according to JN rules (e.g., NAD_CoF or O2)
+        cofactor_code (_type_): cofactor code according to JN rules (e.g., NAD_CoF or O2) for which SMARTS are to be extracted
         reactant_codes (str): reactants on the LHS of a reaction rule template (e.g., 'Any;NAD_CoF')
         product_codes (str): products on the RHS of a reaction rule template (e.g., 'NADH_CoF;Any')
         rxn_SMARTS (str): SMARTS template for the overall reaction of the form "A.B>>C.D"
-        rxn_side (str): _description_
+        rxn_side (str): 'lhs' or 'rhs' of reaction depending on where the cofactor appears
 
     Returns:
         _type_: _description_
