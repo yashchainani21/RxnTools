@@ -261,7 +261,8 @@ def does_template_fit(rxn_str: str,
 
 def get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes: str, product_codes: str, rxn_SMARTS: str, rxn_side: str):
     """
-    Extracts
+    Extracts the SMARTS template for a given cofactor from the input reaction rule.
+    The reaction rule should be written in SMARTS too and be of the form "A.B>>C.D"
 
     Args:
         cofactor_code (_type_): _description_
