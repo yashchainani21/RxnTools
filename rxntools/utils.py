@@ -265,14 +265,23 @@ def get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes: str, product
     The reaction rule should be written in SMARTS too and be of the form "A.B>>C.D"
 
     Args:
-        cofactor_code (_type_): cofactor code according to JN rules (e.g., NAD_CoF or O2) for which SMARTS are to be extracted
+        cofactor_code (str): cofactor code according to JN rules (e.g., NAD_CoF or O2) for which SMARTS are to be extracted
         reactant_codes (str): reactants on the LHS of a reaction rule template (e.g., 'Any;NAD_CoF')
         product_codes (str): products on the RHS of a reaction rule template (e.g., 'NADH_CoF;Any')
         rxn_SMARTS (str): SMARTS template for the overall reaction of the form "A.B>>C.D"
         rxn_side (str): 'lhs' or 'rhs' of reaction depending on where the cofactor appears
 
     Returns:
-        _type_: _description_
+        str: SMARTS code for the desired cofactor 
+
+    Example:
+    JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+    reactant_codes = JN_rules_df[JN_rules_df['Name']=='rule0002']['Reactants'].to_list()[0]
+    product_codes = JN_rules_df[JN_rules_df['Name']=='rule0002']['Products'].to_list()[0]
+    rxn_SMARTS = JN_rules_df[JN_rules_df['Name']=='rule0002']['SMARTS'].to_list()[0]
+    rxn_side = 'lhs'
+    get_cofactor_SMARTS_from_JN_rule('NAD_CoF', reactant_codes, product_codes, rxn_SMARTS, rxn_side)
+    >>> [#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1
     """
     lhs_side_SMARTS, rhs_side_SMARTS = rxn_SMARTS.split('>>')
     lhs_side_SMARTS_list = lhs_side_SMARTS.split('.')
