@@ -23,6 +23,14 @@ def cofactors_df():
         cofactors_df = pd.read_csv(f, sep=',')
     return cofactors_df
 
+@pytest.fixture
+def JN_rules_df():
+    """
+    Pytest fixture to load the Joseph's generalized reaction rules
+    """
+    JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+    return JN_rules_df
+
 def test_is_isomorphic_ethanol_with_atom_mapped_SMARTS_and_canonical_SMILES():
     """
     Ensure isomorphism when ethanol is represented with atom-mapped SMARTS & canonical SMILES.
@@ -848,3 +856,5 @@ def test_does_template_fit_19_using_unmapped_rxn_str():
     rxn_str = "O=C(/C=C/c1ccc(O)cc1)c1c(O)cc(O)cc1O.O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O[C@H]3O[C@H](CO)[C@@H](O)[C@H](O)[C@H]3O)[C@@H](O)[C@H]2O)c(=O)[nH]1>>O=C(/C=C/c1ccc(O)cc1)c1c(O)cc(O)cc1OC1O[C@H](CO)[C@@H](O)[C@H](O)[C@H]1O.O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]2O)c(=O)[nH]1"
     rxn_template = '[#6:1]-[#8:2].[#8:3]>>[#6:1]-[#8:3].[#8:2]'
     assert utils.does_template_fit(rxn_str, rxn_template) is True
+
+def test_extracting_cofactor_SMARTS_code_01():
