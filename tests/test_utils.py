@@ -887,3 +887,11 @@ def test_extracting_cofactor_SMARTS_code_04(JN_rules_df):
     rxn_side = 'lhs'
     cofactor_code = 'O2'
     assert utils.get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes, product_codes, rxn_SMARTS, rxn_side) == '[#8:8]=[#8:9]'
+
+def test_extracting_cofactor_SMARTS_code_04(JN_rules_df):
+    reactant_codes = JN_rules_df[JN_rules_df['Name']=='rule0004']['Reactants'].to_list()[0]
+    product_codes = JN_rules_df[JN_rules_df['Name']=='rule0004']['Products'].to_list()[0]
+    rxn_SMARTS = JN_rules_df[JN_rules_df['Name']=='rule0004']['SMARTS'].to_list()[0]
+    rxn_side = 'rhs'
+    cofactor_code = 'WATER'
+    assert utils.get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes, product_codes, rxn_SMARTS, rxn_side) == '[#8:9]'
