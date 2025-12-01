@@ -258,3 +258,19 @@ def does_template_fit(rxn_str: str,
             return True
         else:
             pass
+
+def get_cofactor_SMARTS_from_JN_rule(cofactor_code, reactant_codes: str, product_codes: str, rxn_SMARTS: str, rxn_side: str):
+    lhs_side_SMARTS, rhs_side_SMARTS = rxn_SMARTS.split('>>')
+    lhs_side_SMARTS_list = lhs_side_SMARTS.split('.')
+    rhs_side_SMARTS_list = rhs_side_SMARTS.split('.')
+    
+    reactant_codes_list = reactant_codes.split(';')
+    product_codes_list = product_codes.split(';')
+
+    if rxn_side == 'lhs':
+        cofactor_idx = reactant_codes_list.index(cofactor_code)
+        return lhs_side_SMARTS_list[cofactor_idx]
+    
+    elif rxn_side == 'rhs':
+        cofactor_idx = product_codes_list.index(cofactor_code)
+        return rhs_side_SMARTS_list[cofactor_idx]
