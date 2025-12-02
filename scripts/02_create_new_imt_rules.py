@@ -6,19 +6,19 @@ from collections import Counter
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-query_rule = 'rule00'
+query_rule = 'rule0002'
 radius = 1
 include_stereo = True
 
-reported_rxns_df = pd.read_parquet("/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_MetaCyc_JN_mapped.parquet")
-JN_rules_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+reported_rxns_df = pd.read_parquet("../data/interim/enzymemap_MetaCyc_JN_mapped.parquet")
+JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
-with open('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/cofactors.json') as f:
+with open('../data/raw/cofactors.json') as f:
     cofactors_dict = json.load(f)
 
 all_cofactor_codes: List[str] = list(cofactors_dict.keys())
 cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys()]
-cofactors_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/all_cofactors.csv')
+cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
 
 # initialize a counter to keep track of the number of reactions from which rules were not extracted
 rxns_skipped_count = 0
