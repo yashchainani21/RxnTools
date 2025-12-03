@@ -108,3 +108,4 @@ final_df = input_rxns_w_JN_mappings_df.iloc[keep_idx, :].copy()
 final_df['top_mapped_operator'] = all_top_mapped_operators
 
 print(rxns_skipped_count, "reactions were skipped due to errors.")
+print(f"Final processed reactions count: {final_df.shape[0]}")
