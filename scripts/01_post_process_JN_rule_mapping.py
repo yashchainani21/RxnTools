@@ -101,7 +101,7 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         keep_idx.append(i)
 
     except Exception as e:
-        print(f"Error processing reaction {i}: {e}")
+        print(f"Error processing reaction {i}: {e}\n")
         rxns_skipped_count += 1
         continue
 
