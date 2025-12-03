@@ -46,7 +46,7 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         all_rule_mappings = input_rxns_w_JN_mappings_df.iloc[i, :]['all_mapped_operators']
 
         # initialize an empty list to store the best matching JN rule for this given reaction
-        best_mapped_rule = []
+        best_mapped_rule: List[str] = []
         
         # identify which JN rule mapping has the best cofactor/ substrate-product pairs match
         for rule in all_rule_mappings:
@@ -64,6 +64,8 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
                 # then, check if the cofactors match that specified by the JN rule
                 if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
                     best_mapped_rule.append(rule)
+
+            # of the three 
 
     except Exception as e:
         print(f"Error processing reaction {i}: {e}")
