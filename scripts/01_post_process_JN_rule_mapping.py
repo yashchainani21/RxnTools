@@ -36,8 +36,8 @@ def get_top_operator(op_list):
 
 # load in interim mapped reactions data
 input_rxns_w_JN_mappings = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_KEGG_JN_mapped.parquet'
-input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)
-print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")
+input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
+print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")       
 
 all_unmapped_rxns_list = input_rxns_w_JN_mappings_df['unmapped'].to_list()
 
@@ -103,7 +103,6 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         print(f"Error processing reaction {i}: {e}")
         rxns_skipped_count += 1
         continue
-
 
 final_df = input_rxns_w_JN_mappings_df.iloc[keep_idx, :].copy()
 final_df['top_mapped_operator'] = all_top_mapped_operators
