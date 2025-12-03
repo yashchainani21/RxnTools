@@ -65,7 +65,7 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
                 if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
                     best_mapped_rule.append(rule)
 
-            # of the three 
+            # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
 
     except Exception as e:
         print(f"Error processing reaction {i}: {e}")
