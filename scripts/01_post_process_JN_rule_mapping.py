@@ -3,6 +3,10 @@ import pandas as pd
 from rxntools import reaction, utils
 from typing import List
 
+from rdkit import RDLogger
+RDLogger.DisableLog('rdApp.*')
+
+
 # load in cofactors data and JN generalized reaction rules
 with open('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/cofactors.json') as f:
     cofactors_dict = json.load(f)
@@ -33,6 +37,8 @@ def get_top_operator(op_list):
 # load in interim mapped reactions data
 input_rxns_w_JN_mappings = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_KEGG_JN_mapped.parquet'
 input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)
+print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")
+
 all_unmapped_rxns_list = input_rxns_w_JN_mappings_df['unmapped'].to_list()
 
 # remove the 'top_mapped_operator' column if it exists
@@ -86,7 +92,7 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
                     best_mapped_rule.append(rule)
 
         # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
-
+        all_top_mapped_operators.append(get_top_operator(best_mapped_rule))
 
     except Exception as e:
         print(f"Error processing reaction {i}: {e}")
