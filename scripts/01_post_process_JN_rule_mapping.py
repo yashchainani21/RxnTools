@@ -39,6 +39,9 @@ all_unmapped_rxns_list = input_rxns_w_JN_mappings_df['unmapped'].to_list()
 if 'top_mapped_operator' in input_rxns_w_JN_mappings_df.columns:
     input_rxns_w_JN_mappings_df = input_rxns_w_JN_mappings_df.drop(columns=['top_mapped_operator'])
 
+# initialize list to store the best revised JN rule mapping for each reaction
+all_top_mapped_operators: List[str] = []
+
 rxns_skipped_count = 0
 
 for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
