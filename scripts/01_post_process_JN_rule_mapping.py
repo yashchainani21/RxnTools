@@ -4,17 +4,17 @@ from rxntools import reaction, utils
 from typing import List
 
 # load in cofactors data and JN generalized reaction rules
-with open('../data/raw/cofactors.json') as f:
+with open('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/cofactors.json') as f:
     cofactors_dict = json.load(f)
 
 all_cofactor_codes: List[str] = list(cofactors_dict.keys())
 cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys()]
-cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
+cofactors_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/all_cofactors.csv')
 
-JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+JN_rules_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
 # load in interim mapped reactions data
-input_rxns_w_JN_mappings = '../data/interim/enzymemap_KEGG_JN_mapped.parquet'
+input_rxns_w_JN_mappings = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_KEGG_JN_mapped.parquet'
 input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)
 all_unmapped_rxns_list = input_rxns_w_JN_mappings_df['unmapped'].to_list()
 
@@ -37,11 +37,17 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         # from cofactor SMILES extracted, get their cofactor codes
         # extract cofactor codes (leave out H+)
         lhs_cofactor_codes = [utils.get_cofactor_CoF_code(cofactor_smiles, cofactors_df) for cofactor_smiles in lhs_cofactors_list]
+        lhs_cofactor_codes = [code for code in lhs_cofactor_codes if code!='H+']
+        
         rhs_cofactor_codes = [utils.get_cofactor_CoF_code(cofactor_smiles, cofactors_df) for cofactor_smiles in rhs_cofactors_list]
+        rhs_cofactor_codes = [code for code in rhs_cofactor_codes if code!='H+']
 
         # get all possible JN rule mappings for this reaction
         all_rule_mappings = input_rxns_w_JN_mappings_df.iloc[i, :]['all_mapped_operators']
 
+        # initialize an empty list to store the best matching JN rule for this given reaction
+        best_mapped_rule = []
+        
         # identify which JN rule mapping has the best cofactor/ substrate-product pairs match
         for rule in all_rule_mappings:
             JN_reactants = JN_rules_df[JN_rules_df['Name']==rule]['Reactants'].to_list()[0].split(';')
