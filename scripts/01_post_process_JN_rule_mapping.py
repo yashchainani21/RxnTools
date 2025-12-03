@@ -45,9 +45,11 @@ all_unmapped_rxns_list = input_rxns_w_JN_mappings_df['unmapped'].to_list()
 if 'top_mapped_operator' in input_rxns_w_JN_mappings_df.columns:
     input_rxns_w_JN_mappings_df = input_rxns_w_JN_mappings_df.drop(columns=['top_mapped_operator'])
 
-# initialize list to store the best revised JN rule mapping for each reaction
+# initialize a list to store the best revised JN rule mapping for each reaction
 all_top_mapped_operators: List[str] = []
 
+# initialize a list to store the indices of successfully processed reactions
+keep_idx = []
 rxns_skipped_count = 0
 
 for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
@@ -72,7 +74,7 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         all_rule_mappings = input_rxns_w_JN_mappings_df.iloc[i, :]['all_mapped_operators']
 
         # initialize an empty list to store the best matching JN rule for this given reaction
-        best_mapped_rule: List[str] = []
+        best_mapped_rules: List[str] = []
         
         # identify which JN rule mapping has the best cofactor/ substrate-product pairs match
         for rule in all_rule_mappings:
@@ -89,14 +91,20 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
 
                 # then, check if the cofactors match that specified by the JN rule
                 if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
-                    best_mapped_rule.append(rule)
+                    best_mapped_rules.append(rule)
 
         # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
-        all_top_mapped_operators.append(get_top_operator(best_mapped_rule))
+        all_top_mapped_operators.append(get_top_operator(best_mapped_rules))
+
+        # if everything went well, keep this index
+        keep_idx.append(i)
 
     except Exception as e:
         print(f"Error processing reaction {i}: {e}")
         rxns_skipped_count += 1
         continue
+
+
+input_rxns_w_JN_mappings_df['top_mapped_operator'] = all_top_mapped_operators
 
 print(rxns_skipped_count, "reactions were skipped due to errors.")
