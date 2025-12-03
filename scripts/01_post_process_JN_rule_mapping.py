@@ -13,6 +13,23 @@ cofactors_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/
 
 JN_rules_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
+def get_top_operator(op_list):
+    """
+    Given a list like ['rule0002', 'rule0754'], return the one with
+    the smallest integer value (e.g. 'rule0002').
+    """
+    if not op_list:
+        return None  # or np.nan if you prefer
+
+    # extract integer part: "rule0034" → 34
+    nums = [int(op.replace("rule", "")) for op in op_list]
+
+    # lowest rule number
+    min_num = min(nums)
+
+    # convert back to rule format
+    return f"rule{min_num:04d}"
+
 # load in interim mapped reactions data
 input_rxns_w_JN_mappings = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_KEGG_JN_mapped.parquet'
 input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)
@@ -65,7 +82,8 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
                 if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
                     best_mapped_rule.append(rule)
 
-            # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
+        # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
+
 
     except Exception as e:
         print(f"Error processing reaction {i}: {e}")
