@@ -61,9 +61,9 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
             # check first that the number of substrates and products match that specified by the JN rule
             if len(substrates_list) == len(JN_substrates) and len(products_list) == len(JN_products):
 
+                # then, check if the cofactors match that specified by the JN rule
                 if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
-                    top_mapped_operator = rule
-                    print(rule)
+                    best_mapped_rule.append(rule)
 
     except Exception as e:
         print(f"Error processing reaction {i}: {e}")
