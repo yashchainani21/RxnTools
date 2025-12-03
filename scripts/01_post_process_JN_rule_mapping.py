@@ -3,12 +3,15 @@ import pandas as pd
 from rxntools import reaction, utils
 from typing import List
 
+# load in cofactors data and JN generalized reaction rules
 with open('../data/raw/cofactors.json') as f:
     cofactors_dict = json.load(f)
 
 all_cofactor_codes: List[str] = list(cofactors_dict.keys())
 cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys()]
 cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
+
+JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
 # load in interim mapped reactions data
 input_rxns_w_JN_mappings = '../data/interim/enzymemap_KEGG_JN_mapped.parquet'
@@ -35,6 +38,26 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         # extract cofactor codes (leave out H+)
         lhs_cofactor_codes = [utils.get_cofactor_CoF_code(cofactor_smiles, cofactors_df) for cofactor_smiles in lhs_cofactors_list]
         rhs_cofactor_codes = [utils.get_cofactor_CoF_code(cofactor_smiles, cofactors_df) for cofactor_smiles in rhs_cofactors_list]
+
+        # get all possible JN rule mappings for this reaction
+        all_rule_mappings = input_rxns_w_JN_mappings_df.iloc[i, :]['all_mapped_operators']
+
+        # identify which JN rule mapping has the best cofactor/ substrate-product pairs match
+        for rule in all_rule_mappings:
+            JN_reactants = JN_rules_df[JN_rules_df['Name']==rule]['Reactants'].to_list()[0].split(';')
+            JN_products = JN_rules_df[JN_rules_df['Name']==rule]['Products'].to_list()[0].split(';')
+            
+            JN_lhs_cofactors = [x for x in JN_reactants if x!='Any']
+            JN_rhs_cofactors = [x for x in JN_products if x!='Any']
+            JN_substrates = [x for x in JN_reactants if x=='Any']
+            JN_products = [x for x in JN_products if x=='Any']
+
+            # check first that the number of substrates and products match that specified by the JN rule
+            if len(substrates_list) == len(JN_substrates) and len(products_list) == len(JN_products):
+
+                if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
+                    top_mapped_operator = rule
+                    print(rule)
 
     except Exception as e:
         print(f"Error processing reaction {i}: {e}")
