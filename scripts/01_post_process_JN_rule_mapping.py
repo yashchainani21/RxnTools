@@ -101,6 +101,10 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         single_best_mapped_rule = get_top_operator(best_mapped_rules)
         all_top_mapped_operators.append(single_best_mapped_rule)
 
+        # store substrates, products, and cofactors
+        all_substrates.append(substrates_list)
+        all_products.append(products_list)
+        
         # if everything went well, keep this index
         keep_idx.append(i)
 
