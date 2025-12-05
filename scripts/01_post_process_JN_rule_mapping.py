@@ -54,6 +54,9 @@ all_substrates: List[List[str]] = []
 all_products: List[List[str]] = []
 all_LHS_cofactors: List[List[str]] = []
 all_RHS_cofactors: List[List[str]] = []
+all_LHS_cofactor_codes: List[List[str]] = []
+all_RHS_cofactor_codes: List[List[str]] = []
+
 rxns_skipped_count = 0
 
 for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
@@ -108,6 +111,8 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         all_products.append(products_list)
         all_LHS_cofactors.append(lhs_cofactors_list)
         all_RHS_cofactors.append(rhs_cofactors_list)
+        all_LHS_cofactor_codes.append(lhs_cofactor_codes)
+        all_RHS_cofactor_codes.append(rhs_cofactor_codes)
         
         # if everything went well, keep this index
         keep_idx.append(i)
