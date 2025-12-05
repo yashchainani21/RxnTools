@@ -7,14 +7,14 @@ from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
 # load in cofactors data and JN generalized reaction rules
-with open('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/cofactors.json') as f:
+with open('../data/raw/cofactors.json') as f:
     cofactors_dict = json.load(f)
 
 all_cofactor_codes: List[str] = list(cofactors_dict.keys())
 cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys()]
-cofactors_df = pd.read_csv('//Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/all_cofactors.csv')
+cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
 
-JN_rules_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
 def get_top_operator(op_list):
     """
@@ -34,8 +34,8 @@ def get_top_operator(op_list):
     return f"rule{min_num:04d}"
 
 # load in interim mapped reactions data
-output_filepath = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/processed/enzymemap_KEGG_JN_mapped_non_unique.parquet'
-input_rxns_w_JN_mappings = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_KEGG_JN_mapped.parquet'
+output_filepath = '../data/processed/enzymemap_KEGG_JN_mapped_non_unique.parquet'
+input_rxns_w_JN_mappings = '../data/interim/enzymemap_KEGG_JN_mapped.parquet'
 input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
 print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")       
 
