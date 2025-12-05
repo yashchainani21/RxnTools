@@ -120,7 +120,16 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         rxns_skipped_count += 1
         continue
 
+# slice the dataframe to keep only successfully processed reactions
 final_df = input_rxns_w_JN_mappings_df.iloc[keep_idx, :].copy()
+
+# add new columns to the final dataframe
+final_df['substrates'] = all_substrates
+final_df['products'] = all_products
+final_df['LHS_cofactors'] = all_LHS_cofactors
+final_df['RHS_cofactors'] = all_RHS_cofactors
+final_df['LHS_cofactor_codes'] = all_LHS_cofactor_codes
+final_df['RHS_cofactor_codes'] = all_RHS_cofactor_codes
 final_df['top_mapped_operator'] = all_top_mapped_operators
 
 # save the final processed dataframe
