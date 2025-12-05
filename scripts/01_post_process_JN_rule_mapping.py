@@ -6,16 +6,15 @@ from typing import List
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
-
 # load in cofactors data and JN generalized reaction rules
-with open('../data/raw/cofactors.json') as f:
+with open('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/cofactors.json') as f:
     cofactors_dict = json.load(f)
 
 all_cofactor_codes: List[str] = list(cofactors_dict.keys())
 cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys()]
-cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
+cofactors_df = pd.read_csv('//Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/all_cofactors.csv')
 
-JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+JN_rules_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
 def get_top_operator(op_list):
     """
@@ -23,7 +22,7 @@ def get_top_operator(op_list):
     the smallest integer value (e.g. 'rule0002').
     """
     if not op_list:
-        return None  # or np.nan if you prefer
+        return None  
 
     # extract integer part: "rule0034" → 34
     nums = [int(op.replace("rule", "")) for op in op_list]
@@ -35,8 +34,8 @@ def get_top_operator(op_list):
     return f"rule{min_num:04d}"
 
 # load in interim mapped reactions data
-output_filepath = '../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet'
-input_rxns_w_JN_mappings = '../data/interim/enzymemap_MetaCyc_JN_mapped.parquet'
+output_filepath = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/processed/enzymemap_KEGG_JN_mapped_non_unique.parquet'
+input_rxns_w_JN_mappings = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_KEGG_JN_mapped.parquet'
 input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
 print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")       
 
@@ -50,7 +49,9 @@ if 'top_mapped_operator' in input_rxns_w_JN_mappings_df.columns:
 all_top_mapped_operators: List[str] = []
 
 # initialize a list to store the indices of successfully processed reactions
-keep_idx = []
+keep_idx: List[int] = []
+all_substrates: List[List[str]] = []
+all_products: List[List[str]] = []
 rxns_skipped_count = 0
 
 for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
@@ -93,9 +94,12 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
                 # then, check if the cofactors match that specified by the JN rule
                 if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
                     best_mapped_rules.append(rule)
+                else:
+                    best_mapped_rules.append(None)
 
         # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
-        all_top_mapped_operators.append(get_top_operator(best_mapped_rules))
+        single_best_mapped_rule = get_top_operator(best_mapped_rules)
+        all_top_mapped_operators.append(single_best_mapped_rule)
 
         # if everything went well, keep this index
         keep_idx.append(i)
