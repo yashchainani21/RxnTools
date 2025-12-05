@@ -12,8 +12,8 @@ with open('../data/raw/cofactors.json') as f:
 
 all_cofactor_codes: List[str] = list(cofactors_dict.keys())
 cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys()]
-cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
 
+cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
 JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
 def get_top_operator(op_list: List[str]) -> str:
