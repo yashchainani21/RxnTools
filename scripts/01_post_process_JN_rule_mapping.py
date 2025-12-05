@@ -7,14 +7,14 @@ from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
 # load in cofactors data and JN generalized reaction rules
-with open('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/cofactors.json') as f:
+with open('../data/raw/cofactors.json') as f:
     cofactors_dict = json.load(f)
 
 all_cofactor_codes: List[str] = list(cofactors_dict.keys())
 cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys()]
-cofactors_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/all_cofactors.csv')
+cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
 
-JN_rules_df = pd.read_csv('/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
 def get_top_operator(op_list: List[str]) -> str:
     """
@@ -23,9 +23,6 @@ def get_top_operator(op_list: List[str]) -> str:
     """
     if not op_list:
         return None  
-
-    if None in op_list:
-        op_list.remove(None)
 
     # extract integer part: "rule0034" → 34
     nums = [int(op.replace("rule", "")) for op in op_list]
@@ -37,8 +34,8 @@ def get_top_operator(op_list: List[str]) -> str:
     return f"rule{min_num:04d}"
 
 # load in interim mapped reactions data
-output_filepath = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/processed/enzymemap_KEGG_JN_mapped_non_unique.parquet'
-input_rxns_w_JN_mappings = '/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_KEGG_JN_mapped.parquet'
+output_filepath = '../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet'
+input_rxns_w_JN_mappings = '../data/interim/enzymemap_MetaCyc_JN_mapped.parquet'
 input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
 print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")       
 
@@ -102,8 +99,6 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
                 # then, check if the cofactors match that specified by the JN rule
                 if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
                     best_mapped_rules.append(rule)
-                else:
-                    best_mapped_rules.append(None)
 
         # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
         single_best_mapped_rule = get_top_operator(best_mapped_rules)
