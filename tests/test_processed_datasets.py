@@ -40,6 +40,10 @@ def test_processed_KEGG_rule0002_and_rule0003_rxns_count(KEGG_df):
     assert rule0002_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     assert rule0003_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
+    # the products column should contain a list with exactly one element each as well
+    assert rule0002_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0003_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
 
 def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count():
     MetaCyc_df = pd.read_parquet("../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet")
