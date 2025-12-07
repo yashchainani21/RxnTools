@@ -34,8 +34,8 @@ def get_top_operator(op_list: List[str]) -> str:
     return f"rule{min_num:04d}"
 
 # load in interim mapped reactions data
-output_filepath = '../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet'
-input_rxns_w_JN_mappings = '../data/interim/enzymemap_MetaCyc_JN_mapped.parquet'
+output_filepath = '../data/processed/enzymemap_KEGG_JN_mapped_non_unique.parquet'
+input_rxns_w_JN_mappings = '../data/interim/enzymemap_KEGG_JN_mapped.parquet'
 input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
 print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")       
 
