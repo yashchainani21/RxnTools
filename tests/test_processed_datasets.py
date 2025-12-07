@@ -85,3 +85,15 @@ def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
     # the rhs cofactors column should contain exactly one element each as well
     assert rule0002_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     assert rule0003_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the lhs cofactor codes column for rule0002 should contain exactly one element: NAD_CoF
+    assert rule0002_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NAD_CoF').all()
+
+    # the rhs cofactor codes column for rule0002 should contain exactly one element: NADH_CoF
+    assert rule0002_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NADH_CoF').all()
+
+    # the lhs cofactor codes column for rule0003 should contain exactly one element: NADH_CoF
+    assert rule0003_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NADH_CoF').all()
+
+    # the rhs cofactor codes column for rule0003 should contain exactly one element: NAD_CoF
+    assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NAD_CoF').all()
