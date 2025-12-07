@@ -43,6 +43,14 @@ def test_processed_KEGG_rule0002_and_rule0003_rxns_count(KEGG_df):
     assert rule0002_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     assert rule0003_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
+    # the lhs cofactors column should contain exactly one element each
+    assert rule0002_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0003_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the rhs cofactors column should contain exactly one element each as well
+    assert rule0002_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0003_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
 # test alcohol dehydrogenase related rules for MetaCyc were mapped correctly
 def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
     rule0002_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0002']
@@ -53,3 +61,15 @@ def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
     # the substrates column should contain a list with exactly one element each (the alcohol being oxidized or the aldehyde being reduced)
     assert rule0002_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     assert rule0003_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the products column should contain a list with exactly one element each as well (the alcohol being oxidized or the aldehyde being reduced)
+    assert rule0002_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0003_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the lhs cofactors column should contain exactly one element each
+    assert rule0002_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0003_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the rhs cofactors column should contain exactly one element each as well
+    assert rule0002_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0003_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
