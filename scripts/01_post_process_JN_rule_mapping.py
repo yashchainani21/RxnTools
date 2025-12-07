@@ -67,7 +67,9 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
         substrates_list = unmapped_rxn.get_substrates(cofactors_list = cofactors_list, consider_stereo=False)
         products_list = unmapped_rxn.get_products(cofactors_list = cofactors_list, consider_stereo=False)
         lhs_cofactors_list = unmapped_rxn.get_lhs_cofactors(cofactors_list = cofactors_list, consider_stereo=False)
+        lhs_cofactors_list = [x for x in lhs_cofactors_list if x!='[H+]']  # remove H+ from cofactors
         rhs_cofactors_list = unmapped_rxn.get_rhs_cofactors(cofactors_list = cofactors_list, consider_stereo=False)
+        rhs_cofactors_list = [x for x in rhs_cofactors_list if x!='[H+]']  # remove H+ from cofactors
     
         # from cofactor SMILES extracted, get their cofactor codes
         # extract cofactor codes (leave out H+)
