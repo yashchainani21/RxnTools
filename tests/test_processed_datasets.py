@@ -28,26 +28,28 @@ def check_columns_in_MetaCyc_processed_df(MetaCyc_df):
     for col in expected_columns:
         assert col in MetaCyc_df.columns
 
+# test alcohol dehydrogenase related rules for KEGG were mapped correctly
 def test_processed_KEGG_rule0002_and_rule0003_rxns_count(KEGG_df):
     rule0002_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0002']
     rule0003_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0003']
-    rule_0002_count = rule0002_df.shape[0]
-    rule_0003_count = rule0003_df.shape[0]
-    assert rule_0002_count == 704
-    assert rule_0003_count == 125
+    assert rule0002_df.shape[0] == 704
+    assert rule0003_df.shape[0] == 125
 
-    # the substrates column should contain a list with exactly on element each
+    # the substrates column should contain a list with exactly on element each (the alcohol being oxidized or the aldehyde being reduced)
     assert rule0002_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     assert rule0003_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
-    # the products column should contain a list with exactly one element each as well
+    # the products column should contain a list with exactly one element each as well (the alcohol being oxidized or the aldehyde being reduced)
     assert rule0002_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     assert rule0003_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
+# test alcohol dehydrogenase related rules for MetaCyc were mapped correctly
+def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
+    rule0002_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0002']
+    rule0003_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0003']
+    assert rule0002_df.shape[0] == 404
+    assert rule0003_df.shape[0] == 389
 
-def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count():
-    MetaCyc_df = pd.read_parquet("../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet")
-    rule_0002_count = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0002'].shape[0]
-    rule_0003_count = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0003'].shape[0]
-    assert rule_0002_count == 404
-    assert rule_0003_count == 389
+    # the substrates column should contain a list with exactly one element each (the alcohol being oxidized or the aldehyde being reduced)
+    assert rule0002_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0003_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
