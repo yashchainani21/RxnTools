@@ -11,7 +11,7 @@ def MetaCyc_df():
     return pd.read_parquet("../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet")
 
 def test_processed_KEGG_rxns_not_empty(KEGG_df):
-    assert KEGG_df.shape[0] == 7966 # c
+    assert KEGG_df.shape[0] == 7966 # confirmed against the original .csv file too
     assert 'top_mapped_operator' in KEGG_df.columns
 
 def test_processed_MetaCyc_rxns_not_empty(MetaCyc_df):
