@@ -102,3 +102,8 @@ def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
 def test_processed_KEGG_rule0023_and_rule0024_rxns_count(KEGG_df):
     rule0023_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0023']
     rule0024_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0024']
+
+# test decarboxylase related rules for MetaCyc were mapped correctly
+def test_processed_MetaCyc_rule0023_and_rule0024_rxns_count(MetaCyc_df):
+    rule0023_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0023']
+    rule0024_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0024']
