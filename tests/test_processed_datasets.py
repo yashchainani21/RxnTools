@@ -97,3 +97,8 @@ def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
 
     # the rhs cofactor codes column for rule0003 should contain exactly one element: NAD_CoF
     assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NAD_CoF').all()
+
+# test decarboxylase related rules for KEGG were mapped correctly
+def test_processed_KEGG_rule0023_and_rule0024_rxns_count(KEGG_df):
+    rule0023_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0023']
+    rule0024_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0024']
