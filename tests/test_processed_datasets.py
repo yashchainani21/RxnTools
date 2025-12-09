@@ -307,5 +307,14 @@ def test_all_KEGG_rxns_mapped(KEGG_df, JN_rules_df):
         JN_mapped_rule = row['top_mapped_operator']
         rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
         
+        # substrates and products are indicated by 'Any' in the JN rule definition
         assert len(row['substrates']) == list(rule_row['Reactants'])[0].split(';').count('Any')
         assert len(row['products']) == list(rule_row['Products'])[0].split(';').count('Any')
+
+        # cofactors are also indicated by anything that is not 'Any' in the JN rule definition
+        reactants = list(rule_row['Reactants'])[0].split(';')
+        products = list(rule_row['Products'])[0].split(';')
+        lhs_non_any = sum(1 for s in reactants if s.strip() != 'Any')
+        rhs_non_any = sum(1 for s in products if s.strip() != 'Any')
+        assert len(row['LHS_cofactors']) == lhs_non_any
+        assert len(row['RHS_cofactors']) == rhs_non_any
