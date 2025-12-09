@@ -244,4 +244,5 @@ def test_processed_KEGG_monooxygenase_rules(KEGG_df):
     rule0004_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0004']
     rule0005_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0005']
 
-    
+    assert rule0004_df.shape[0] == 111
+    assert rule0005_df.shape[0] == 1
