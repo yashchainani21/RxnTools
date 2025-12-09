@@ -121,6 +121,9 @@ def test_processed_KEGG_rule0023_and_rule0024_rxns_count(KEGG_df):
     # the lhs cofactor codes column for carboxylation rxns (rule0023) should contain exactly one element: CO2_CoF
     assert rule0023_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'CO2').all()
 
+    # the rhs cofactor codes column for carboxylation rxns (rule0023) should contain no cofactors
+    assert rule0023_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 0).all()
+
 # test decarboxylase related rules for MetaCyc were mapped correctly
 def test_processed_MetaCyc_rule0023_and_rule0024_rxns_count(MetaCyc_df):
     rule0023_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0023']
@@ -129,4 +132,6 @@ def test_processed_MetaCyc_rule0023_and_rule0024_rxns_count(MetaCyc_df):
     # there are no carboxylation and decarboxylation reactions in MetaCyc
     assert rule0023_df.shape[0] == 0
     assert rule0024_df.shape[0] == 0
+
+
 
