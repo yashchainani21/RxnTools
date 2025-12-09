@@ -141,8 +141,10 @@ def test_processed_MetaCyc_rule0023_and_rule0024_rxns_count(MetaCyc_df):
 
 # test aldehyde dehydrogenase related rules for KEGG were mapped correctly
 def test_processed_KEGG_aldehyde_dehydrogenase_rules(KEGG_df):
-    rule0004_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0025']
-    rule0005_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0026']
+    rule0025_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0025']
+    rule0026_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0026']
 
+    assert rule0025_df.shape[0] == 7
+    assert rule0026_df.shape[0] == 150
     
 
