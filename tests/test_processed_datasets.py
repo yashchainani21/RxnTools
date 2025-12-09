@@ -146,5 +146,17 @@ def test_processed_KEGG_aldehyde_dehydrogenase_rules(KEGG_df):
 
     assert rule0025_df.shape[0] == 7
     assert rule0026_df.shape[0] == 150
+
+    # the lhs cofactors column for rule0025 should contain exactly one element
+    assert rule0025_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the rhs cofactors column for rule0025 should contain exactly two elements
+    assert rule0025_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
+
+    # the lhs cofactors column for rule0026 should contain exactly two elements
+    assert rule0026_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
+
+    # the rhs cofactors column for rule0026 should contain exactly one element
+    assert rule0026_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     
 
