@@ -159,6 +159,18 @@ def test_processed_KEGG_aldehyde_dehydrogenase_rules(KEGG_df):
     assert rule0025_df.shape[0] == 7
     assert rule0026_df.shape[0] == 150
 
+    # the substrates column for rule0025 should contain exactly one element: the aldehyde being oxidized
+    assert rule0025_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()   
+
+    # the products column for rule0025 should contain exactly one element: the carboxylic acid produced
+    assert rule0025_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the substrates column for rule0026 should contain exactly one element: the carboxylic acid being oxidized
+    assert rule0026_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()     
+
+    # the products column for rule0026 should contain exactly one element: the aldehyde produced
+    assert rule0026_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
     # the lhs cofactors column for rule0025 should contain exactly one element
     assert rule0025_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
