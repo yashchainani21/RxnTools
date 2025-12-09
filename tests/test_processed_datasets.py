@@ -246,3 +246,15 @@ def test_processed_KEGG_monooxygenase_rules(KEGG_df):
 
     assert rule0004_df.shape[0] == 111
     assert rule0005_df.shape[0] == 1
+
+    # the substrates column for rule0004 should contain exactly one element: the substrate being monooxygenated
+    assert rule0004_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the products column for rule0004 should contain exactly one element: the monooxygenated product
+    assert rule0004_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the lhs cofactors column for rule0004 should contain exactly two elements
+    assert rule0004_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
+
+    # the rhs cofactors column for rule0004 should contain exactly two elements
+    assert rule0004_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
