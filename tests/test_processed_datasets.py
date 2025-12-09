@@ -10,6 +10,10 @@ def KEGG_df():
 def MetaCyc_df():
     return pd.read_parquet("../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet")
 
+@pytest.fixture()
+def JN_rules_df():
+    return pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter='\t')
+
 def test_processed_KEGG_rxns_not_empty(KEGG_df):
     assert KEGG_df.shape[0] == 7966 # confirmed against the original .csv file too
     assert 'top_mapped_operator' in KEGG_df.columns
@@ -287,3 +291,18 @@ def test_processed_KEGG_monooxygenase_rules(KEGG_df):
 def test_all_KEGG_rxns_mapped(KEGG_df):
     mapped_rxns_df = KEGG_df[KEGG_df['top_mapped_operator'] != 'None']
     assert mapped_rxns_df.shape[0] > 0
+
+    for idx, row in mapped_rxns_df.iterrows():
+
+        # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
+        assert isinstance(row['substrates'], np.ndarray)
+        assert isinstance(row['products'], np.ndarray)
+        assert isinstance(row['LHS_cofactors'], np.ndarray)
+        assert isinstance(row['RHS_cofactors'], np.ndarray)
+        assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
+        assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
+
+        # test that the number of substrates and products aligns with the top mapped operator
+        JN_mapped_rule = row['top_mapped_operator']
+        num_substrates = len(row['substrates'])
+        num_products = len(row['products'])
