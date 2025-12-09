@@ -239,4 +239,9 @@ def test_processed_MetaCyc_aldehyde_dehydrogenase_rules(MetaCyc_df):
     # the rhs cofactor codes column for rule0026 should contain exactly one element: NADH_CoF
     assert rule0026_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NADH_CoF').all()
     
-     
+# test monooxygenase related rules (rule0004 & rule0005) for KEGG were mapped correctly
+def test_processed_KEGG_monooxygenase_rules(KEGG_df):
+    rule0004_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0004']
+    rule0005_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0005']
+
+    
