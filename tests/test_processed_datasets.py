@@ -112,6 +112,12 @@ def test_processed_KEGG_rule0023_and_rule0024_rxns_count(KEGG_df):
     # the products column for carboxylation rxns (rule0023) should contain a list with exactly one element each
     assert rule0023_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
+    # the substrates column for decarboxylation rxns (rule0024) should contain a list with exactly one element each
+    assert rule0024_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the products column for decarboxylation rxns (rule0024) should contain a list with exactly one element each
+    assert rule0024_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
     # the lhs cofactors column for carboxylation rxns (rule0023) should contain exactly one element each
     assert rule0023_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
