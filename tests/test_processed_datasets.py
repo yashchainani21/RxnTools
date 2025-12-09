@@ -273,3 +273,6 @@ def test_processed_KEGG_monooxygenase_rules(KEGG_df):
 
     # the lhs cofactor codes column for rule0004 should contain exactly two elements: NADH_CoF and OXYGEN
     assert rule0004_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2 and 'NADH_CoF' in x and 'O2' in x).all()
+
+    # the rhs cofactor codes column for rule0004 should contain exactly two elements: NAD_CoF and WATER
+    assert rule0004_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2 and 'NAD_CoF' in x and 'WATER' in x).all()
