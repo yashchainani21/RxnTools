@@ -288,8 +288,9 @@ def test_processed_KEGG_monooxygenase_rules(KEGG_df):
     assert rule0005_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2 and 'NADH_CoF' in x and 'O2' in x).all()
 
 # test mappings for all reactions in KEGG
-def test_all_KEGG_rxns_mapped(KEGG_df):
-    mapped_rxns_df = KEGG_df[KEGG_df['top_mapped_operator'] != 'None']
+def test_all_KEGG_rxns_mapped(KEGG_df, JN_rules_df):
+    mapped_rxns_df = KEGG_df[(KEGG_df['top_mapped_operator'].notna()) & (KEGG_df['top_mapped_operator']!='None')]
+
     assert mapped_rxns_df.shape[0] > 0
 
     for idx, row in mapped_rxns_df.iterrows():
@@ -304,5 +305,7 @@ def test_all_KEGG_rxns_mapped(KEGG_df):
 
         # test that the number of substrates and products aligns with the top mapped operator
         JN_mapped_rule = row['top_mapped_operator']
-        num_substrates = len(row['substrates'])
-        num_products = len(row['products'])
+        rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
+        
+        assert len(row['substrates']) == list(rule_row['Reactants'])[0].split(';').count('Any')
+        assert len(row['products']) == list(rule_row['Products'])[0].split(';').count('Any')
