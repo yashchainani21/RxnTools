@@ -282,3 +282,8 @@ def test_processed_KEGG_monooxygenase_rules(KEGG_df):
 
     # the rhs cofactor codes column for rule0005 should contain exactly two elements: NADH_CoF and OXYGEN
     assert rule0005_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2 and 'NADH_CoF' in x and 'O2' in x).all()
+
+# test mappings for all reactions in KEGG
+def test_all_KEGG_rxns_mapped(KEGG_df):
+    mapped_rxns_df = KEGG_df[KEGG_df['top_mapped_operator'] != 'None']
+    assert mapped_rxns_df.shape[0] > 0
