@@ -159,4 +159,6 @@ def test_processed_KEGG_aldehyde_dehydrogenase_rules(KEGG_df):
     # the rhs cofactors column for rule0026 should contain exactly one element
     assert rule0026_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     
+    # the lhs cofactor codes column for rule0025 should contain exactly one element: NADH_CoF
+    assert rule0025_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NADH_CoF').all()
 
