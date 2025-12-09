@@ -151,7 +151,7 @@ def test_processed_MetaCyc_rule0023_and_rule0024_rxns_count(MetaCyc_df):
     assert rule0023_df.shape[0] == 0
     assert rule0024_df.shape[0] == 0
 
-# test aldehyde dehydrogenase related rules for KEGG were mapped correctly
+# test aldehyde dehydrogenase related rules for KEGG (rule0025 & rule0026) were mapped correctly
 def test_processed_KEGG_aldehyde_dehydrogenase_rules(KEGG_df):
     rule0025_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0025']
     rule0026_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0026']
@@ -195,4 +195,48 @@ def test_processed_KEGG_aldehyde_dehydrogenase_rules(KEGG_df):
     # the rhs cofactor codes column for rule0026 should contain exactly one element: NADH_CoF
     assert rule0026_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NADH_CoF').all()
     
+# test aldehyde dehydrogenase related rules for MetaCyc (rule0025 & rule0026) were mapped correctly
+def test_processed_MetaCyc_aldehyde_dehydrogenase_rules(MetaCyc_df):
+    rule0025_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0025']
+    rule0026_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0026']
+
+    assert rule0025_df.shape[0] == 7
+    assert rule0026_df.shape[0] == 1
+
+    # the substrates column for rule0025 should contain exactly one element: the aldehyde being oxidized
+    assert rule0025_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()   
+
+    # the products column for rule0025 should contain exactly one element: the carboxylic acid produced
+    assert rule0025_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the substrates column for rule0026 should contain exactly one element: the carboxylic acid being oxidized
+    assert rule0026_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()     
+
+    # the products column for rule0026 should contain exactly one element: the aldehyde produced
+    assert rule0026_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the lhs cofactors column for rule0025 should contain exactly one element
+    assert rule0025_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
+    # the rhs cofactors column for rule0025 should contain exactly two elements
+    assert rule0025_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
+
+    # the lhs cofactors column for rule0026 should contain exactly two elements
+    assert rule0026_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
+
+    # the rhs cofactors column for rule0026 should contain exactly one element
+    assert rule0026_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
     
+    # the lhs cofactor codes column for rule0025 should contain exactly one element: NADH_CoF
+    assert rule0025_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NADH_CoF').all()
+
+    # the rhs cofactor codes column for rule0025 should contain exactly two elements: NAD_CoF and WATER
+    assert rule0025_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2 and 'NAD_CoF' in x and 'WATER' in x).all()
+
+    # the lhs cofactor codes column for rule0026 should contain exactly two elements: NAD_CoF and WATER
+    assert rule0026_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2 and 'NAD_CoF' in x and 'WATER' in x).all()
+
+    # the rhs cofactor codes column for rule0026 should contain exactly one element: NADH_CoF
+    assert rule0026_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NADH_CoF').all()
+    
+     
