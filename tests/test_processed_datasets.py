@@ -256,11 +256,20 @@ def test_processed_KEGG_monooxygenase_rules(KEGG_df):
     # the substrates column for rule0005 should contain exactly one element: the monooxygenated product
     assert rule0005_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
 
+    # the products column for rule0005 should contain exactly one element: the substrate being monooxygenated
+    assert rule0005_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+
     # the lhs cofactors column for rule0004 should contain exactly two elements
     assert rule0004_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
 
     # the rhs cofactors column for rule0004 should contain exactly two elements
     assert rule0004_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
+
+    # the lhs cofactors column for rule0005 should contain exactly two elements
+    assert rule0005_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
+
+    # the rhs cofactors column for rule0005 should contain exactly two elements
+    assert rule0005_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2).all()
 
     # the lhs cofactor codes column for rule0004 should contain exactly two elements: NADH_CoF and OXYGEN
     assert rule0004_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 2 and 'NADH_CoF' in x and 'O2' in x).all()
