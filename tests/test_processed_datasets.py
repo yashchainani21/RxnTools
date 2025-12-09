@@ -112,6 +112,9 @@ def test_processed_KEGG_rule0023_and_rule0024_rxns_count(KEGG_df):
     # the rhs cofactors column for carboxylation rxns (rule0023) should contain no cofactors
     assert rule0023_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 0).all()
 
+    # the lhs cofactors column for decarboxylation rxns (rule0024) should contain no cofactors
+    assert rule0024_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 0).all()
+
 # test decarboxylase related rules for MetaCyc were mapped correctly
 def test_processed_MetaCyc_rule0023_and_rule0024_rxns_count(MetaCyc_df):
     rule0023_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0023']
