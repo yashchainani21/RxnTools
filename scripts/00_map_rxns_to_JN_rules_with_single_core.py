@@ -7,8 +7,8 @@ import os
 # ----------------------------------------------------------
 # Paths
 # ----------------------------------------------------------
-rxns_df_input_filepath = "../data/raw/enzymemap_v2_brenda2023.csv"
-rxns_df_output_filepath = "../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns.parquet"
+rxns_df_input_filepath = "/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/enzymemap_v2_brenda2023.csv"
+rxns_df_output_filepath = "/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns.parquet"
 
 # ----------------------------------------------------------
 # Helper — make rule ID
@@ -21,7 +21,7 @@ def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
 # ----------------------------------------------------------
 # Load SMARTS rules
 # ----------------------------------------------------------
-gen_rxn_operators_df = pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter="\t")
+gen_rxn_operators_df = pd.read_csv("/Users/yashchainani/Desktop/PythonProjects/RxnTools/data/raw/JN1224MIN_rules.tsv", delimiter="\t")
 gen_rxn_operators_list: List[str] = gen_rxn_operators_df["SMARTS"].to_list()
 
 # ----------------------------------------------------------
