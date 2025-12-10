@@ -71,7 +71,6 @@ def map_single_reaction(args):
 
     return idx, mapped_ops
 
-
 # ---- MAIN ----
 rxns = cleaned_rxns_list
 tasks = [(i, rxn, gen_rxn_operators_list) for i, rxn in enumerate(rxns)]
