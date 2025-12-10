@@ -16,6 +16,10 @@ batch_num = 1  # current batch number
 start_idx = 0  # starting index for the current batch
 end_idx = batch_num * batch_size  # ending index for the current batch
 
+# rewrite output filepath if batching is used
+if use_batching:
+    rxns_df_output_filepath = f"{rxns_df_output_filepath.replace('.parquet', f'_batch{batch_num}.parquet')}"
+
 
 def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
     """
