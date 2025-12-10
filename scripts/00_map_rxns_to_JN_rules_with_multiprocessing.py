@@ -9,6 +9,12 @@ multiprocessing.set_start_method("fork", force=True)
 rxns_df_input_filepath = "../data/raw/enzymemap_v2_brenda2023.csv"
 rxns_df_output_filepath = "../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns.parquet"
 
+# enable batching to map large numbers of reactions without running out of memory
+batch_size = 10000  # number of reactions to process in each batch
+batch_num = 0  # current batch number
+start_idx = 0  # starting index for the current batch
+
+
 def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
     """
     Convert an integer into a zero-padded rule ID of the form 'rule0001'.
