@@ -16,7 +16,6 @@ batch_num = 1  # current batch number
 start_idx = 0  # starting index for the current batch
 end_idx = batch_num * batch_size  # ending index for the current batch
 
-
 def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
     """
     Convert an integer into a zero-padded rule ID of the form 'rule0001'.
@@ -108,10 +107,8 @@ def get_top_operator(op_list):
     # convert back to rule format
     return f"rule{min_num:04d}"
 
-
 enzymatic_rxns_df["top_mapped_operator"] = (
     enzymatic_rxns_df["all_mapped_operators"]
-    .apply(get_top_operator)
-)
+    .apply(get_top_operator))
 
 enzymatic_rxns_df.to_parquet(rxns_df_output_filepath)
