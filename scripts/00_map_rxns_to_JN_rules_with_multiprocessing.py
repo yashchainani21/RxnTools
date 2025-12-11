@@ -13,8 +13,8 @@ rxns_df_output_filepath = "../data/interim/enzymemap_v2_brenda2023_JN_mapped_uni
 use_batching = True
 batch_size = 5000  # number of reactions to process in each batch
 batch_num = 1  # current batch number
-start_idx = 0  # starting index for the current batch
-end_idx = batch_num * batch_size  # ending index for the current batch
+start_idx = batch_num * batch_size  # starting index for the current batch
+end_idx = (batch_num + 1) * batch_size  # ending index for the current batch
 
 def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
     """
