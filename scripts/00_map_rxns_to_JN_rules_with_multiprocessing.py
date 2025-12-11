@@ -11,14 +11,10 @@ rxns_df_output_filepath = "../data/interim/enzymemap_v2_brenda2023_JN_mapped_uni
 
 # enable batching to map large numbers of reactions without running out of memory
 use_batching = True
-batch_size = 10000  # number of reactions to process in each batch
+batch_size = 5000  # number of reactions to process in each batch
 batch_num = 1  # current batch number
 start_idx = 0  # starting index for the current batch
 end_idx = batch_num * batch_size  # ending index for the current batch
-
-# rewrite output filepath if batching is used
-if use_batching:
-    rxns_df_output_filepath = f"{rxns_df_output_filepath.replace('.parquet', f'_batch{batch_num}.parquet')}"
 
 
 def make_rule_id(n: int, prefix: str = "rule", width: int = 4) -> str:
@@ -44,14 +40,16 @@ gen_rxn_operators_list: List[str] = gen_rxn_operators_df["SMARTS"].to_list()
 # extract and create a list of all unmapped reactions
 enzymatic_rxns_df = pd.read_csv(rxns_df_input_filepath)
 enzymatic_rxns_df = enzymatic_rxns_df[~enzymatic_rxns_df['mapped'].duplicated()]
+
+# rewrite output filepath if batching is used
+if use_batching:
+    rxns_df_output_filepath = f"{rxns_df_output_filepath.replace('.parquet', f'_batch{batch_num}.parquet')}"
+    enzymatic_rxns_df = enzymatic_rxns_df[start_idx:end_idx]
+
 unmapped_rxns_list: List[str] = enzymatic_rxns_df["unmapped"].to_list()
 
 # remove all hydrogen ions from rxn strings so that they can be mapped by Stefan's ergochemics
 cleaned_rxns_list: List[str] = []
-
-if use_batching:
-    print(f"Processing batch {batch_num} (reactions {start_idx} to {end_idx})...")
-    unmapped_rxns_list = unmapped_rxns_list[start_idx:end_idx]
 
 for rxn in unmapped_rxns_list:
     rxn = rxn.replace(".[H+]","").replace("[H+].","")
