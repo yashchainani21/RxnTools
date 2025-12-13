@@ -43,6 +43,13 @@ def JN_rules_df():
         all_lhs_cofactor_codes.append(lhs_cofactor_codes_in_rule)
         all_rhs_cofactor_codes.append(rhs_cofactor_codes_in_rule)
 
+    JN_rules_df['num_substrates'] = all_num_substrates
+    JN_rules_df['num_products'] = all_num_products
+    JN_rules_df['num_lhs_cofactors'] = all_num_lhs_cofactors
+    JN_rules_df['num_rhs_cofactors'] = all_num_rhs_cofactors
+    JN_rules_df['lhs_cofactor_codes'] = all_lhs_cofactor_codes
+    JN_rules_df['rhs_cofactor_codes'] = all_rhs_cofactor_codes
+
     return JN_rules_df
 
 def test_processed_KEGG_rxns_not_empty(KEGG_df):
