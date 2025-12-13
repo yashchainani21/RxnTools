@@ -378,8 +378,36 @@ def test_all_KEGG_rxns_unmapped(KEGG_df, JN_rules_df):
 
     assert KEGG_unmapped_df.shape[0] > 0
 
+    for _, row in KEGG_unmapped_df.iterrows():
+
+        # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
+        assert isinstance(row['substrates'], np.ndarray)
+        assert isinstance(row['products'], np.ndarray)
+        assert isinstance(row['LHS_cofactors'], np.ndarray)
+        assert isinstance(row['RHS_cofactors'], np.ndarray)
+        assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
+        assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
+
+        # test that the number of substrates and products aligns with the top mapped operator
+        JN_mapped_rule = row['top_mapped_operator']
+        rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
+
 # ensure that unmapped reactions in MetaCyc are truly unmapped (i.e., they do not fit any JN rule)
 def test_all_MetaCyc_rxns_unmapped(MetaCyc_df, JN_rules_df):
     MetaCyc_unmapped_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'].isna() | (MetaCyc_df['top_mapped_operator']=='None')]
 
     assert MetaCyc_unmapped_df.shape[0] > 0
+
+    for _, row in MetaCyc_unmapped_df.iterrows():
+
+        # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
+        assert isinstance(row['substrates'], np.ndarray)
+        assert isinstance(row['products'], np.ndarray)
+        assert isinstance(row['LHS_cofactors'], np.ndarray)
+        assert isinstance(row['RHS_cofactors'], np.ndarray)
+        assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
+        assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
+
+        # test that the number of substrates and products aligns with the top mapped operator
+        JN_mapped_rule = row['top_mapped_operator']
+        rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
