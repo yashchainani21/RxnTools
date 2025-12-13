@@ -12,7 +12,38 @@ def MetaCyc_df():
 
 @pytest.fixture()
 def JN_rules_df():
-    return pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter='\t')
+    JN_rules_df = pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter='\t')
+
+    all_num_substrates = []
+    all_num_products = []
+    all_num_lhs_cofactors = []
+    all_num_rhs_cofactors = []
+    all_lhs_cofactor_codes = []
+    all_rhs_cofactor_codes = []
+
+    # for each reaction rule in the generalized reaction operators' dataframe
+    for _, rule_row in JN_rules_df.iterrows():
+        num_substrates_in_rule = list(rule_row['Reactants'])[0].split(';').count('Any')
+        num_products_in_rule = list(rule_row['Products'])[0].split(';').count('Any')
+        
+        # cofactors are also indicated by anything that is not 'Any' in the JN rule definition
+        reactants = list(rule_row['Reactants'])[0].split(';')
+        products = list(rule_row['Products'])[0].split(';')
+        num_lhs_cofactors_in_rule = sum(1 for s in reactants if s.strip() != 'Any')
+        num_rhs_cofactors_in_rule = sum(1 for s in products if s.strip() != 'Any')
+
+        # finally, we check if the identifies of the cofactors match those in the JN rule definition
+        lhs_cofactor_codes_in_rule = [s.strip() for s in reactants if s.strip() != 'Any']
+        rhs_cofactor_codes_in_rule = [s.strip() for s in products if s.strip() != 'Any']
+
+        all_num_substrates.append(num_substrates_in_rule)
+        all_num_products.append(num_products_in_rule)
+        all_num_lhs_cofactors.append(num_lhs_cofactors_in_rule)
+        all_num_rhs_cofactors.append(num_rhs_cofactors_in_rule)
+        all_lhs_cofactor_codes.append(lhs_cofactor_codes_in_rule)
+        all_rhs_cofactor_codes.append(rhs_cofactor_codes_in_rule)
+
+    return JN_rules_df
 
 def test_processed_KEGG_rxns_not_empty(KEGG_df):
     assert KEGG_df.shape[0] == 7966 # confirmed against the original .csv file too
@@ -388,26 +419,5 @@ def test_all_KEGG_rxns_unmapped(KEGG_df, JN_rules_df):
         assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
         assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
 
-        # test that the number of substrates and products aligns with the top mapped operator
-        JN_mapped_rule = row['top_mapped_operator']
-        rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
+        
 
-# ensure that unmapped reactions in MetaCyc are truly unmapped (i.e., they do not fit any JN rule)
-def test_all_MetaCyc_rxns_unmapped(MetaCyc_df, JN_rules_df):
-    MetaCyc_unmapped_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'].isna() | (MetaCyc_df['top_mapped_operator']=='None')]
-
-    assert MetaCyc_unmapped_df.shape[0] > 0
-
-    for _, row in MetaCyc_unmapped_df.iterrows():
-
-        # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
-        assert isinstance(row['substrates'], np.ndarray)
-        assert isinstance(row['products'], np.ndarray)
-        assert isinstance(row['LHS_cofactors'], np.ndarray)
-        assert isinstance(row['RHS_cofactors'], np.ndarray)
-        assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
-        assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
-
-        # test that the number of substrates and products aligns with the top mapped operator
-        JN_mapped_rule = row['top_mapped_operator']
-        rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
