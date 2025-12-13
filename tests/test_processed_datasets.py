@@ -363,3 +363,11 @@ def test_all_MetaCyc_rxns_mapped(MetaCyc_df, JN_rules_df):
 
         assert set(row['LHS_cofactor_codes']) == set(lhs_cofactor_codes_in_rule)
         assert set(row['RHS_cofactor_codes']) == set(rhs_cofactor_codes_in_rule)
+
+# ensure unmapped reactions have 'None' in the top_mapped_operator column
+def test_unmapped_reactions_have_none_top_mapped_operator(KEGG_df, MetaCyc_df):
+    KEGG_unmapped_df = KEGG_df[KEGG_df['top_mapped_operator'].isna() | (KEGG_df['top_mapped_operator']=='None')]
+    MetaCyc_unmapped_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'].isna() | (MetaCyc_df['top_mapped_operator']=='None')]
+
+    assert KEGG_unmapped_df.shape[0] == 1522
+    assert MetaCyc_unmapped_df.shape[0] == 542
