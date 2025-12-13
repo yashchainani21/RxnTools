@@ -372,8 +372,14 @@ def test_unmapped_reactions_have_none_top_mapped_operator(KEGG_df, MetaCyc_df):
     assert KEGG_unmapped_df.shape[0] == 1522
     assert MetaCyc_unmapped_df.shape[0] == 542
 
-# ensure that unmapped reactions are truly unmapped (i.e., they do not fit any JN rule)
+# ensure that unmapped reactions in KEGG are truly unmapped (i.e., they do not fit any JN rule)
 def test_all_KEGG_rxns_unmapped(KEGG_df, JN_rules_df):
     KEGG_unmapped_df = KEGG_df[KEGG_df['top_mapped_operator'].isna() | (KEGG_df['top_mapped_operator']=='None')]
 
     assert KEGG_unmapped_df.shape[0] > 0
+
+# ensure that unmapped reactions in MetaCyc are truly unmapped (i.e., they do not fit any JN rule)
+def test_all_MetaCyc_rxns_unmapped(MetaCyc_df, JN_rules_df):
+    MetaCyc_unmapped_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'].isna() | (MetaCyc_df['top_mapped_operator']=='None')]
+
+    assert MetaCyc_unmapped_df.shape[0] > 0
