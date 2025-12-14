@@ -2,7 +2,6 @@ import json
 import pandas as pd
 from rxntools import reaction, utils
 from typing import List
-
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
@@ -15,6 +14,34 @@ cofactors_list: List[str] = [cofactors_dict[key] for key in cofactors_dict.keys(
 
 cofactors_df = pd.read_csv('../data/raw/all_cofactors.csv')
 JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
+
+def parse_operator_list(x):
+    # already a list → return as-is
+    if isinstance(x, list):
+        return x
+
+    # bytes → decode
+    if isinstance(x, (bytes, bytearray)):
+        x = x.decode("utf-8")
+
+    # missing / empty
+    if x is None or (isinstance(x, float) and np.isnan(x)):
+        return []
+
+    if isinstance(x, str):
+        x = x.strip()
+
+        if x in ("", "None", "nan"):
+            return []
+
+        try:
+            # JSON-style list
+            return json.loads(x)
+        except json.JSONDecodeError:
+            pass
+
+    # fallback: return empty list or raise
+    return []
 
 def get_top_operator(op_list: List[str]) -> str:
     """
@@ -33,10 +60,40 @@ def get_top_operator(op_list: List[str]) -> str:
     # convert back to rule format
     return f"rule{min_num:04d}"
 
-# load in interim mapped reactions data
-output_filepath = '../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet'
-input_rxns_w_JN_mappings = '../data/interim/enzymemap_MetaCyc_JN_mapped.parquet'
-input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
+### load in interim mapped reactions data (KEGG and MetaCyc)
+#output_filepath = '../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet'
+#input_rxns_w_JN_mappings = '../data/interim/enzymemap_MetaCyc_JN_mapped.parquet'
+#input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
+
+### load in interim mapped reactions data (BRENDA)
+output_filepath = '../data/processed/enzymemap_BRENDA_JN_mapped_non_unique.parquet'
+input_rxns_df0 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch0.parquet')
+input_rxns_df1 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch1.parquet')
+input_rxns_df2 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch2.parquet')
+input_rxns_df3 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch3.parquet')
+input_rxns_df4 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch4.parquet')
+input_rxns_df5 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch5.parquet')
+input_rxns_df6 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch6.parquet')
+input_rxns_df7 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch7.parquet')
+
+input_rxns_w_JN_mappings_df = pd.concat([input_rxns_df0,
+                                         input_rxns_df1,
+                                         input_rxns_df2,
+                                         input_rxns_df3,
+                                         input_rxns_df4,
+                                         input_rxns_df5,
+                                         input_rxns_df6,
+                                         input_rxns_df7], ignore_index=True)
+
+input_rxns_w_JN_mappings_df.reset_index(drop=True, inplace=True)
+
+# retain unique reactions only based on the 'unmapped' column
+input_rxns_w_JN_mappings_df = input_rxns_w_JN_mappings_df.drop_duplicates(subset=['unmapped']).reset_index(drop=True)
+
+input_rxns_w_JN_mappings_df["all_mapped_operators"] = (
+    input_rxns_w_JN_mappings_df["all_mapped_operators"]
+    .apply(parse_operator_list))
+
 print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")       
 
 all_unmapped_rxns_list = input_rxns_w_JN_mappings_df['unmapped'].to_list()
