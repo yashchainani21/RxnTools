@@ -426,5 +426,21 @@ def test_all_KEGG_rxns_unmapped(KEGG_df, JN_rules_df):
         assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
         assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
 
+        KEGG_rxn_num_substrates = len(row['substrates'])
+        KEGG_rxn_num_products = len(row['products'])
+        KEGG_rxn_num_lhs_cofactors = len(row['LHS_cofactors'])
+        KEGG_rxn_num_rhs_cofactors = len(row['RHS_cofactors'])
+        KEGG_rxn_lhs_cofactor_codes = set(row['LHS_cofactor_codes'])
+        KEGG_rxn_rhs_cofactor_codes = set(row['RHS_cofactor_codes'])
+
+        # ensure that no JN rule matches this reaction's characteristics
+        assert JN_rules_df[(JN_rules_df["num_substrates"] == KEGG_rxn_num_substrates)
+                    & (JN_rules_df["num_products"] == KEGG_rxn_num_products)
+                    & (JN_rules_df["num_lhs_cofactors"] == KEGG_rxn_num_lhs_cofactors)
+                    & (JN_rules_df["num_rhs_cofactors"] == KEGG_rxn_num_rhs_cofactors)
+                    & (JN_rules_df["lhs_cofactor_codes"].apply(lambda x: set(x) == KEGG_rxn_lhs_cofactor_codes))
+                    & (JN_rules_df["rhs_cofactor_codes"].apply(lambda x: set(x) == KEGG_rxn_rhs_cofactor_codes))
+                   ].shape[0] == 0
+
         
 
