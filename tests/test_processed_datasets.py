@@ -11,6 +11,10 @@ def MetaCyc_df():
     return pd.read_parquet("../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet")
 
 @pytest.fixture()
+def BRENDA_df():
+    return pd.read_parquet("../data/processed/enzymemap_BRENDA_JN_mapped_non_unique.parquet")
+
+@pytest.fixture()
 def JN_rules_df():
     JN_rules_df = pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter='\t')
 
@@ -59,6 +63,11 @@ def test_processed_KEGG_rxns_not_empty(KEGG_df):
 def test_processed_MetaCyc_rxns_not_empty(MetaCyc_df):
     assert MetaCyc_df.shape[0] == 4580 # confirmed against the original .csv file too
     assert 'top_mapped_operator' in MetaCyc_df.columns
+
+def test_processed_BRENDA_rxns_not_empty():
+    BRENDA_df = pd.read_parquet("../data/processed/enzymemap_BRENDA_JN_mapped_non_unique.parquet")
+    assert BRENDA_df.shape[0] > 0
+    assert 'top_mapped_operator' in BRENDA_df.columns
 
 def check_columns_in_KEGG_processed_df(KEGG_df):
     expected_columns = ['substrates', 'products', 'LHS_cofactors', 'RHS_cofactors', 'LHS_cofactor_codes', 'RHS_cofactor_codes', 'top_mapped_operator']
@@ -365,6 +374,44 @@ def test_all_KEGG_rxns_mapped(KEGG_df, JN_rules_df):
         assert set(row['RHS_cofactor_codes']) == set(rhs_cofactor_codes_in_rule)
 
 def test_all_MetaCyc_rxns_mapped(MetaCyc_df, JN_rules_df):
+    mapped_rxns_df = MetaCyc_df[(MetaCyc_df['top_mapped_operator'].notna()) & (MetaCyc_df['top_mapped_operator']!='None')]
+
+    assert mapped_rxns_df.shape[0] > 0
+
+    for _, row in mapped_rxns_df.iterrows():
+
+        # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
+        assert isinstance(row['substrates'], np.ndarray)
+        assert isinstance(row['products'], np.ndarray)
+        assert isinstance(row['LHS_cofactors'], np.ndarray)
+        assert isinstance(row['RHS_cofactors'], np.ndarray)
+        assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
+        assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
+
+        # test that the number of substrates and products aligns with the top mapped operator
+        JN_mapped_rule = row['top_mapped_operator']
+        rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
+        
+        # substrates and products are indicated by 'Any' in the JN rule definition
+        assert len(row['substrates']) == list(rule_row['Reactants'])[0].split(';').count('Any')
+        assert len(row['products']) == list(rule_row['Products'])[0].split(';').count('Any')
+
+        # cofactors are also indicated by anything that is not 'Any' in the JN rule definition
+        reactants = list(rule_row['Reactants'])[0].split(';')
+        products = list(rule_row['Products'])[0].split(';')
+        lhs_non_any = sum(1 for s in reactants if s.strip() != 'Any')
+        rhs_non_any = sum(1 for s in products if s.strip() != 'Any')
+        assert len(row['LHS_cofactors']) == lhs_non_any
+        assert len(row['RHS_cofactors']) == rhs_non_any
+
+        # finally, we check if the identifies of the cofactors match those in the JN rule definition
+        lhs_cofactor_codes_in_rule = [s.strip() for s in reactants if s.strip() != 'Any']
+        rhs_cofactor_codes_in_rule = [s.strip() for s in products if s.strip() != 'Any']
+
+        assert set(row['LHS_cofactor_codes']) == set(lhs_cofactor_codes_in_rule)
+        assert set(row['RHS_cofactor_codes']) == set(rhs_cofactor_codes_in_rule)
+
+def test_all_BRENDA_rxns_mapped(MetaCyc_df, JN_rules_df):
     mapped_rxns_df = MetaCyc_df[(MetaCyc_df['top_mapped_operator'].notna()) & (MetaCyc_df['top_mapped_operator']!='None')]
 
     assert mapped_rxns_df.shape[0] > 0
