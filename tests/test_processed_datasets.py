@@ -441,6 +441,37 @@ def test_all_KEGG_rxns_unmapped(KEGG_df, JN_rules_df):
                     & (JN_rules_df["lhs_cofactor_codes"].apply(lambda x: set(x) == KEGG_rxn_lhs_cofactor_codes))
                     & (JN_rules_df["rhs_cofactor_codes"].apply(lambda x: set(x) == KEGG_rxn_rhs_cofactor_codes))
                    ].shape[0] == 0
+        
+def test_all_MetaCyc_rxns_unmapped(MetaCyc_df, JN_rules_df):
+    MetaCyc_unmapped_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'].isna() | (MetaCyc_df['top_mapped_operator']=='None')]
+
+    assert MetaCyc_unmapped_df.shape[0] > 0
+
+    for _, row in MetaCyc_unmapped_df.iterrows():
+
+        # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
+        assert isinstance(row['substrates'], np.ndarray)
+        assert isinstance(row['products'], np.ndarray)
+        assert isinstance(row['LHS_cofactors'], np.ndarray)
+        assert isinstance(row['RHS_cofactors'], np.ndarray)
+        assert isinstance(row['LHS_cofactor_codes'], np.ndarray)
+        assert isinstance(row['RHS_cofactor_codes'], np.ndarray)
+
+        MetaCyc_rxn_num_substrates = len(row['substrates'])
+        MetaCyc_rxn_num_products = len(row['products'])
+        MetaCyc_rxn_num_lhs_cofactors = len(row['LHS_cofactors'])
+        MetaCyc_rxn_num_rhs_cofactors = len(row['RHS_cofactors'])
+        MetaCyc_rxn_lhs_cofactor_codes = set(row['LHS_cofactor_codes'])
+        MetaCyc_rxn_rhs_cofactor_codes = set(row['RHS_cofactor_codes'])
+
+        # ensure that no JN rule matches this reaction's characteristics
+        assert JN_rules_df[(JN_rules_df["num_substrates"] == MetaCyc_rxn_num_substrates)
+                    & (JN_rules_df["num_products"] == MetaCyc_rxn_num_products)
+                    & (JN_rules_df["num_lhs_cofactors"] == MetaCyc_rxn_num_lhs_cofactors)
+                    & (JN_rules_df["num_rhs_cofactors"] == MetaCyc_rxn_num_rhs_cofactors)
+                    & (JN_rules_df["lhs_cofactor_codes"].apply(lambda x: set(x) == MetaCyc_rxn_lhs_cofactor_codes))
+                    & (JN_rules_df["rhs_cofactor_codes"].apply(lambda x: set(x) == MetaCyc_rxn_rhs_cofactor_codes))
+                   ].shape[0] == 0
 
         
 
