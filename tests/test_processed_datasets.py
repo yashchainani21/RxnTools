@@ -411,8 +411,8 @@ def test_all_MetaCyc_rxns_mapped(MetaCyc_df, JN_rules_df):
         assert set(row['LHS_cofactor_codes']) == set(lhs_cofactor_codes_in_rule)
         assert set(row['RHS_cofactor_codes']) == set(rhs_cofactor_codes_in_rule)
 
-def test_all_BRENDA_rxns_mapped(MetaCyc_df, JN_rules_df):
-    mapped_rxns_df = MetaCyc_df[(MetaCyc_df['top_mapped_operator'].notna()) & (MetaCyc_df['top_mapped_operator']!='None')]
+def test_all_BRENDA_rxns_mapped(BRENDA_df, JN_rules_df):
+    mapped_rxns_df = BRENDA_df[(BRENDA_df['top_mapped_operator'].notna()) & (BRENDA_df['top_mapped_operator']!='None')]
 
     assert mapped_rxns_df.shape[0] > 0
 
