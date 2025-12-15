@@ -60,12 +60,13 @@ def get_top_operator(op_list: List[str]) -> str:
     # convert back to rule format
     return f"rule{min_num:04d}"
 
-### load in interim mapped reactions data (KEGG and MetaCyc)
+###### ------- loading in KEGG and MetaCyc reactions data ------- ######
 #output_filepath = '../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet'
 #input_rxns_w_JN_mappings = '../data/interim/enzymemap_MetaCyc_JN_mapped.parquet'
-#input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)                
+#input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)
+###### ---------------------------------------------------------- ######                
 
-### load in interim mapped reactions data (BRENDA)
+###### ------- loading in BRENDA reactions data in batches ------- ######
 output_filepath = '../data/processed/enzymemap_BRENDA_JN_mapped_non_unique.parquet'
 input_rxns_df0 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch0.parquet')
 input_rxns_df1 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch1.parquet')
@@ -75,6 +76,8 @@ input_rxns_df4 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_map
 input_rxns_df5 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch5.parquet')
 input_rxns_df6 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch6.parquet')
 input_rxns_df7 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch7.parquet')
+input_rxns_df8 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch8.parquet')
+input_rxns_df9 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch9.parquet')
 
 input_rxns_w_JN_mappings_df = pd.concat([input_rxns_df0,
                                          input_rxns_df1,
@@ -83,7 +86,9 @@ input_rxns_w_JN_mappings_df = pd.concat([input_rxns_df0,
                                          input_rxns_df4,
                                          input_rxns_df5,
                                          input_rxns_df6,
-                                         input_rxns_df7], ignore_index=True)
+                                         input_rxns_df7,
+                                         input_rxns_df8,
+                                         input_rxns_df9], ignore_index=True)
 
 input_rxns_w_JN_mappings_df.reset_index(drop=True, inplace=True)
 
@@ -93,6 +98,8 @@ input_rxns_w_JN_mappings_df = input_rxns_w_JN_mappings_df.drop_duplicates(subset
 input_rxns_w_JN_mappings_df["all_mapped_operators"] = (
     input_rxns_w_JN_mappings_df["all_mapped_operators"]
     .apply(parse_operator_list))
+
+###### ------------------------------------------------------------- ######
 
 print(f"\nTotal reactions to re-process: {input_rxns_w_JN_mappings_df.shape[0]}\n")       
 
