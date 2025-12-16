@@ -10,7 +10,7 @@ query_rule = 'rule0002'
 radius = 1
 include_stereo = True
 
-reported_rxns_df = pd.read_parquet("../data/interim/enzymemap_MetaCyc_JN_mapped.parquet")
+reported_rxns_df = pd.read_parquet("../data/processed/enzymemap_MetaCyc_JN_mapped.parquet")
 JN_rules_df = pd.read_csv('../data/raw/JN1224MIN_rules.tsv', delimiter='\t')
 
 with open('../data/raw/cofactors.json') as f:
