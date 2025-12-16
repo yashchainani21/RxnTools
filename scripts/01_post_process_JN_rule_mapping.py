@@ -79,6 +79,9 @@ input_rxns_df7 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_map
 input_rxns_df8 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch8.parquet')
 input_rxns_df9 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch9.parquet')
 input_rxns_df10 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch10.parquet')
+input_rxns_df11 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch11.parquet')
+input_rxns_df12 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch12.parquet')
+input_rxns_df13 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch13.parquet')
 
 input_rxns_w_JN_mappings_df = pd.concat([input_rxns_df0,
                                          input_rxns_df1,
