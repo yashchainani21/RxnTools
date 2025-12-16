@@ -93,7 +93,10 @@ input_rxns_w_JN_mappings_df = pd.concat([input_rxns_df0,
                                          input_rxns_df7,
                                          input_rxns_df8,
                                          input_rxns_df9,
-                                         input_rxns_df10], ignore_index=True)
+                                         input_rxns_df10,
+                                         input_rxns_df11,
+                                         input_rxns_df12,
+                                         input_rxns_df13], ignore_index=True)
 
 input_rxns_w_JN_mappings_df.reset_index(drop=True, inplace=True)
 
