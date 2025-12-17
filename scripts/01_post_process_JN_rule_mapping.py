@@ -62,7 +62,7 @@ def get_top_operator(op_list: List[str]) -> str:
     return f"rule{min_num:04d}"
 
 ###### select which dataset to process: KEGG/MetaCyc or BRENDA ######
-dataset = "KEGG"  # options: "KEGG", "MetaCyc", "BRENDA"
+dataset = "MetaCyc"  # options: "KEGG", "MetaCyc", "BRENDA"
 
 ###### ------- loading in KEGG and MetaCyc reactions data ------- ######
 if dataset in ["KEGG", "MetaCyc"]:
@@ -181,7 +181,7 @@ for i, rxn_SMILES in enumerate(all_unmapped_rxns_list):
             if len(substrates_list) == len(JN_substrates) and len(products_list) == len(JN_products):
 
                 # then, check if the cofactors match that specified by the JN rule
-                if set(lhs_cofactor_codes) == set(JN_lhs_cofactors) and set(rhs_cofactor_codes) == set(JN_rhs_cofactors):
+                if Counter(lhs_cofactor_codes) == Counter(JN_lhs_cofactors) and Counter(rhs_cofactor_codes) == Counter(JN_rhs_cofactors):
                     best_mapped_rules.append(rule)
 
         # of the all the best mapped rules, pick the first one (since the JN rules are ordered by frequency of occurrence) 
