@@ -248,7 +248,7 @@ def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
     # the rhs cofactor codes column for rule0003 should contain exactly one element: NAD_CoF
     assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NAD_CoF').all()
 
-      # finally, check that running the template with RDKit's RunReactants method gives the resulting products
+    # finally, check that running the template with RDKit's RunReactants method gives the resulting products
     JN_rule0002_SMARTS = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     for _, rxn_row in rule0002_df.iterrows():
         reactants_tuple = tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['substrates'])
@@ -327,7 +327,7 @@ def test_processed_BRENDA_rule0002_and_rule0003_rxns_count(BRENDA_df):
     # the rhs cofactor codes column for rule0003 should contain exactly one element: NAD_CoF
     assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NAD_CoF').all()
 
-      # finally, check that running the template with RDKit's RunReactants method gives the resulting products
+    # finally, check that running the template with RDKit's RunReactants method gives the resulting products
     JN_rule0002_SMARTS = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     for _, rxn_row in rule0002_df.iterrows():
         reactants_tuple = tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['substrates'])
@@ -575,6 +575,7 @@ def test_all_KEGG_rxns_mapped(KEGG_df, JN_rules_df):
         # test that the number of substrates and products aligns with the top mapped operator
         JN_mapped_rule = row['top_mapped_operator']
         rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
+        rule_SMARTS = rule_row['SMARTS']
         
         # substrates and products are indicated by 'Any' in the JN rule definition
         assert len(row['substrates']) == list(rule_row['Reactants'])[0].split(';').count('Any')
@@ -613,6 +614,7 @@ def test_all_MetaCyc_rxns_mapped(MetaCyc_df, JN_rules_df):
         # test that the number of substrates and products aligns with the top mapped operator
         JN_mapped_rule = row['top_mapped_operator']
         rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
+        rule_SMARTS = rule_row['SMARTS']
         
         # substrates and products are indicated by 'Any' in the JN rule definition
         assert len(row['substrates']) == list(rule_row['Reactants'])[0].split(';').count('Any')
@@ -651,6 +653,7 @@ def test_all_BRENDA_rxns_mapped(BRENDA_df, JN_rules_df):
         # test that the number of substrates and products aligns with the top mapped operator
         JN_mapped_rule = row['top_mapped_operator']
         rule_row = JN_rules_df[JN_rules_df['Name'] == JN_mapped_rule]
+        rule_SMARTS = rule_row['SMARTS']
         
         # substrates and products are indicated by 'Any' in the JN rule definition
         assert len(row['substrates']) == list(rule_row['Reactants'])[0].split(';').count('Any')
