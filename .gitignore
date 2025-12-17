@@ -11,3 +11,4 @@ data/raw/enzymemap_Kegg_processed.csv
 data/interim/*.parquet
 data/processed/*.parquet
 dist/
+*.parquet
