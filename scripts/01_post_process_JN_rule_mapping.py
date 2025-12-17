@@ -60,56 +60,62 @@ def get_top_operator(op_list: List[str]) -> str:
     # convert back to rule format
     return f"rule{min_num:04d}"
 
+
+###### select which dataset to process: KEGG/MetaCyc or BRENDA ######
+dataset = "KEGG"  # options: "KEGG", "MetaCyc", "BRENDA"
+
 ###### ------- loading in KEGG and MetaCyc reactions data ------- ######
-#output_filepath = '../data/processed/enzymemap_MetaCyc_JN_mapped_non_unique.parquet'
-#input_rxns_w_JN_mappings = '../data/interim/enzymemap_MetaCyc_JN_mapped.parquet'
-#input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)
-###### ---------------------------------------------------------- ######                
+if dataset in ["KEGG", "MetaCyc"]:
+    output_filepath = f'../data/processed/enzymemap_{dataset}_JN_mapped_non_unique.parquet'
+    input_rxns_w_JN_mappings = f'../data/interim/enzymemap_{dataset}_JN_mapped.parquet'
+    input_rxns_w_JN_mappings_df = pd.read_parquet(input_rxns_w_JN_mappings)
+###### ---------------------------------------------------------- ######
 
 ###### ------- loading in BRENDA reactions data in batches ------- ######
-output_filepath = '../data/processed/enzymemap_BRENDA_JN_mapped_non_unique.parquet'
-input_rxns_df0 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch0.parquet')
-input_rxns_df1 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch1.parquet')
-input_rxns_df2 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch2.parquet')
-input_rxns_df3 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch3.parquet')
-input_rxns_df4 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch4.parquet')
-input_rxns_df5 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch5.parquet')
-input_rxns_df6 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch6.parquet')
-input_rxns_df7 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch7.parquet')
-input_rxns_df8 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch8.parquet')
-input_rxns_df9 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch9.parquet')
-input_rxns_df10 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch10.parquet')
-input_rxns_df11 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch11.parquet')
-input_rxns_df12 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch12.parquet')
-input_rxns_df13 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch13.parquet')
-input_rxns_df14 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch14.parquet')
-input_rxns_df15 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch15.parquet')
+if dataset == "BRENDA":
+# output_filepath = '../data/processed/enzymemap_BRENDA_JN_mapped_non_unique.parquet'
+# input_rxns_df0 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch0.parquet')
+# input_rxns_df1 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch1.parquet')
+# input_rxns_df2 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch2.parquet')
+# input_rxns_df3 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch3.parquet')
+# input_rxns_df4 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch4.parquet')
+# input_rxns_df5 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch5.parquet')
+# input_rxns_df6 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch6.parquet')
+# input_rxns_df7 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch7.parquet')
+# input_rxns_df8 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch8.parquet')
+# input_rxns_df9 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch9.parquet')
+# input_rxns_df10 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch10.parquet')
+# input_rxns_df11 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch11.parquet')
+# input_rxns_df12 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch12.parquet')
+# input_rxns_df13 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch13.parquet')
+# input_rxns_df14 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch14.parquet')
+# input_rxns_df15 = pd.read_parquet('../data/interim/enzymemap_v2_brenda2023_JN_mapped_unique_rxns_batch15.parquet')
 
-input_rxns_w_JN_mappings_df = pd.concat([input_rxns_df0,
-                                         input_rxns_df1,
-                                         input_rxns_df2,
-                                         input_rxns_df3,
-                                         input_rxns_df4,
-                                         input_rxns_df5,
-                                         input_rxns_df6,
-                                         input_rxns_df7,
-                                         input_rxns_df8,
-                                         input_rxns_df9,
-                                         input_rxns_df10,
-                                         input_rxns_df11,
-                                         input_rxns_df12,
-                                         input_rxns_df13,
-                                         input_rxns_df14,
-                                         input_rxns_df15], ignore_index=True)
+# input_rxns_w_JN_mappings_df = pd.concat([input_rxns_df0,
+#                                          input_rxns_df1,
+#                                          input_rxns_df2,
+#                                          input_rxns_df3,
+#                                          input_rxns_df4,
+#                                          input_rxns_df5,
+#                                          input_rxns_df6,
+#                                          input_rxns_df7,
+#                                          input_rxns_df8,
+#                                          input_rxns_df9,
+#                                          input_rxns_df10,
+#                                          input_rxns_df11,
+#                                          input_rxns_df12,
+#                                          input_rxns_df13,
+#                                          input_rxns_df14,
+#                                          input_rxns_df15], ignore_index=True)
 
-input_rxns_w_JN_mappings_df.reset_index(drop=True, inplace=True)
+# input_rxns_w_JN_mappings_df.reset_index(drop=True, inplace=True)
 
-# retain unique reactions only based on the 'unmapped' column
-input_rxns_w_JN_mappings_df = input_rxns_w_JN_mappings_df.drop_duplicates(subset=['unmapped']).reset_index(drop=True)
+# # retain unique reactions only based on the 'unmapped' column
+# input_rxns_w_JN_mappings_df = input_rxns_w_JN_mappings_df.drop_duplicates(subset=['unmapped']).reset_index(drop=True)
 
-input_rxns_w_JN_mappings_df["all_mapped_operators"] = (
-    input_rxns_w_JN_mappings_df["all_mapped_operators"]
-    .apply(parse_operator_list))
+# input_rxns_w_JN_mappings_df["all_mapped_operators"] = (
+#     input_rxns_w_JN_mappings_df["all_mapped_operators"]
+#     .apply(parse_operator_list))
 
 ###### ------------------------------------------------------------- ######
 
