@@ -114,6 +114,10 @@ def test_processed_KEGG_rule0002_and_rule0003_rxns_count(KEGG_df):
     # the rhs cofactor codes column for rule0003 should contain exactly one element: NAD_CoF
     assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NAD_CoF').all()
 
+    # finally, check that running the template with RDKit's RunReactants method gives the resulting products
+    for _, rxn_row in rule0002_df.iterrows():
+        reactants_tuple = tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['substrates'])
+
 # test alcohol dehydrogenase related rules (rule0002 & rule0003) for MetaCyc were mapped correctly
 def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
     rule0002_df = MetaCyc_df[MetaCyc_df['top_mapped_operator'] == 'rule0002']
@@ -521,4 +525,7 @@ def test_all_MetaCyc_rxns_unmapped(MetaCyc_df, JN_rules_df):
                    ].shape[0] == 0
 
         
+KEGG_df2 = pd.read_parquet("../data/processed/enzymemap_KEGG_JN_mapped_non_unique.parquet")
+JN_rules_df2 = pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter='\t')
 
+test_all_KEGG_rxns_unmapped(KEGG_df2, JN_rules_df2)
