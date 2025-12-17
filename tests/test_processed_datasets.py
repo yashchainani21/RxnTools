@@ -222,8 +222,8 @@ def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
     assert rule0003_df.shape[0] == 389
 
     # the substrates column should contain a list with exactly one element each (the alcohol being oxidized or the aldehyde being reduced)
-    assert rule0002_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
-    assert rule0003_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
+    assert rule0002_df['substrates'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
+    assert rule0003_df['substrates'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
 
     # the products column should contain a list with exactly one element each as well (the alcohol being oxidized or the aldehyde being reduced)
     assert rule0002_df['products'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1).all()
