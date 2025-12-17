@@ -1,5 +1,6 @@
 import pytest
 from rdkit import Chem
+from rdkit.Chem import AllChem
 import pandas as pd
 import numpy as np
 
@@ -116,8 +117,11 @@ def test_processed_KEGG_rule0002_and_rule0003_rxns_count(KEGG_df):
     assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) and len(x) == 1 and x[0] == 'NAD_CoF').all()
 
     # finally, check that running the template with RDKit's RunReactants method gives the resulting products
+    JN_rule0002_SMARTS = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
     for _, rxn_row in rule0002_df.iterrows():
         reactants_tuple = tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['substrates'])
+        reactants_tuple += tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['LHS_cofactors'])
+        rxn = AllChem.ReactionFromSmarts(JN_rule0002_SMARTS)
 
 # test alcohol dehydrogenase related rules (rule0002 & rule0003) for MetaCyc were mapped correctly
 def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
@@ -525,8 +529,3 @@ def test_all_MetaCyc_rxns_unmapped(MetaCyc_df, JN_rules_df):
                     & (JN_rules_df["rhs_cofactor_codes"].apply(lambda x: set(x) == MetaCyc_rxn_rhs_cofactor_codes))
                    ].shape[0] == 0
 
-        
-KEGG_df2 = pd.read_parquet("../data/processed/enzymemap_KEGG_JN_mapped_non_unique.parquet")
-JN_rules_df2 = pd.read_csv("../data/raw/JN1224MIN_rules.tsv", delimiter='\t')
-
-test_all_KEGG_rxns_unmapped(KEGG_df2, JN_rules_df2)
