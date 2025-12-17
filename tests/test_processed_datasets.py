@@ -1,8 +1,61 @@
 import pytest
-from rdkit import Chem
-from rdkit.Chem import AllChem
 import pandas as pd
 import numpy as np
+from rdkit import Chem
+from rdkit.Chem import AllChem
+from typing import Tuple, List
+
+def are_isomorphic(mol1: Chem.rdchem.Mol, mol2: Chem.rdchem.Mol, consider_stereo: bool = False) -> bool:
+    """ 
+    Check if two molecules are isomorphic, i.e. their bond and atom arrangements are identical
+
+    Parameters ----------
+    mol1 : Chem.rdchem.Mol
+        RDKit mol object of first molecule generated from its SMILES or SMARTS representation. If SMARTS were used in creating mol object, these need not be atom mapped.
+    mol2 : Chem.rdchem.Mol
+        RDKit mol object of second molecule generated from its SMILES or SMARTS representation. If SMARTS were used in creating mol object, these need not be atom mapped.
+    consider_stereo: bool
+        Whether to consider stereochemistry or not when comparing two molecules.
+
+    Returns -------
+    is_isomorphic : bool
+        True if both molecules are isomorphic, False otherwise.
+    """
+    if consider_stereo:
+        is_isomorphic = mol1.HasSubstructMatch(mol2, useChirality=True) and mol2.HasSubstructMatch(mol1, useChirality=True)
+    else:
+        is_isomorphic = mol1.HasSubstructMatch(mol2) and mol2.HasSubstructMatch(mol1)
+    return is_isomorphic
+
+def are_mol_tuples_isomorphic(
+    tup1: Tuple[Chem.rdchem.Mol, ...],
+    tup2: Tuple[Chem.rdchem.Mol, ...],
+    consider_stereo: bool = False,
+) -> bool:
+    """
+    Check whether two tuples of RDKit molecules are identical as multisets
+    under molecular isomorphism.
+    """
+
+    if len(tup1) != len(tup2):
+        return False
+
+    unmatched = list(tup2)
+
+    for mol1 in tup1:
+        match_idx = None
+        for i, mol2 in enumerate(unmatched):
+            if are_isomorphic(mol1, mol2, consider_stereo=consider_stereo):
+                match_idx = i
+                break
+
+        if match_idx is None:
+            return False
+
+        # consume the matched molecule (preserves multiplicity!)
+        unmatched.pop(match_idx)
+
+    return True
 
 @pytest.fixture()
 def KEGG_df():
@@ -122,6 +175,12 @@ def test_processed_KEGG_rule0002_and_rule0003_rxns_count(KEGG_df):
         reactants_tuple = tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['substrates'])
         reactants_tuple += tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['LHS_cofactors'])
         rxn = AllChem.ReactionFromSmarts(JN_rule0002_SMARTS)
+        products_from_RDKit = rxn.RunReactants(reactants_tuple)
+
+        expected_products_tuple = tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['products'])
+        expected_products_tuple += tuple(Chem.MolFromSmiles(smi) for smi in rxn_row['RHS_cofactors'])
+        assert are_mol_tuples_isomorphic(tup1 = products_from_RDKit,
+                                         tup2 = expected_products_tuple,)
 
 # test alcohol dehydrogenase related rules (rule0002 & rule0003) for MetaCyc were mapped correctly
 def test_processed_MetaCyc_rule0002_and_rule0003_rxns_count(MetaCyc_df):
