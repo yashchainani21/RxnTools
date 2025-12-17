@@ -83,12 +83,12 @@ def JN_rules_df():
 
     # for each reaction rule in the generalized reaction operators' dataframe
     for _, rule_row in JN_rules_df.iterrows():
-        num_substrates_in_rule = list(rule_row['Reactants'])[0].split(';').count('Any')
-        num_products_in_rule = list(rule_row['Products'])[0].split(';').count('Any')
+        num_substrates_in_rule = rule_row['Reactants'].split(';').count('Any')
+        num_products_in_rule = rule_row['Products'].split(';').count('Any')
         
         # cofactors are also indicated by anything that is not 'Any' in the JN rule definition
-        reactants = list(rule_row['Reactants'])[0].split(';')
-        products = list(rule_row['Products'])[0].split(';')
+        reactants = rule_row['Reactants'].split(';')
+        products = rule_row['Products'].split(';')
         num_lhs_cofactors_in_rule = sum(1 for s in reactants if s.strip() != 'Any')
         num_rhs_cofactors_in_rule = sum(1 for s in products if s.strip() != 'Any')
 
@@ -878,3 +878,5 @@ def test_all_MetaCyc_rxns_unmapped(MetaCyc_df, JN_rules_df):
                     & (JN_rules_df["lhs_cofactor_codes"].apply(lambda x: Counter(x) == MetaCyc_rxn_lhs_cofactor_codes))
                     & (JN_rules_df["rhs_cofactor_codes"].apply(lambda x: Counter(x) == MetaCyc_rxn_rhs_cofactor_codes))
                    ].shape[0] == 0
+        
+
