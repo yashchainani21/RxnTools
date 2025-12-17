@@ -468,6 +468,15 @@ def test_processed_MetaCyc_rule0023_and_rule0024_rxns_count(MetaCyc_df):
     assert rule0023_df.shape[0] == 0
     assert rule0024_df.shape[0] == 0
 
+# test decarboxylase related rules (rule0023 & rule0024) for BRENDA were mapped correctly
+def test_processed_BRENDA_rule0023_and_rule0024_rxns_count(BRENDA_df):
+    rule0023_df = BRENDA_df[BRENDA_df['top_mapped_operator'] == 'rule0023']
+    rule0024_df = BRENDA_df[BRENDA_df['top_mapped_operator'] == 'rule0024']
+
+    # there are no carboxylation and decarboxylation reactions in BRENDA
+    assert rule0023_df.shape[0] > 0
+    assert rule0024_df.shape[0] > 0
+
 # test aldehyde dehydrogenase related rules for KEGG (rule0025 & rule0026) were mapped correctly
 def test_processed_KEGG_aldehyde_dehydrogenase_rules(KEGG_df):
     rule0025_df = KEGG_df[KEGG_df['top_mapped_operator'] == 'rule0025']
