@@ -1,4 +1,5 @@
 import pytest
+from rdkit import Chem
 import pandas as pd
 import numpy as np
 
