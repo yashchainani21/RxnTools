@@ -62,7 +62,7 @@ def get_top_operator(op_list: List[str]) -> str:
     return f"rule{min_num:04d}"
 
 ###### select which dataset to process: KEGG/MetaCyc or BRENDA ######
-dataset = "MetaCyc"  # options: "KEGG", "MetaCyc", "BRENDA"
+dataset = "BRENDA"  # options: "KEGG", "MetaCyc", "BRENDA"
 
 ###### ------- loading in KEGG and MetaCyc reactions data ------- ######
 if dataset in ["KEGG", "MetaCyc"]:
