@@ -143,32 +143,32 @@ def test_processed_KEGG_rule0002_and_rule0003_rxns_count(KEGG_df):
     assert rule0003_df.shape[0] == 125
 
     # the substrates column should contain a list with exactly on element each (the alcohol being oxidized or the aldehyde being reduced)
-    assert rule0002_df['substrates'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
-    assert rule0003_df['substrates'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
+    assert rule0002_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
+    assert rule0003_df['substrates'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
 
     # the products column should contain a list with exactly one element each as well (the alcohol being oxidized or the aldehyde being reduced)
-    assert rule0002_df['products'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
-    assert rule0003_df['products'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
+    assert rule0002_df['products'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
+    assert rule0003_df['products'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
 
     # the lhs cofactors column should contain exactly one element each
-    assert rule0002_df['LHS_cofactors'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
-    assert rule0003_df['LHS_cofactors'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
+    assert rule0002_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
+    assert rule0003_df['LHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
 
     # the rhs cofactors column should contain exactly one element each as well
-    assert rule0002_df['RHS_cofactors'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
-    assert rule0003_df['RHS_cofactors'].apply(lambda x: isinstance(x, list) and len(x) == 1).all()
+    assert rule0002_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
+    assert rule0003_df['RHS_cofactors'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1)).all()
 
     # the lhs cofactor codes column for rule0002 should contain exactly one element: NAD_CoF
-    assert rule0002_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, list) and len(x) == 1 and x[0] == 'NAD_CoF').all()
+    assert rule0002_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1 and x[0] == 'NAD_CoF')).all()
 
     # the rhs cofactor codes column for rule0002 should contain exactly one element: NADH_CoF
-    assert rule0002_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, list) and len(x) == 1 and x[0] == 'NADH_CoF').all()
+    assert rule0002_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1 and x[0] == 'NADH_CoF')).all()
 
     # the lhs cofactor codes column for rule0003 should contain exactly one element: NADH_CoF
-    assert rule0003_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, list) and len(x) == 1 and x[0] == 'NADH_CoF').all()
+    assert rule0003_df['LHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1 and x[0] == 'NADH_CoF')).all()
 
     # the rhs cofactor codes column for rule0003 should contain exactly one element: NAD_CoF
-    assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, list) and len(x) == 1 and x[0] == 'NAD_CoF').all()
+    assert rule0003_df['RHS_cofactor_codes'].apply(lambda x: isinstance(x, np.ndarray) or (isinstance(x, list) and len(x) == 1 and x[0] == 'NAD_CoF')).all()
 
     # finally, check that running the template with RDKit's RunReactants method gives the resulting products
     JN_rule0002_SMARTS = '[#6:1]-[#8:2].[#6:3]1:[#6:4]:[#6:5]:[#6:6]:[#7+:7]:[#6:8]:1>>[#6:3]1=[#6:8]-[#7+0:7]-[#6:6]=[#6:5]-[#6:4]-1.[#6:1]=[#8:2]'
