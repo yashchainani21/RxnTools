@@ -738,12 +738,12 @@ def test_all_MetaCyc_rxns_mapped(MetaCyc_df, JN_rules_df):
     for _, row in mapped_rxns_df.iterrows():
 
         # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
-        assert isinstance(row['substrates'],list)
-        assert isinstance(row['products'], list)
-        assert isinstance(row['LHS_cofactors'], list)
-        assert isinstance(row['RHS_cofactors'], list)
-        assert isinstance(row['LHS_cofactor_codes'], list)
-        assert isinstance(row['RHS_cofactor_codes'], list)
+        assert isinstance(row['substrates'],list) or isinstance(row['substrates'], np.ndarray)
+        assert isinstance(row['products'], list) or isinstance(row['products'], np.ndarray)
+        assert isinstance(row['LHS_cofactors'], list) or isinstance(row['LHS_cofactors'], np.ndarray)
+        assert isinstance(row['RHS_cofactors'], list) or isinstance(row['RHS_cofactors'], np.ndarray)
+        assert isinstance(row['LHS_cofactor_codes'], list) or isinstance(row['LHS_cofactor_codes'], np.ndarray)
+        assert isinstance(row['RHS_cofactor_codes'], list) or isinstance(row['RHS_cofactor_codes'], np.ndarray)
 
         # test that the number of substrates and products aligns with the top mapped operator
         JN_mapped_rule = row['top_mapped_operator']
@@ -777,12 +777,12 @@ def test_all_BRENDA_rxns_mapped(BRENDA_df, JN_rules_df):
     for _, row in mapped_rxns_df.iterrows():
 
         # check that the substrates, products, LHS_cofactors, RHS_cofactors, LHS_cofactor_codes, RHS_cofactor_codes are all numpy arrays
-        assert isinstance(row['substrates'], list)
-        assert isinstance(row['products'], list)
-        assert isinstance(row['LHS_cofactors'], list)
-        assert isinstance(row['RHS_cofactors'], list)
-        assert isinstance(row['LHS_cofactor_codes'], list)
-        assert isinstance(row['RHS_cofactor_codes'], list)
+        assert isinstance(row['substrates'], list) or isinstance(row['substrates'], np.ndarray)
+        assert isinstance(row['products'], list) or isinstance(row['products'], np.ndarray)
+        assert isinstance(row['LHS_cofactors'], list) or isinstance(row['LHS_cofactors'], np.ndarray)
+        assert isinstance(row['RHS_cofactors'], list) or isinstance(row['RHS_cofactors'], np.ndarray)
+        assert isinstance(row['LHS_cofactor_codes'], list) or isinstance(row['LHS_cofactor_codes'], np.ndarray)
+        assert isinstance(row['RHS_cofactor_codes'], list) or isinstance(row['RHS_cofactor_codes'], np.ndarray)
 
         # test that the number of substrates and products aligns with the top mapped operator
         JN_mapped_rule = row['top_mapped_operator']
