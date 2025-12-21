@@ -1098,3 +1098,4 @@ class mapped_reaction:
         # with the final combined environment, extract a submolecule
         combined_submol = Chem.PathToSubmol(substrate_mol, list(combined_env))
         return Chem.MolToSmarts(combined_submol)
+
