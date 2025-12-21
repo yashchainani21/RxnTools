@@ -3,11 +3,15 @@ from rdkit.Chem import AllChem
 import pandas as pd
 from itertools import permutations
 from typing import List, Tuple
-
-from tests.test_reaction import cofactors_df
 from .utils import are_isomorphic
 
 class ReactionTemplate:
+    """
+    Parameters
+    ----------
+    rxn_smarts : str
+        SMARTS template of the form "A.B >> C.D" describing a chemical reaction.
+    """
     def __init__(self, rxn_smarts: str):
         self.rxn_smarts = rxn_smarts
 
