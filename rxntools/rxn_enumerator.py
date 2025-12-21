@@ -74,7 +74,7 @@ class ReactionTemplate:
             num_matches = 0
 
             for (reactant_mol, lhs_template_SMARTS) in zip(combination, lhs_templates_list):
-                if reactant_mol.HasSubstructMatch(Chem.MolFromSmarts(lhs_template_SMARTS, useChirality=useChirality)):
+                if reactant_mol.HasSubstructMatch(Chem.MolFromSmarts(lhs_template_SMARTS), useChirality=useChirality):
                     num_matches += 1
 
                 if num_matches == len(lhs_templates_list):
