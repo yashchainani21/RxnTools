@@ -18,6 +18,7 @@ class ReactionTemplate:
     def RunReactantsChiral(self,
                            rule_ID: str,
                            rule_df: pd.DataFrame,
+                           cofactors_df: pd.DataFrame,
                            reactants_SMILES_list: List[str],
                            useChirality: bool = True) -> List[Tuple[Chem.Mol, ...]]:
 
