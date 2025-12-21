@@ -23,11 +23,26 @@ class ReactionTemplate:
 
         """Run the reaction template on the provided reactants.
 
-        Raises:
-            ValueError: _description_
+        Parameters
+        ----------
+        self
 
-        Returns:
-            _type_: _description_
+        rule_ID : str
+            Identifier for the reaction rule.
+
+        rule_df : pd.DataFrame
+            DataFrame containing reaction rules with reactant and product codes.
+
+        reactants_SMILES_list : List[str]
+            List of SMILES strings representing the reactants.
+
+        useChirality : bool, optional
+            Whether to consider chirality in substructure matching (default is True).
+
+        Returns
+        -------
+        List[Tuple[Chem.Mol, ...]]
+            List of tuples, each containing RDKit Mol objects representing the products formed.
         """
         # using the rule_ID, get the reactant and product codes from rule_df
         # these codes describe the reactants, products, and cofactors involved in the reaction
