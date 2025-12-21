@@ -12,8 +12,8 @@ class ReactionTemplate:
     rxn_smarts : str
         SMARTS template of the form "A.B >> C.D" describing a chemical reaction.
     """
-    def __init__(self, rxn_smarts: str):
-        self.rxn_smarts = rxn_smarts
+    def __init__(self, rxn_SMARTS: str):
+        self.rxn_SMARTS = rxn_SMARTS
 
     def RunReactantsChiral(self,
                            rule_ID: str,
@@ -57,7 +57,7 @@ class ReactionTemplate:
         # generate all possible orderings of reactants
         all_reactant_combinations: List[Tuple[Chem.Mol, ...]] = list(permutations(reactant_mols, len(reactant_mols)))
 
-        lhs_template, rhs_template = self.rxn_smarts.split('>>')
+        lhs_template, rhs_template = self.rxn_SMARTS.split('>>')
         lhs_templates_list: List[str] = lhs_template.split('.') # list like [Any_SMARTS, NAD_CoF_SMARTS]
         rhs_templates_list: List[str] = rhs_template.split('.') # list like [Any_SMARTS, NADH_CoF_SMARTS]
 
@@ -84,7 +84,7 @@ class ReactionTemplate:
         all_products: List[Tuple[Chem.Mol, ...]] = []
 
         for correct_combination in correct_reactant_combinations:
-            rxn = AllChem.ReactionFromSmarts(self.rxn_smarts)
+            rxn = AllChem.ReactionFromSmarts(self.rxn_SMARTS)
             products: Tuple[Tuple[Chem.Mol, ...], ...] = rxn.RunReactants(correct_combination)
             for product_set in products:
                 all_products.append(product_set)
