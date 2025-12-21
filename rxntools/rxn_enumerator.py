@@ -30,4 +30,9 @@ class ReactionTemplate:
         lhs_templates_list: List[str] = lhs_template.split('.') # list like [Any_SMARTS, NAD_CoF_SMARTS]
         rhs_templates_list: List[str] = rhs_template.split('.') # list like [Any_SMARTS, NADH_CoF_SMARTS]
 
-        reactant_codes_list: List[str] = 
+        reactant_codes_list: List[str] = reactant_codes.split(';') # list like ['Any', 'NAD_CoF']
+        product_codes_list: List[str] = product_codes.split(';') # list like ['Any', 'NADH_CoF']
+
+        # initialize a list to store the correct order in which reactants should be positioned based on their SMARTS
+        # determining the correct order of reactants is necessary because RDKit's RunReactants method is order-dependent
+        correct_reactant_combinations: List[Tuple[Chem.Mol, ...]] = []
